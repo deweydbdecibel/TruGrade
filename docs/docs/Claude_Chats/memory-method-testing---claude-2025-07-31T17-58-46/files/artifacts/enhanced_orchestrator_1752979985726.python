@@ -1,0 +1,476 @@
+# Enhanced Training Orchestrator - Segmentation Intelligence Layer
+# Because revolutionary card grading demands architectural transcendence
+
+import json
+import re
+from pathlib import Path
+from typing import Dict, List, Optional, Union, Tuple
+from dataclasses import dataclass
+from enum import Enum
+
+# Import your existing orchestrator foundation
+from training_orchestrator import FlexibleTrainingOrchestrator, TrainingConfig
+
+class AnnotationFormat(Enum):
+    """Annotation format taxonomy for intelligent routing"""
+    YOLO_DETECTION = "yolo_detection"      # Rectangular bounding boxes
+    YOLO_SEGMENTATION = "yolo_segmentation" # Polygon coordinates  
+    COCO_JSON = "coco_json"               # JSON-based annotations
+    UNKNOWN = "unknown"                    # Format detection failure
+
+@dataclass
+class FormatAnalysis:
+    """Comprehensive annotation format intelligence"""
+    format_type: AnnotationFormat
+    confidence: float
+    sample_count: int
+    geometric_complexity: str  # "bbox", "polygon", "hybrid"
+    conversion_required: bool
+    quality_metrics: Dict
+
+class AnnotationFormatDetector:
+    """
+    Neural format archaeology - decode annotation formats with transformer-grade precision
+    Because intelligent systems adapt to data, not the inverse
+    """
+    
+    def __init__(self):
+        self.detection_patterns = {
+            "yolo_bbox": r"^[0-9]\s+[0-9.]+\s+[0-9.]+\s+[0-9.]+\s+[0-9.]+\s*$",
+            "yolo_polygon": r"^[0-9]\s+([0-9.]+\s+[0-9.]+\s*){3,}$",
+            "coco_json": r'[\{\[].*"annotations".*[\}\]]'
+        }
+        
+    def analyze_annotation_corpus(self, label_paths: List[str]) -> FormatAnalysis:
+        """
+        Forensic annotation analysis with statistical confidence metrics
+        Transform file archaeology into format intelligence
+        """
+        if not label_paths:
+            return self._create_unknown_format_analysis()
+            
+        # Sample-based format detection for computational efficiency
+        sample_size = min(10, len(label_paths))
+        sample_paths = label_paths[:sample_size]
+        
+        format_votes = {
+            AnnotationFormat.YOLO_DETECTION: 0,
+            AnnotationFormat.YOLO_SEGMENTATION: 0,
+            AnnotationFormat.COCO_JSON: 0,
+            AnnotationFormat.UNKNOWN: 0
+        }
+        
+        geometric_complexity_samples = []
+        
+        for label_path in sample_paths:
+            file_analysis = self._analyze_single_annotation_file(Path(label_path))
+            format_votes[file_analysis.detected_format] += 1
+            geometric_complexity_samples.append(file_analysis.coordinate_count)
+            
+        # Statistical format determination with confidence metrics
+        winning_format = max(format_votes, key=format_votes.get)
+        confidence = format_votes[winning_format] / sample_size
+        
+        # Geometric complexity analysis for conversion requirements
+        avg_coordinates = sum(geometric_complexity_samples) / len(geometric_complexity_samples)
+        geometric_complexity = "polygon" if avg_coordinates > 8 else "bbox"
+        
+        return FormatAnalysis(
+            format_type=winning_format,
+            confidence=confidence,
+            sample_count=sample_size,
+            geometric_complexity=geometric_complexity,
+            conversion_required=self._determine_conversion_necessity(winning_format, geometric_complexity),
+            quality_metrics={
+                "coordinate_density": avg_coordinates,
+                "format_consistency": confidence,
+                "sample_coverage": sample_size / len(label_paths)
+            }
+        )
+    
+    def _analyze_single_annotation_file(self, label_path: Path) -> 'SingleFileAnalysis':
+        """
+        Individual file format archaeology with regex-powered pattern matching
+        """
+        if not label_path.exists():
+            return SingleFileAnalysis(AnnotationFormat.UNKNOWN, 0)
+            
+        try:
+            with open(label_path, 'r') as f:
+                content = f.read().strip()
+                
+            # JSON format detection
+            if content.startswith('{') or content.startswith('['):
+                return SingleFileAnalysis(AnnotationFormat.COCO_JSON, self._count_json_coordinates(content))
+            
+            # YOLO format analysis
+            lines = content.split('\n')
+            if not lines or not lines[0]:
+                return SingleFileAnalysis(AnnotationFormat.UNKNOWN, 0)
+                
+            # Coordinate density analysis for segmentation vs detection
+            first_line_coords = len(lines[0].split()) - 1  # Exclude class ID
+            
+            if first_line_coords == 4:  # x_center, y_center, width, height
+                return SingleFileAnalysis(AnnotationFormat.YOLO_DETECTION, 4)
+            elif first_line_coords > 4 and first_line_coords % 2 == 0:  # Polygon coordinates
+                return SingleFileAnalysis(AnnotationFormat.YOLO_SEGMENTATION, first_line_coords)
+            else:
+                return SingleFileAnalysis(AnnotationFormat.UNKNOWN, first_line_coords)
+                
+        except Exception as e:
+            print(f"🔍 Format detection anomaly: {label_path.name} - {e}")
+            return SingleFileAnalysis(AnnotationFormat.UNKNOWN, 0)
+    
+    def _count_json_coordinates(self, json_content: str) -> int:
+        """Extract coordinate density from JSON annotations"""
+        try:
+            data = json.loads(json_content)
+            # Simplified coordinate counting for COCO format
+            if 'annotations' in data:
+                avg_coords = sum(len(ann.get('segmentation', [[]])[0]) for ann in data['annotations'])
+                return avg_coords // len(data['annotations']) if data['annotations'] else 0
+            return 0
+        except:
+            return 0
+    
+    def _determine_conversion_necessity(self, format_type: AnnotationFormat, complexity: str) -> bool:
+        """
+        Conversion requirement logic for training pipeline optimization
+        """
+        # If segmentation training requested but detection format detected
+        return format_type == AnnotationFormat.YOLO_DETECTION and complexity == "bbox"
+    
+    def _create_unknown_format_analysis(self) -> FormatAnalysis:
+        """Fallback analysis for edge cases"""
+        return FormatAnalysis(
+            format_type=AnnotationFormat.UNKNOWN,
+            confidence=0.0,
+            sample_count=0,
+            geometric_complexity="unknown",
+            conversion_required=False,
+            quality_metrics={}
+        )
+
+@dataclass
+class SingleFileAnalysis:
+    """Individual annotation file intelligence"""
+    detected_format: AnnotationFormat
+    coordinate_count: int
+
+class IntelligentTrainingOrchestrator(FlexibleTrainingOrchestrator):
+    """
+    Architectural transcendence: Format-agnostic training orchestration
+    Where detection heritage meets segmentation precision through computational alchemy
+    """
+    
+    def __init__(self):
+        super().__init__()
+        self.format_detector = AnnotationFormatDetector()
+        # Lazy import to avoid dependency issues if conversion not needed
+        self._sam_converter = None
+        
+    @property
+    def sam_converter(self):
+        """Lazy initialization of SAM converter for memory efficiency"""
+        if self._sam_converter is None:
+            from conversion_pipeline import RevolutionaryAnnotationConverter
+            self._sam_converter = RevolutionaryAnnotationConverter()
+        return self._sam_converter
+    
+    def create_intelligent_session(self, config_data: Dict) -> Dict:
+        """
+        Enhanced session creation with format intelligence and conversion routing
+        Polymorphic annotation handling without workflow disruption
+        """
+        # Standard session creation with format detection enhancement
+        session_response = super().create_session(config_data)
+        
+        if session_response.get("session_id"):
+            session_id = session_response["session_id"]
+            session = self.active_sessions[session_id]
+            
+            # Inject format intelligence layer
+            session["format_intelligence"] = {
+                "detector": self.format_detector,
+                "conversion_capable": True,
+                "analysis_cache": {}
+            }
+            
+        return session_response
+    
+    def intelligent_dataset_preparation(self, session_id: str) -> Optional[Path]:
+        """
+        Polymorphic dataset preparation with transparent format conversion
+        Architectural elegance: Zero disruption to existing workflows
+        """
+        if session_id not in self.active_sessions:
+            return None
+            
+        session = self.active_sessions[session_id]
+        config = session["config"]
+        
+        # Perform comprehensive format analysis
+        if not session.get("labels"):
+            print("⚠️ No labels uploaded for format analysis")
+            return None
+            
+        format_analysis = self.format_detector.analyze_annotation_corpus(session["labels"])
+        
+        # Cache analysis for performance optimization
+        session["format_intelligence"]["analysis_cache"] = format_analysis
+        
+        print(f"🔍 Format Intelligence: {format_analysis.format_type.value} "
+              f"({format_analysis.confidence:.1%} confidence)")
+        print(f"📐 Geometric Complexity: {format_analysis.geometric_complexity}")
+        
+        # Intelligent routing based on training requirements and format compatibility
+        if self._requires_format_conversion(config, format_analysis):
+            return self._execute_transparent_conversion(session, format_analysis)
+        else:
+            return self._execute_native_format_training(session, format_analysis)
+    
+    def _requires_format_conversion(self, config: TrainingConfig, analysis: FormatAnalysis) -> bool:
+        """
+        Conversion necessity logic with architectural sophistication
+        """
+        # Extract architecture requirement safely
+        arch_value = getattr(config, 'architecture', None)
+        if hasattr(arch_value, 'value'):
+            arch_value = arch_value.value
+        
+        # Segmentation training with detection annotations requires conversion
+        segmentation_architectures = ["yolo_segmentation", "yolo_obb"]
+        detection_format = analysis.format_type == AnnotationFormat.YOLO_DETECTION
+        
+        return (arch_value in segmentation_architectures and 
+                detection_format and 
+                analysis.confidence > 0.8)
+    
+    def _execute_transparent_conversion(self, session: Dict, analysis: FormatAnalysis) -> Optional[Path]:
+        """
+        Seamless SAM-powered conversion with quality assurance
+        Transform detection heritage into segmentation precision
+        """
+        print(f"🔄 Initiating transparent format conversion...")
+        print(f"📊 Converting {len(session['labels'])} annotations with SAM2-B precision")
+        
+        try:
+            # Create conversion workspace
+            workspace = session["workspace"]
+            conversion_input = workspace / "detection_format"
+            conversion_output = workspace / "segmentation_format"
+            
+            # Organize data for conversion pipeline
+            self._prepare_conversion_workspace(session, conversion_input)
+            
+            # Execute SAM-powered conversion with your proven pipeline
+            conversion_stats = self.sam_converter.convert_dataset_to_segmentation(
+                str(conversion_input), str(conversion_output)
+            )
+            
+            print(f"✅ Conversion metrics: {conversion_stats}")
+            
+            # Update session with converted annotations
+            converted_labels = list((conversion_output / "labels").glob("*.txt"))
+            session["labels"] = [str(label) for label in converted_labels]
+            session["conversion_applied"] = True
+            
+            # Proceed with segmentation training using converted data
+            return self.prepare_yolo_dataset(session)
+            
+        except Exception as e:
+            print(f"🚨 Conversion pipeline failure: {e}")
+            # Graceful degradation: attempt detection training if conversion fails
+            return self._execute_native_format_training(session, analysis)
+    
+    def _execute_native_format_training(self, session: Dict, analysis: FormatAnalysis) -> Optional[Path]:
+        """
+        Native format training without conversion overhead
+        Preserve computational efficiency when conversion unnecessary
+        """
+        print(f"📊 Executing native format training: {analysis.format_type.value}")
+        
+        if analysis.format_type == AnnotationFormat.YOLO_SEGMENTATION:
+            return self._prepare_segmentation_dataset(session)
+        else:
+            return self.prepare_yolo_dataset(session)  # Your existing detection pipeline
+    
+    def _prepare_conversion_workspace(self, session: Dict, conversion_input: Path):
+        """
+        Organize session data for SAM conversion pipeline compatibility
+        """
+        # Create required directory structure
+        (conversion_input / "images").mkdir(parents=True, exist_ok=True)
+        (conversion_input / "labels").mkdir(parents=True, exist_ok=True)
+        
+        # Copy/link files to conversion workspace
+        import shutil
+        
+        for image_path in session["images"]:
+            shutil.copy2(image_path, conversion_input / "images" / Path(image_path).name)
+            
+        for label_path in session["labels"]:
+            shutil.copy2(label_path, conversion_input / "labels" / Path(label_path).name)
+    
+    def _prepare_segmentation_dataset(self, session: Dict) -> Optional[Path]:
+        """
+        Native segmentation dataset preparation for polygon annotations
+        Enhanced version of your detection pipeline for polygon data
+        """
+        try:
+            workspace = session["workspace"]
+            config = session["config"]
+            
+            # Enhanced YOLO segmentation structure
+            yolo_dir = workspace / "yolo_segmentation_dataset"
+            for split in ["train", "val"]:
+                (yolo_dir / "images" / split).mkdir(parents=True, exist_ok=True)
+                (yolo_dir / "labels" / split).mkdir(parents=True, exist_ok=True)
+            
+            # Your existing dataset preparation logic adapted for polygons
+            images = session["images"]
+            labels = session["labels"]
+            
+            # 80/20 split with validation
+            split_idx = int(0.8 * len(images))
+            train_images, val_images = images[:split_idx], images[split_idx:]
+            train_labels, val_labels = labels[:split_idx], labels[split_idx:]
+            
+            # File organization for segmentation training
+            self._organize_segmentation_files(yolo_dir, train_images, train_labels, "train")
+            self._organize_segmentation_files(yolo_dir, val_images, val_labels, "val")
+            
+            # Enhanced dataset.yaml for segmentation
+            dataset_yaml = self._create_segmentation_yaml(yolo_dir, config)
+            
+            print(f"✅ Segmentation dataset prepared: {len(train_images)} train, {len(val_images)} val")
+            return dataset_yaml
+            
+        except Exception as e:
+            print(f"❌ Segmentation dataset preparation failed: {e}")
+            return None
+    
+    def _organize_segmentation_files(self, yolo_dir: Path, images: List, labels: List, split: str):
+        """Organize files for segmentation training with proper linking"""
+        import shutil
+        
+        for img, lbl in zip(images, labels):
+            shutil.copy2(img, yolo_dir / "images" / split / Path(img).name)
+            shutil.copy2(lbl, yolo_dir / "labels" / split / Path(lbl).name)
+    
+    def _create_segmentation_yaml(self, yolo_dir: Path, config: TrainingConfig) -> Path:
+        """
+        Enhanced dataset.yaml generation for segmentation architectures
+        """
+        # Generate class names with enum-safe extraction
+        class_names = self.generate_class_names(config)
+        num_classes = getattr(config, 'num_classes', len(class_names))
+        
+        # Extract task and architecture safely
+        task_value = getattr(config, 'task_type', 'border_detection')
+        if hasattr(task_value, 'value'):
+            task_value = task_value.value
+            
+        arch_value = getattr(config, 'architecture', 'yolo_segmentation')
+        if hasattr(arch_value, 'value'):
+            arch_value = arch_value.value
+        
+        dataset_yaml = yolo_dir / "dataset.yaml"
+        
+        yaml_content = f"""# Intelligent Segmentation Dataset
+# Generated: {datetime.now().isoformat()}
+# Task: {task_value}
+# Architecture: {arch_value}
+# Format: Polygon-based segmentation annotations
+
+path: {yolo_dir}
+train: images/train
+val: images/val
+
+nc: {num_classes}
+names: {class_names}
+
+# Segmentation-specific configuration
+task: segment
+"""
+        
+        with open(dataset_yaml, 'w') as f:
+            f.write(yaml_content)
+            
+        return dataset_yaml
+
+# Enhanced route integration for intelligent orchestration
+def setup_intelligent_routes(app, orchestrator: IntelligentTrainingOrchestrator):
+    """
+    Enhanced API routes with format intelligence and transparent conversion
+    """
+    
+    @app.post("/api/session/create-intelligent")
+    async def create_intelligent_session(config_data: Dict):
+        """Enhanced session creation with format intelligence"""
+        return orchestrator.create_intelligent_session(config_data)
+    
+    @app.post("/api/session/{session_id}/prepare-intelligent")
+    async def prepare_intelligent_dataset(session_id: str):
+        """Polymorphic dataset preparation with transparent conversion"""
+        dataset_path = orchestrator.intelligent_dataset_preparation(session_id)
+        
+        if dataset_path:
+            return {
+                "status": "ready",
+                "dataset_path": str(dataset_path),
+                "format_intelligence": orchestrator.active_sessions[session_id]["format_intelligence"]["analysis_cache"].__dict__
+            }
+        else:
+            return {"status": "failed", "error": "Dataset preparation failed"}
+    
+    @app.get("/api/session/{session_id}/format-analysis")
+    async def get_format_analysis(session_id: str):
+        """Format intelligence inspection endpoint"""
+        if session_id in orchestrator.active_sessions:
+            session = orchestrator.active_sessions[session_id]
+            if "format_intelligence" in session and "analysis_cache" in session["format_intelligence"]:
+                analysis = session["format_intelligence"]["analysis_cache"]
+                return {
+                    "format": analysis.format_type.value,
+                    "confidence": analysis.confidence,
+                    "geometric_complexity": analysis.geometric_complexity,
+                    "conversion_required": analysis.conversion_required,
+                    "quality_metrics": analysis.quality_metrics
+                }
+        return {"error": "Format analysis not available"}
+
+# Usage integration with your existing orchestrator
+if __name__ == "__main__":
+    from datetime import datetime
+    
+    # Initialize the enhanced orchestrator
+    intelligent_orchestrator = IntelligentTrainingOrchestrator()
+    
+    print("🚀 Intelligent Training Orchestrator")
+    print("=" * 60)
+    print("✅ Format detection: YOLO Detection/Segmentation/COCO")
+    print("🔄 Transparent conversion: SAM-powered polygon generation")
+    print("🎯 Architectural agnosticism: Detection + Segmentation training")
+    print("🛡️ Workflow preservation: Zero disruption to border calibrator")
+    print("🌐 Enhanced interface: http://localhost:8010")
+    print("=" * 60)
+    
+    # Your existing server setup with enhanced capabilities
+    import uvicorn
+    
+    # Add intelligent routes to your existing app
+    setup_intelligent_routes(intelligent_orchestrator.app, intelligent_orchestrator)
+    
+    config = uvicorn.Config(
+        intelligent_orchestrator.app,
+        host="0.0.0.0", 
+        port=8010,
+        log_level="info"
+    )
+    server = uvicorn.Server(config)
+    
+    # Deploy the architecturally transcendent training orchestrator
+    import asyncio
+    asyncio.run(server.serve())

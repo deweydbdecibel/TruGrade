@@ -1,0 +1,314 @@
+#!/usr/bin/env python3
+"""
+🚀 Revolutionary Model Management Hub - Quick Setup
+=================================================
+
+Simple but extensible model organization system that integrates
+with training pipeline and continuous learning.
+
+Features:
+- Organize existing models (corner models, YOLO8)
+- Track model metadata and performance
+- Integration with continuous learning system
+- Simple training pipeline hooks
+- Version management
+"""
+
+import json
+import shutil
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
+import hashlib
+
+class RevolutionaryModelHub:
+    """Quick but smart model management system"""
+    
+    def __init__(self, base_path: str = "models"):
+        self.base_path = Path(base_path)
+        self.setup_structure()
+        
+    def setup_structure(self):
+        """Create organized directory structure"""
+        
+        # Main directories
+        directories = {
+            "production": "Currently deployed models",
+            "experimental": "Models in development/testing", 
+            "archive": "Previous versions and backups",
+            "training": "Active training workspace",
+            "datasets": "Organized training datasets",
+            "continuous": "Continuous learning models"
+        }
+        
+        for dir_name, description in directories.items():
+            dir_path = self.base_path / dir_name
+            dir_path.mkdir(parents=True, exist_ok=True)
+            
+            # Create README for each directory
+            readme_path = dir_path / "README.md"
+            if not readme_path.exists():
+                with open(readme_path, 'w') as f:
+                    f.write(f"# {dir_name.title()} Models\n\n{description}\n\n")
+        
+        print("✅ Model hub structure created!")
+        
+    def register_model(self, model_path: str, model_type: str, 
+                      category: str = "experimental", metadata: Dict = None):
+        """Register a model in the hub"""
+        
+        model_path = Path(model_path)
+        if not model_path.exists():
+            raise FileNotFoundError(f"Model not found: {model_path}")
+            
+        # Generate model info
+        model_info = {
+            "name": model_path.stem,
+            "type": model_type,
+            "category": category,
+            "original_path": str(model_path),
+            "file_size": model_path.stat().st_size,
+            "checksum": self._calculate_checksum(model_path),
+            "registered_at": datetime.now().isoformat(),
+            "metadata": metadata or {}
+        }
+        
+        # Create organized path
+        target_dir = self.base_path / category / model_type
+        target_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Copy model to hub
+        target_path = target_dir / model_path.name
+        shutil.copy2(model_path, target_path)
+        
+        # Save metadata
+        metadata_path = target_dir / f"{model_path.stem}_info.json"
+        with open(metadata_path, 'w') as f:
+            json.dump(model_info, f, indent=2)
+            
+        print(f"✅ Registered: {model_info['name']} -> {category}/{model_type}")
+        return target_path
+        
+    def migrate_existing_models(self):
+        """Migrate your existing models into the hub"""
+        
+        migrations = []
+        
+        # Migrate corner models from src/models
+        src_models_path = Path("src/models")
+        if src_models_path.exists():
+            for model_file in src_models_path.glob("*.pt"):
+                if "corner" in model_file.name.lower():
+                    target = self.register_model(
+                        model_file, 
+                        "corner_detection", 
+                        "production",
+                        {"usage": "Active in photometric analysis"}
+                    )
+                    migrations.append(f"Corner model: {model_file.name}")
+                    
+        # Migrate YOLO8 border detector
+        yolo_path = Path("revolutionary_border_detector.pt")
+        if yolo_path.exists():
+            target = self.register_model(
+                yolo_path,
+                "border_detection", 
+                "production",
+                {"usage": "Border calibration integration", "classes": 2}
+            )
+            migrations.append(f"YOLO8 border: {yolo_path.name}")
+            
+        return migrations
+        
+    def list_models(self, category: str = None, model_type: str = None):
+        """List available models"""
+        
+        models = []
+        search_path = self.base_path
+        
+        if category:
+            search_path = search_path / category
+            
+        for info_file in search_path.rglob("*_info.json"):
+            with open(info_file) as f:
+                model_info = json.load(f)
+                
+            if model_type and model_info["type"] != model_type:
+                continue
+                
+            models.append(model_info)
+            
+        return models
+        
+    def get_model_path(self, model_name: str, category: str = None):
+        """Get path to a registered model"""
+        
+        models = self.list_models(category)
+        for model in models:
+            if model["name"] == model_name:
+                # Reconstruct path
+                model_dir = self.base_path / model["category"] / model["type"]
+                model_files = list(model_dir.glob(f"{model_name}.*"))
+                if model_files:
+                    return model_files[0]
+                    
+        return None
+        
+    def create_training_workspace(self, workspace_name: str):
+        """Create isolated training workspace"""
+        
+        workspace_path = self.base_path / "training" / workspace_name
+        workspace_path.mkdir(parents=True, exist_ok=True)
+        
+        # Create workspace structure
+        subdirs = ["datasets", "models", "results", "configs"]
+        for subdir in subdirs:
+            (workspace_path / subdir).mkdir(exist_ok=True)
+            
+        # Create workspace config
+        config = {
+            "name": workspace_name,
+            "created_at": datetime.now().isoformat(),
+            "status": "active",
+            "datasets": [],
+            "experiments": []
+        }
+        
+        with open(workspace_path / "workspace.json", 'w') as f:
+            json.dump(config, f, indent=2)
+            
+        print(f"✅ Training workspace created: {workspace_name}")
+        return workspace_path
+        
+    def continuous_learning_integration(self):
+        """Setup continuous learning model integration"""
+        
+        continuous_dir = self.base_path / "continuous"
+        
+        # Create continuous learning structure
+        subdirs = ["active_models", "training_data", "feedback", "versions"]
+        for subdir in subdirs:
+            (continuous_dir / subdir).mkdir(exist_ok=True)
+            
+        # Link to existing continuous learning system
+        integration_config = {
+            "model_hub_path": str(self.base_path),
+            "active_models_path": str(continuous_dir / "active_models"),
+            "training_data_path": str(continuous_dir / "training_data"),
+            "integration_enabled": True,
+            "auto_retrain_threshold": 100  # new annotations
+        }
+        
+        config_path = continuous_dir / "integration_config.json"
+        with open(config_path, 'w') as f:
+            json.dump(integration_config, f, indent=2)
+            
+        print("✅ Continuous learning integration configured")
+        return config_path
+        
+    def dataset_organization(self):
+        """Organize your existing datasets"""
+        
+        datasets_dir = self.base_path / "datasets"
+        
+        # Create dataset categories
+        categories = {
+            "annotated_cards": "568 cards with JSON annotations",
+            "raw_scanned": "~1000 scanned cards from Pictures folder", 
+            "processed": "Cleaned and preprocessed datasets",
+            "augmented": "Augmented training data"
+        }
+        
+        for cat_name, description in categories.items():
+            cat_path = datasets_dir / cat_name
+            cat_path.mkdir(exist_ok=True)
+            
+            # Create dataset info
+            info = {
+                "name": cat_name,
+                "description": description,
+                "created_at": datetime.now().isoformat(),
+                "image_count": 0,
+                "annotation_count": 0,
+                "formats": []
+            }
+            
+            with open(cat_path / "dataset_info.json", 'w') as f:
+                json.dump(info, f, indent=2)
+                
+        print("✅ Dataset organization structure created")
+        
+    def _calculate_checksum(self, file_path: Path) -> str:
+        """Calculate file checksum for integrity"""
+        hash_md5 = hashlib.md5()
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+        return hash_md5.hexdigest()
+        
+    def status_report(self):
+        """Generate hub status report"""
+        
+        report = {
+            "total_models": len(self.list_models()),
+            "production_models": len(self.list_models("production")),
+            "experimental_models": len(self.list_models("experimental")),
+            "model_types": {},
+            "recent_additions": []
+        }
+        
+        # Count by type
+        for model in self.list_models():
+            model_type = model["type"]
+            if model_type not in report["model_types"]:
+                report["model_types"][model_type] = 0
+            report["model_types"][model_type] += 1
+            
+        print("🚀 Revolutionary Model Hub Status:")
+        print(f"  📊 Total Models: {report['total_models']}")
+        print(f"  🏭 Production: {report['production_models']}")
+        print(f"  🧪 Experimental: {report['experimental_models']}")
+        print(f"  📝 Model Types: {report['model_types']}")
+        
+        return report
+
+def quick_setup():
+    """Quick setup function for immediate use"""
+    
+    print("🚀 Setting up Revolutionary Model Hub...")
+    
+    # Initialize hub
+    hub = RevolutionaryModelHub()
+    
+    # Migrate existing models
+    print("\n📦 Migrating existing models...")
+    migrations = hub.migrate_existing_models()
+    for migration in migrations:
+        print(f"  ✅ {migration}")
+        
+    # Setup dataset organization
+    print("\n📁 Setting up dataset organization...")
+    hub.dataset_organization()
+    
+    # Setup continuous learning integration
+    print("\n🧠 Configuring continuous learning integration...")
+    hub.continuous_learning_integration()
+    
+    # Create initial training workspace
+    print("\n🛠️ Creating training workspace...")
+    hub.create_training_workspace("border_detection_v2")
+    
+    # Generate status report
+    print("\n📊 Hub Status:")
+    hub.status_report()
+    
+    print("\n✅ Revolutionary Model Hub ready!")
+    print("🎯 Next steps:")
+    print("  1. Copy your 568 annotated cards to models/datasets/annotated_cards/")
+    print("  2. Run training pipeline with organized structure")
+    print("  3. Deploy new models through the hub")
+    
+    return hub
+
+if __name__ == "__main__":
+    hub = quick_setup()

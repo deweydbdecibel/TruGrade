@@ -1,0 +1,173 @@
+# Revolutionary Shell Import Path Fixes
+# These are the targeted fixes needed to resolve the ModuleNotFoundError
+
+"""
+IMPORT PATH ANALYSIS:
+- enhanced_orchestrator.py line 14: from training_orchestrator import...
+- training_orchestrator.py exists but not in Python path
+- Need relative imports or sys.path additions
+"""
+
+# FIX 1: Enhanced Orchestrator Import Fix (services/enhanced_orchestrator.py line 14)
+# REPLACE:
+# from training_orchestrator import FlexibleTrainingOrchestrator, TrainingConfig
+
+# WITH:
+try:
+    from .training_orchestrator import FlexibleTrainingOrchestrator, TrainingConfig
+except ImportError:
+    # Fallback for direct execution
+    import sys
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent))
+    from training_orchestrator import FlexibleTrainingOrchestrator, TrainingConfig
+
+# FIX 2: Revolutionary Shell Import Fix (src/ui/revolutionary_shell.py lines 35-45)
+# REPLACE the problematic imports with safe versions:
+
+# Current broken imports around line 35-45:
+# from services.enhanced_orchestrator import IntelligentTrainingOrchestrator, setup_intelligent_routes
+# from services.integrated_training_module import (...)
+
+# REPLACE WITH:
+def safe_import_training_modules():
+    """Safe import of training modules with proper error handling"""
+    training_modules = {}
+    
+    try:
+        # Add project root to path
+        import sys
+        from pathlib import Path
+        project_root = Path(__file__).parent.parent.parent
+        services_path = project_root / "services"
+        sys.path.insert(0, str(services_path))
+        
+        # Import enhanced orchestrator
+        from enhanced_orchestrator import IntelligentTrainingOrchestrator, setup_intelligent_routes
+        training_modules['enhanced_orchestrator'] = {
+            'IntelligentTrainingOrchestrator': IntelligentTrainingOrchestrator,
+            'setup_intelligent_routes': setup_intelligent_routes
+        }
+        print("✅ Enhanced orchestrator imported successfully")
+        
+    except ImportError as e:
+        print(f"⚠️ Enhanced orchestrator import failed: {e}")
+        training_modules['enhanced_orchestrator'] = None
+    
+    try:
+        # Import basic training interface (fallback)
+        from training_orchestrator import FlexibleTrainingOrchestrator
+        training_modules['basic_orchestrator'] = FlexibleTrainingOrchestrator
+        print("✅ Basic orchestrator imported successfully")
+        
+    except ImportError as e:
+        print(f"⚠️ Basic orchestrator import failed: {e}")
+        training_modules['basic_orchestrator'] = None
+    
+    return training_modules
+
+# FIX 3: Revolutionary Shell Class Integration Fix
+# In RevolutionaryMainShell.__init__() method, REPLACE the training engine init:
+
+def _init_training_engine(self):
+    """Initialize Revolutionary Training Engine with safe imports"""
+    try:
+        # Safe import training modules
+        self.training_modules = safe_import_training_modules()
+        
+        # Check what's available
+        if self.training_modules.get('enhanced_orchestrator'):
+            # Use enhanced orchestrator
+            orchestrator_class = self.training_modules['enhanced_orchestrator']['IntelligentTrainingOrchestrator']
+            self.training_engine = orchestrator_class()
+            self.training_engine_type = "enhanced"
+            print("🚀 Enhanced training orchestrator initialized")
+            
+        elif self.training_modules.get('basic_orchestrator'):
+            # Use basic orchestrator
+            self.training_engine = self.training_modules['basic_orchestrator']()
+            self.training_engine_type = "basic"
+            print("🔧 Basic training orchestrator initialized")
+            
+        else:
+            # Fallback to placeholder
+            self.training_engine = None
+            self.training_engine_type = "placeholder"
+            print("⚠️ No training engine available - using placeholder")
+            
+        self.training_engine_available = self.training_engine is not None
+        
+    except Exception as e:
+        print(f"⚠️ Training engine initialization failed: {e}")
+        self.training_engine = None
+        self.training_engine_type = "none"
+        self.training_engine_available = False
+
+# FIX 4: Navigation Command Handler Fix
+# In handle_navigation_command method, fix the training routing:
+
+def handle_navigation_command(self, command):
+    """Handle navigation commands with proper training system integration"""
+    try:
+        # Clear main content
+        for widget in self.main_content.winfo_children():
+            widget.destroy()
+            
+        # Route to appropriate screen
+        if command == "load_card":
+            self.show_card_loader()
+        elif command == "border_calibration":
+            self.show_border_calibration()
+        elif command == "photometric_scan":
+            self.show_photometric_scanner()
+        elif command == "ai_analysis":
+            self.show_ai_analysis()
+        elif command == "grade_card":
+            self.show_grading_interface()
+        elif command == "train_model" or command == "advanced_training":
+            # Route to port 8003 (your current training system)
+            self.open_url_robust("http://localhost:8003")
+            return
+        elif command == "training_stats":
+            # Stats dashboard on port 8003
+            self.open_url_robust("http://localhost:8003/stats")
+            return
+        elif command == "dataset_manager":
+            self.show_dataset_manager()
+        elif command == "model_validation":
+            self.show_model_validation()
+        elif command == "blockchain_auth":
+            self.show_blockchain_auth()
+        elif command == "market_intel":
+            self.show_market_intelligence()
+        elif command == "upgrade_premium":
+            self.show_premium_upgrade()
+        else:
+            self.show_coming_soon(command)
+            
+    except Exception as e:
+        print(f"❌ Navigation error: {e}")
+        # Fallback to welcome screen
+        self.create_welcome_screen()
+
+# FIX 5: Quick Revolutionary Shell Startup Fix
+# Add this at the top of revolutionary_shell.py after the existing imports:
+
+# Emergency import fixes for immediate startup
+import sys
+from pathlib import Path
+
+# Add project paths to Python path
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+sys.path.insert(0, str(project_root / "services"))
+sys.path.insert(0, str(project_root / "src"))
+
+print(f"🔧 Added to Python path: {project_root}")
+print(f"🔧 Services path: {project_root / 'services'}")
+
+# Comment out the problematic imports temporarily
+# from services.enhanced_orchestrator import IntelligentTrainingOrchestrator, setup_intelligent_routes
+# from services.integrated_training_module import (...)
+
+print("🚀 Revolutionary shell import fixes applied")

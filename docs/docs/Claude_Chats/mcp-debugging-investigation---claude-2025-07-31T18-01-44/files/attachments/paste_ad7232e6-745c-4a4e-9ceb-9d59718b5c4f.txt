@@ -1,0 +1,139 @@
+def convert_yolo_to_coco(self, yolo_dir: Path, output_path: Path,
+                            images_dir: Path, dataset_id: str = None,
+                            progress_callback=None) -> Dict[str, Any]:
+        """Convert YOLO format to COCO JSON with robust error handling"""
+        logger.info(f"🔄 Starting YOLO→COCO conversion: {yolo_dir} → {output_path}")
+        
+        coco_data = {
+            "images": [],
+            "annotations": [],
+            "categories": [
+                {"id": 0, "name": "card", "supercategory": "object"},
+                {"id": 1, "name": "border", "supercategory": "border"},
+                {"id": 2, "name": "corner", "supercategory": "corner"},
+                {"id": 3, "name": "edge", "supercategory": "edge"},
+                {"id": 4, "name": "damage", "supercategory": "damage"}
+            ]
+        }
+
+        annotation_id = 1
+        processed_images = 0
+        processed_annotations = 0
+        
+        # Enterprise-grade O(1) file mapping architecture
+        image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp']
+        yolo_files = list(yolo_dir.glob("*.txt"))
+        image_files = []
+
+        # Optimized batch file discovery
+        for ext in image_extensions:
+            image_files.extend(images_dir.glob(ext))
+            image_files.extend(images_dir.glob(ext.upper()))
+
+        # O(1) lookup dictionary construction  
+        image_lookup = {f.stem: f for f in image_files}
+        yolo_lookup = {f.stem: f for f in yolo_files}
+
+        logger.info(f"📁 Optimized mapping: {len(image_files)} images, {len(yolo_files)} annotations")
+
+        # Revolutionary batch processing with O(1) lookup performance
+        for yolo_file in yolo_files:
+            try:
+                file_stem = yolo_file.stem
+                
+                # O(1) image lookup instead of O(n) search
+                if file_stem not in image_lookup:
+                    logger.debug(f"📄 No corresponding image for {yolo_file.name}")
+                    continue
+                    
+                img_file = image_lookup[file_stem]
+                
+                # High-performance dimension extraction with PIL optimization
+                try:
+                    with Image.open(img_file) as img:
+                        width, height = img.size
+                except Exception as e:
+                    logger.warning(f"⚠️ Could not load image: {img_file.name} - {e}")
+                    continue
+                    
+                processed_images += 1
+                
+                # Enterprise progress tracking with callback optimization
+                if progress_callback and processed_images % 10 == 0:
+                    progress_percent = (processed_images / len(yolo_files)) * 90
+                    progress_callback(dataset_id, "converting", progress_percent, 
+                        f"Processing annotation {processed_images}/{len(yolo_files)}")
+
+                # Professional COCO image metadata construction
+                image_info = {
+                    "id": len(coco_data["images"]) + 1,
+                    "file_name": img_file.name,
+                    "width": int(width),
+                    "height": int(height)
+                }
+                coco_data["images"].append(image_info)
+
+                # Optimized YOLO annotation processing
+                logger.debug(f"📄 Processing annotations for {img_file.name}")
+                
+                with open(yolo_file, 'r') as f:
+                    for line_num, line in enumerate(f, 1):
+                        line = line.strip()
+                        if not line or line.startswith('#'):
+                            continue
+                            
+                        try:
+                            parts = line.split()
+                            if len(parts) < 5:
+                                logger.warning(f"⚠️ Invalid YOLO format in {yolo_file.name}:{line_num}")
+                                continue
+
+                            class_id = int(parts[0])
+                            cx, cy, w, h = map(float, parts[1:5])
+                            
+                            # Vectorized coordinate validation
+                            if not (0 <= cx <= 1 and 0 <= cy <= 1 and 0 <= w <= 1 and 0 <= h <= 1):
+                                logger.warning(f"⚠️ Invalid coordinates in {yolo_file.name}:{line_num}")
+                                continue
+
+                            # High-performance coordinate transformation
+                            abs_cx, abs_cy = cx * width, cy * height
+                            abs_w, abs_h = w * width, h * height
+                            
+                            # COCO format conversion with bounds optimization
+                            x = max(0, min(abs_cx - abs_w / 2, width - 1))
+                            y = max(0, min(abs_cy - abs_h / 2, height - 1))
+                            abs_w = min(abs_w, width - x)
+                            abs_h = min(abs_h, height - y)
+
+                            # Enterprise-grade annotation object construction
+                            annotation = {
+                                "id": annotation_id,
+                                "image_id": image_info["id"],
+                                "category_id": int(class_id),
+                                "bbox": [float(x), float(y), float(abs_w), float(abs_h)],
+                                "area": float(abs_w * abs_h),
+                                "iscrowd": 0
+                            }
+                            coco_data["annotations"].append(annotation)
+                            annotation_id += 1
+                            processed_annotations += 1
+                            
+                        except (ValueError, IndexError) as e:
+                            logger.warning(f"⚠️ Annotation parsing error {yolo_file.name}:{line_num}: {e}")
+                            continue
+                            
+            except Exception as e:
+                logger.error(f"❌ Critical error processing {yolo_file.name}: {e}")
+                continue
+
+        # Save COCO JSON
+        try:
+            with open(output_path, 'w') as f:
+                json.dump(coco_data, f, indent=2)
+            logger.info(f"✅ COCO conversion complete: {processed_images} images, {processed_annotations} annotations")
+        except Exception as e:
+            logger.error(f"❌ Failed to save COCO file: {e}")
+            raise
+
+        return coco_data

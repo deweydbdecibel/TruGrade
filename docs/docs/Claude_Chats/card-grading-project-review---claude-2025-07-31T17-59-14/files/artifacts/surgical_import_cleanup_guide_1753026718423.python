@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+"""
+Surgical Import Cleanup Guide - Revolutionary Shell Architecture
+==============================================================
+
+Precise removal instructions for professional import architecture migration.
+This guide shows exactly which lines to remove and replace for clean, scalable code.
+"""
+
+# ========================================================================
+# REMOVAL INSTRUCTIONS: Delete these EXACT lines from revolutionary_shell.py
+# ========================================================================
+
+"""
+DELETE THESE LINES (copy/paste match):
+
+Line-by-line removal targets:
+"""
+
+# REMOVE: Duplicate subprocess import
+# DELETE: import subprocess  (appears twice - remove the duplicate)
+
+# REMOVE: Duplicate sys import  
+# DELETE: import sys  (appears twice - remove the duplicate)
+
+# REMOVE: Duplicate Path import
+# DELETE: from pathlib import Path  (appears twice - remove the duplicate)
+
+# REMOVE: Duplicate webbrowser import
+# DELETE: import webbrowser  (appears twice - remove the duplicate)
+
+# REMOVE: Scattered path manipulation code
+# DELETE: project_root = Path(__file__).parent.parent.parent
+# DELETE: sys.path.insert(0, str(project_root / "services"))
+
+# REMOVE: Redundant path manipulation section
+# DELETE: # Revolutionary training integration
+# DELETE: import sys
+# DELETE: from pathlib import Path  
+# DELETE: sys.path.append(str(Path(__file__).parent.parent.parent))
+
+# REMOVE: All commented import clutter
+# DELETE: #from services.integrated_training_module import (
+# DELETE:     #RevolutionaryTrainingIntegration,
+# DELETE:     #TrainingProgress,
+# DELETE:     #IntegratedTrainingStatus,
+# DELETE:     #create_integrated_training_interface
+# DELETE: #)
+# DELETE: #from services.enhanced_orchestrator import IntelligentTrainingOrchestrator, setup_intelligent_routes
+# DELETE: #import webbrowser
+
+# ========================================================================
+# SURGICAL REPLACEMENT STRATEGY
+# ========================================================================
+
+"""
+STEP 1: Locate the import section (typically lines 1-40)
+STEP 2: Delete everything from first import to last import/path manipulation
+STEP 3: Replace with the professional architecture below
+"""
+
+# ========================================================================
+# PROFESSIONAL REPLACEMENT CODE - Add this at the top
+# ========================================================================
+
+#!/usr/bin/env python3
+"""
+Revolutionary Card Grader Pro - Desktop Interface
+================================================
+Enterprise-grade modular architecture with professional import management
+"""
+
+# ==================== STANDARD LIBRARY ARCHITECTURE ====================
+import sys
+import os
+import json
+import math
+import time
+import threading
+import asyncio
+import argparse
+import platform
+import subprocess
+import webbrowser
+from datetime import datetime
+from pathlib import Path
+from typing import Optional, Dict, Any, Callable, List
+
+# ==================== UI FRAMEWORK STACK ====================
+import customtkinter as ctk
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+
+# ==================== COMPUTER VISION PIPELINE ====================
+import cv2
+import numpy as np
+from PIL import Image, ImageTk, ImageDraw, ImageFilter
+
+# ==================== NETWORK COMMUNICATION ====================
+import requests
+
+# ==================== PROFESSIONAL PATH ARCHITECTURE ====================
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root / "services"))
+
+# ==================== MODULE INTEGRATIONS ====================
+try:
+    from revolutionary_border_calibration import RevolutionaryBorderCalibration
+except ImportError as e:
+    print(f"⚠️ Border calibration unavailable: {e}")
+    RevolutionaryBorderCalibration = None
+
+# Training Integration with Graceful Degradation
+training_integration_available = False
+try:
+    from training_orchestrator import FlexibleTrainingOrchestrator
+    training_integration_available = True
+    print("✅ Training orchestrator integration successful")
+except ImportError as e:
+    print(f"⚠️ Training orchestrator unavailable: {e}")
+
+# Drag & Drop Support Detection
+try:
+    import tkinterdnd2
+    DND_AVAILABLE = True
+except ImportError:
+    DND_AVAILABLE = False
+
+# ==================== GLOBAL CONFIGURATION ====================
+DEBUG = False
+os.environ['RCG_DEBUG'] = 'false'
+
+# ========================================================================
+# PRECISION REMOVAL TARGETS
+# ========================================================================
+
+"""
+EXACT TEXT TO FIND AND DELETE (use Ctrl+F to locate):
+
+1. Find: "import subprocess" (second occurrence)
+   Action: DELETE entire line
+
+2. Find: "import sys" (second occurrence) 
+   Action: DELETE entire line
+
+3. Find: "from pathlib import Path" (second occurrence)
+   Action: DELETE entire line
+
+4. Find: "import webbrowser" (second occurrence)
+   Action: DELETE entire line
+
+5. Find: "project_root = Path(__file__).parent.parent.parent"
+   Action: DELETE entire line
+
+6. Find: "sys.path.insert(0, str(project_root / \"services\"))"
+   Action: DELETE entire line
+
+7. Find: "# Revolutionary training integration"
+   Action: DELETE this line and the next 3 lines (sys import block)
+
+8. Find: "#from services.integrated_training_module"
+   Action: DELETE this entire commented block (8 lines)
+
+9. Find: "#from services.enhanced_orchestrator" 
+   Action: DELETE this line and next commented line
+
+10. Find: "#import webbrowser" (at end of import section)
+    Action: DELETE entire line
+"""
+
+# ========================================================================
+# VERIFICATION CHECKLIST
+# ========================================================================
+
+"""
+After cleanup, verify these imports appear ONLY ONCE:
+
+✓ sys
+✓ subprocess  
+✓ pathlib.Path
+✓ webbrowser
+✓ project_root path setup
+✓ No commented import lines remain
+✓ Professional section organization maintained
+
+RESULT: Clean, maintainable, enterprise-grade import architecture
+"""
+
+# ========================================================================
+# INTEGRATION VERIFICATION
+# ========================================================================
+
+"""
+Post-cleanup verification commands:
+
+1. python revolutionary_shell.py --debug
+   Expected: Clean startup with professional import logging
+
+2. Check for import errors:
+   Expected: Only legitimate missing module warnings
+
+3. Verify training integration:
+   Expected: "✅ Training orchestrator integration successful" 
+   OR: "⚠️ Training orchestrator unavailable" (graceful degradation)
+
+4. Test shell functionality:
+   Expected: All UI components load without import-related errors
+"""

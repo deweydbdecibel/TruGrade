@@ -1,0 +1,146 @@
+```diff
+Index: /home/dewster/RCG/src/ui/revolutionary_shell.py
+===================================================================
+--- /home/dewster/RCG/src/ui/revolutionary_shell.py	original
++++ /home/dewster/RCG/src/ui/revolutionary_shell.py	modified
+@@ -1337,40 +1337,111 @@
+                 webbrowser.open(url)
+             except Exception as e2:
+                 print(f"❌ Webbrowser fallback failed: {e2}")
+ 
+-    def show_border_calibration(self):
+-        """Show revolutionary border calibration interface - FIXED VERSION"""
+-        print("🎯 Loading Revolutionary Border Calibration...")
+-
+-        # Clear main content first
+-        for widget in self.main_content.winfo_children():
+-            widget.destroy()
+-
+-        # Create the ACTUAL border calibration module
++    def open_advanced_training_platform(self):
++        """Open the Advanced Training Platform in browser"""
+         try:
+-            self.border_calibration_module = RevolutionaryBorderCalibration(
+-                self.main_content,
+-                command_callback=self.handle_navigation_command,
+-                photometric_callback=self.send_to_photometric_stereo
++            print("🎯 Opening Advanced Training Platform...")
++            
++            # Check if the service is running first
++            import requests
++            try:
++                response = requests.get("http://localhost:8006", timeout=3)
++                if response.status_code == 200:
++                    print("✅ Advanced Training Platform is running!")
++                else:
++                    print(f"⚠️ Service returned status {response.status_code}")
++            except requests.exceptions.ConnectionError:
++                print("⚠️ Advanced Training Platform not running - starting it...")
++                # You could add code here to start the service automatically
++                messagebox.showwarning(
++                    "Service Not Running",
++                    "Advanced Training Platform is not running.\n\n"
++                    "Please start it with:\n"
++                    "python services/advanced_training_platform.py\n\n"
++                    "Then click the button again."
++                )
++                return
++            except Exception as e:
++                print(f"❌ Error checking service: {e}")
++            
++            # Open in browser
++            self.open_url_robust("http://localhost:8006")
++            
++            # Show success message in main content
++            self.show_browser_redirect_message(
++                "Advanced Training Platform",
++                "http://localhost:8006",
++                "🎯 Complete control over model training with visual file management"
+             )
+-            self.border_calibration_module.pack(fill="both", expand=True)
+-            print("✅ Border calibration module loaded successfully!")
+-
++            
+         except Exception as e:
+-            print(f"❌ Border calibration error: {e}")
+-            # Fallback error display
+-            error_frame = ctk.CTkFrame(self.main_content, fg_color="transparent")
+-            error_frame.pack(fill="both", expand=True, padx=40, pady=40)
++            print(f"❌ Error opening Advanced Training Platform: {e}")
++            messagebox.showerror("Error", f"Failed to open Advanced Training Platform: {str(e)}")
++    
++    def show_browser_redirect_message(self, platform_name, url, description):
++        """Show a message indicating the platform opened in browser"""
++        # Clear main content
++        for widget in self.main_content.winfo_children():
++            widget.destroy()
++        
++        # Create message frame
++        message_frame = ctk.CTkFrame(
++            self.main_content,
++            fg_color="transparent"
++        )
++        message_frame.pack(fill="both", expand=True, padx=40, pady=40)
++        
++        # Title
++        title_label = ctk.CTkLabel(
++            message_frame,
++            text=f"🎆 {platform_name} Opened!",
++            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 32, "bold"),
++            text_color=RevolutionaryTheme.PLASMA_BLUE
++        )
++        title_label.pack(pady=(100, 20))
++        
++        # Description
++        desc_label = ctk.CTkLabel(
++            message_frame,
++            text=description,
++            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 16),
++            text_color=RevolutionaryTheme.GHOST_WHITE
++        )
++        desc_label.pack(pady=(0, 30))
++        
++        # URL display
++        url_label = ctk.CTkLabel(
++            message_frame,
++            text=f"🌐 {url}",
++            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 14),
++            text_color=RevolutionaryTheme.QUANTUM_GREEN
++        )
++        url_label.pack(pady=(0, 40))
++        
++        # Action buttons
++        button_frame = ctk.CTkFrame(message_frame, fg_color="transparent")
++        button_frame.pack(pady=20)
++        
++        reopen_btn = RevolutionaryButton(
++            button_frame,
++            text=f"🔄 Reopen {platform_name}",
++            style="primary",
++            width=250,
++            command=lambda: self.open_url_robust(url)
++        )
++        reopen_btn.pack(side="left", padx=(0, 10))
++        
++        back_btn = RevolutionaryButton(
++            button_frame,
++            text="← Back to Dashboard",
++            style="glass",
++            width=200,
++            command=self.create_welcome_screen
++        )
++        back_btn.pack(side="left", padx=(10, 0))
+ 
+-            error_label = ctk.CTkLabel(
+-                error_frame,
+-                text=f"❌ Border Calibration Error\n\n{str(e)}\n\nCheck console for details.",
+-                font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 16),
+-                text_color=RevolutionaryTheme.PLASMA_ORANGE
+-            )
+-            error_label.pack(pady=100)
+-
+     def send_to_photometric_stereo(self, calibration_data):
+         """Receive calibrated borders and send to photometric stereo engine - ENHANCED"""
+         print("🔬 REVOLUTIONARY PIPELINE ACTIVATED!")
+         print(f"📊 Calibrated Borders: {len(calibration_data.get('calibrated_borders', []))}")
+```

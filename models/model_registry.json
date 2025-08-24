@@ -1,0 +1,154 @@
+{
+  "trugrade_model_registry": {
+    "description": "TruGrade Professional Model Registry",
+    "version": "1.0.0",
+    "transferred_from": "models/ directory structure",
+    
+    "model_categories": {
+      "phoenix_models": {
+        "description": "7 specialized Phoenix AI models",
+        "models": {
+          "border_master_ai": {
+            "name": "BorderMasterAI",
+            "type": "border_detection",
+            "architecture": "mask_rcnn_resnet50_fpn",
+            "status": "development",
+            "capabilities": ["single_border", "dual_border", "precision_alignment"]
+          },
+          "surface_oracle_ai": {
+            "name": "SurfaceOracleAI", 
+            "type": "surface_analysis",
+            "architecture": "efficientnet_b4_photometric",
+            "status": "development",
+            "capabilities": ["defect_detection", "photometric_stereo", "quality_assessment"]
+          },
+          "centering_sage_ai": {
+            "name": "CenteringSageAI",
+            "type": "centering_analysis", 
+            "architecture": "custom_24_point_analyzer",
+            "status": "development",
+            "capabilities": ["24_point_centering", "precision_measurement", "confidence_intervals"]
+          },
+          "hologram_wizard_ai": {
+            "name": "HologramWizardAI",
+            "type": "hologram_analysis",
+            "architecture": "spectral_analysis_cnn",
+            "status": "development", 
+            "capabilities": ["holographic_detection", "reflectance_analysis", "authenticity_verification"]
+          },
+          "print_detective_ai": {
+            "name": "PrintDetectiveAI",
+            "type": "print_analysis",
+            "architecture": "multi_scale_feature_net",
+            "status": "development",
+            "capabilities": ["ink_density", "registration_accuracy", "print_quality"]
+          },
+          "corner_guardian_ai": {
+            "name": "CornerGuardianAI", 
+            "type": "corner_analysis",
+            "architecture": "3d_geometry_net",
+            "status": "development",
+            "capabilities": ["corner_damage", "sharpness_measurement", "wear_analysis"]
+          },
+          "authenticity_judge_ai": {
+            "name": "AuthenticityJudgeAI",
+            "type": "authenticity_verification",
+            "architecture": "feature_comparison_net", 
+            "status": "development",
+            "capabilities": ["counterfeit_detection", "security_features", "authenticity_scoring"]
+          }
+        }
+      },
+      
+      "production_models": {
+        "description": "Production-ready models transferred from original system",
+        "models": {
+          "revolutionary_border_detector": {
+            "name": "revolutionary_border_detector",
+            "type": "border_detection",
+            "category": "production",
+            "file_size": 52020946,
+            "checksum": "55deb1c93b3f54f3533164376f6eac61",
+            "registered_at": "2025-07-13T18:59:53.068141",
+            "metadata": {
+              "usage": "Border calibration integration",
+              "classes": 2,
+              "transferred_from": "models/production/border_detection/"
+            },
+            "status": "ready_for_integration"
+          }
+        }
+      },
+      
+      "training_models": {
+        "description": "Models in training or development",
+        "models": {
+          "border_detection_v2": {
+            "name": "border_detection_v2",
+            "type": "border_detection",
+            "status": "training",
+            "workspace_config": "transferred_from_models/training/border_detection_v2/"
+          }
+        }
+      },
+      
+      "experimental_models": {
+        "description": "Experimental and research models",
+        "models": {}
+      }
+    },
+    
+    "datasets": {
+      "annotated_cards": {
+        "description": "Manually annotated card datasets",
+        "status": "available",
+        "transferred_from": "models/datasets/annotated_cards/"
+      },
+      "augmented": {
+        "description": "Augmented training datasets", 
+        "status": "available",
+        "transferred_from": "models/datasets/augmented/"
+      },
+      "processed": {
+        "description": "Processed and cleaned datasets",
+        "status": "available", 
+        "transferred_from": "models/datasets/processed/"
+      },
+      "raw_scanned": {
+        "description": "Raw scanned card images",
+        "status": "available",
+        "transferred_from": "models/datasets/raw_scanned/"
+      }
+    },
+    
+    "continuous_learning": {
+      "enabled": true,
+      "integration_config": {
+        "model_hub_path": "models",
+        "active_models_path": "models/continuous/active_models", 
+        "training_data_path": "models/continuous/training_data",
+        "auto_retrain_threshold": 100,
+        "transferred_from": "models/continuous/integration_config.json"
+      }
+    },
+    
+    "model_hubs": {
+      "professional_hub": {
+        "description": "Professional model storage",
+        "models": [
+          "4800bce0-647b-45a6-81bb-8f8899dd015f",
+          "b1c85a92-6f53-47da-ab6e-d6abfb82f4a2", 
+          "cce88926-b35f-495a-996c-e42a52411e4b"
+        ],
+        "transferred_from": "models/professional_hub/"
+      },
+      "revolutionary_hub": {
+        "description": "Revolutionary model experiments",
+        "models": [
+          "5e2d53df-15c5-45b3-943f-b5798923355c"
+        ],
+        "transferred_from": "models/revolutionary_hub/"
+      }
+    }
+  }
+}

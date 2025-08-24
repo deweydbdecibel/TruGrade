@@ -1,0 +1,1201 @@
+<div class="file-list" id="ground-truth-list">
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test001.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test001.txt')" title="Delete Test001.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test001_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">6.1 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test001_converted.json')" title="Delete Test001_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test002.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test002.txt')" title="Delete Test002.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test002_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">6.5 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test002_converted.json')" title="Delete Test002_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test003.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test003.txt')" title="Delete Test003.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test003_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">7 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test003_converted.json')" title="Delete Test003_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test004.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test004.txt')" title="Delete Test004.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test004_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">7.5 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test004_converted.json')" title="Delete Test004_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test005.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test005.txt')" title="Delete Test005.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test005_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">8 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test005_converted.json')" title="Delete Test005_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test006.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test006.txt')" title="Delete Test006.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test006_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">8.5 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test006_converted.json')" title="Delete Test006_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test007.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test007.txt')" title="Delete Test007.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test007_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">9 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test007_converted.json')" title="Delete Test007_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test008.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test008.txt')" title="Delete Test008.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test008_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">9.5 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test008_converted.json')" title="Delete Test008_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test009.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test009.txt')" title="Delete Test009.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test009_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">9.9 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test009_converted.json')" title="Delete Test009_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test010.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test010.txt')" title="Delete Test010.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test010_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">10.4 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test010_converted.json')" title="Delete Test010_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test011.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test011.txt')" title="Delete Test011.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test011_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">10.9 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test011_converted.json')" title="Delete Test011_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test012.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test012.txt')" title="Delete Test012.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test012_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">11.4 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test012_converted.json')" title="Delete Test012_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test013.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test013.txt')" title="Delete Test013.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test013_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">11.8 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test013_converted.json')" title="Delete Test013_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test014.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test014.txt')" title="Delete Test014.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test014_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">12.3 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test014_converted.json')" title="Delete Test014_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test015.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test015.txt')" title="Delete Test015.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test015_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">12.8 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test015_converted.json')" title="Delete Test015_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test016.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test016.txt')" title="Delete Test016.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test016_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">13.3 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test016_converted.json')" title="Delete Test016_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test017.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test017.txt')" title="Delete Test017.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test017_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">13.8 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test017_converted.json')" title="Delete Test017_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test018.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test018.txt')" title="Delete Test018.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test018_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">14.3 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test018_converted.json')" title="Delete Test018_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test019.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test019.txt')" title="Delete Test019.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test019_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">14.7 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test019_converted.json')" title="Delete Test019_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test020.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test020.txt')" title="Delete Test020.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test020_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">15.2 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test020_converted.json')" title="Delete Test020_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test021.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test021.txt')" title="Delete Test021.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test021_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">15.7 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test021_converted.json')" title="Delete Test021_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test022.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test022.txt')" title="Delete Test022.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test022_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">16.2 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test022_converted.json')" title="Delete Test022_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test023.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test023.txt')" title="Delete Test023.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test023_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">16.7 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test023_converted.json')" title="Delete Test023_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test024.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test024.txt')" title="Delete Test024.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test024_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">17.2 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test024_converted.json')" title="Delete Test024_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test025.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test025.txt')" title="Delete Test025.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test025_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">17.7 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test025_converted.json')" title="Delete Test025_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test026.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test026.txt')" title="Delete Test026.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test026_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">18.2 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test026_converted.json')" title="Delete Test026_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test027.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test027.txt')" title="Delete Test027.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test027_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">18.7 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test027_converted.json')" title="Delete Test027_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test028.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test028.txt')" title="Delete Test028.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test028_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">19.2 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test028_converted.json')" title="Delete Test028_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test029.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test029.txt')" title="Delete Test029.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test029_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">19.6 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test029_converted.json')" title="Delete Test029_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test030.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test030.txt')" title="Delete Test030.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test030_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">20.1 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test030_converted.json')" title="Delete Test030_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test031.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test031.txt')" title="Delete Test031.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test031_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">20.6 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test031_converted.json')" title="Delete Test031_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test032.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test032.txt')" title="Delete Test032.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test032_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">21.1 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test032_converted.json')" title="Delete Test032_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test033.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test033.txt')" title="Delete Test033.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test033_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">21.6 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test033_converted.json')" title="Delete Test033_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test034.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test034.txt')" title="Delete Test034.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test034_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">22.1 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test034_converted.json')" title="Delete Test034_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test035.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test035.txt')" title="Delete Test035.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test035_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">22.6 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test035_converted.json')" title="Delete Test035_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test036.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test036.txt')" title="Delete Test036.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test036_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">23.1 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test036_converted.json')" title="Delete Test036_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test037.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test037.txt')" title="Delete Test037.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test037_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">23.6 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test037_converted.json')" title="Delete Test037_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test038.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test038.txt')" title="Delete Test038.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test038_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">24 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test038_converted.json')" title="Delete Test038_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test039.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test039.txt')" title="Delete Test039.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test039_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">24.5 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test039_converted.json')" title="Delete Test039_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test040.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test040.txt')" title="Delete Test040.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test040_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">25 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test040_converted.json')" title="Delete Test040_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test041.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test041.txt')" title="Delete Test041.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test041_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">25.5 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test041_converted.json')" title="Delete Test041_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test042.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test042.txt')" title="Delete Test042.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test042_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">26 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test042_converted.json')" title="Delete Test042_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test043.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test043.txt')" title="Delete Test043.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test043_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">26.5 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test043_converted.json')" title="Delete Test043_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test044.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test044.txt')" title="Delete Test044.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test044_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">27 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test044_converted.json')" title="Delete Test044_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test045.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test045.txt')" title="Delete Test045.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test045_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">27.4 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test045_converted.json')" title="Delete Test045_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test046.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test046.txt')" title="Delete Test046.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test046_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">27.9 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test046_converted.json')" title="Delete Test046_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test047.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test047.txt')" title="Delete Test047.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test047_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">28.4 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test047_converted.json')" title="Delete Test047_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test048.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test048.txt')" title="Delete Test048.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test048_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">28.9 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test048_converted.json')" title="Delete Test048_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test049.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test049.txt')" title="Delete Test049.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test049_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">29.4 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test049_converted.json')" title="Delete Test049_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name">Test050.txt</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">76 B</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test050.txt')" title="Delete Test050.txt">
+                                ×
+                            </button>
+                        </div>
+                    
+                        <div class="file-item">
+                            <div class="file-icon">📋</div>
+                            <div class="file-details">
+                                <div class="file-name">Test050_converted.json</div>
+                                <div class="file-meta">Uploaded • Jul 27, 2025</div>
+                            </div>
+                            <div class="file-size">29.9 KB</div>
+                            <button class="delete-file-button" onclick="fileManager.deleteFile('undefined', 'Test050_converted.json')" title="Delete Test050_converted.json">
+                                ×
+                            </button>
+                        </div>
+                    </div>

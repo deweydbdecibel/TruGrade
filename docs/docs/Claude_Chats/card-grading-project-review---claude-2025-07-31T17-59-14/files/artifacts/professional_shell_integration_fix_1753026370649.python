@@ -1,0 +1,385 @@
+#!/usr/bin/env python3
+"""
+Professional Revolutionary Shell Integration Architecture
+=======================================================
+
+Modular, scalable import system with robust error handling and clean separation of concerns.
+Eliminates hard dependencies while maintaining full functionality.
+"""
+
+import sys
+import logging
+from pathlib import Path
+from typing import Optional, Dict, Any, Callable
+from dataclasses import dataclass
+from abc import ABC, abstractmethod
+
+# Configure professional logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+@dataclass
+class ServiceEndpoint:
+    """Professional service endpoint configuration"""
+    name: str
+    port: int
+    protocol: str = "http"
+    path: str = ""
+    
+    @property
+    def url(self) -> str:
+        return f"{self.protocol}://localhost:{self.port}{self.path}"
+
+class TrainingEngineInterface(ABC):
+    """Abstract interface for training engine implementations"""
+    
+    @abstractmethod
+    def initialize(self) -> bool:
+        """Initialize the training engine"""
+        pass
+    
+    @abstractmethod
+    def get_service_endpoints(self) -> Dict[str, ServiceEndpoint]:
+        """Get available service endpoints"""
+        pass
+    
+    @abstractmethod
+    def is_available(self) -> bool:
+        """Check if training engine is operational"""
+        pass
+
+class ProfessionalImportManager:
+    """
+    Enterprise-grade import management with graceful degradation
+    and comprehensive error handling
+    """
+    
+    def __init__(self):
+        self.project_root = Path(__file__).parent.parent.parent
+        self.services_path = self.project_root / "services"
+        self._setup_python_path()
+        self._imported_modules = {}
+        
+    def _setup_python_path(self) -> None:
+        """Configure Python import paths with professional structure"""
+        paths_to_add = [
+            str(self.project_root),
+            str(self.services_path),
+            str(self.project_root / "src"),
+            str(self.project_root / "src" / "core"),
+            str(self.project_root / "src" / "ui")
+        ]
+        
+        for path in paths_to_add:
+            if path not in sys.path:
+                sys.path.insert(0, path)
+                logger.debug(f"Added to Python path: {path}")
+    
+    def safe_import(self, module_name: str, class_names: list = None) -> Optional[Dict[str, Any]]:
+        """
+        Safely import modules with comprehensive error handling
+        
+        Args:
+            module_name: Name of the module to import
+            class_names: Optional list of specific classes to import
+            
+        Returns:
+            Dictionary of imported objects or None if import fails
+        """
+        try:
+            if module_name in self._imported_modules:
+                return self._imported_modules[module_name]
+            
+            module = __import__(module_name, fromlist=class_names or [])
+            
+            if class_names:
+                imported_objects = {}
+                for class_name in class_names:
+                    if hasattr(module, class_name):
+                        imported_objects[class_name] = getattr(module, class_name)
+                    else:
+                        logger.warning(f"Class {class_name} not found in module {module_name}")
+                
+                self._imported_modules[module_name] = imported_objects
+                return imported_objects
+            else:
+                self._imported_modules[module_name] = {'module': module}
+                return {'module': module}
+                
+        except ImportError as e:
+            logger.warning(f"Failed to import {module_name}: {e}")
+            return None
+        except Exception as e:
+            logger.error(f"Unexpected error importing {module_name}: {e}")
+            return None
+
+class RevolutionaryTrainingEngine(TrainingEngineInterface):
+    """
+    Professional training engine implementation with modular architecture
+    """
+    
+    def __init__(self, import_manager: ProfessionalImportManager):
+        self.import_manager = import_manager
+        self.orchestrator = None
+        self.orchestrator_type = "none"
+        self._service_endpoints = {}
+        self._operational = False
+        
+    def initialize(self) -> bool:
+        """Initialize training engine with graceful degradation"""
+        logger.info("Initializing Revolutionary Training Engine...")
+        
+        # Primary: Try to import training_orchestrator
+        training_imports = self.import_manager.safe_import(
+            'training_orchestrator', 
+            ['FlexibleTrainingOrchestrator', 'TrainingConfig']
+        )
+        
+        if training_imports and 'FlexibleTrainingOrchestrator' in training_imports:
+            try:
+                self.orchestrator = training_imports['FlexibleTrainingOrchestrator']()
+                self.orchestrator_type = "flexible_orchestrator"
+                self._setup_service_endpoints()
+                self._operational = True
+                logger.info("✅ Flexible Training Orchestrator initialized successfully")
+                return True
+            except Exception as e:
+                logger.error(f"Failed to initialize FlexibleTrainingOrchestrator: {e}")
+        
+        # Fallback: Enhanced orchestrator if available
+        enhanced_imports = self.import_manager.safe_import(
+            'enhanced_orchestrator',
+            ['IntelligentTrainingOrchestrator']
+        )
+        
+        if enhanced_imports and 'IntelligentTrainingOrchestrator' in enhanced_imports:
+            try:
+                self.orchestrator = enhanced_imports['IntelligentTrainingOrchestrator']()
+                self.orchestrator_type = "intelligent_orchestrator"
+                self._setup_enhanced_endpoints()
+                self._operational = True
+                logger.info("✅ Intelligent Training Orchestrator initialized successfully")
+                return True
+            except Exception as e:
+                logger.error(f"Failed to initialize IntelligentTrainingOrchestrator: {e}")
+        
+        # Final fallback: Placeholder mode
+        self.orchestrator_type = "placeholder"
+        self._setup_placeholder_endpoints()
+        logger.warning("⚠️ Training engine running in placeholder mode")
+        return False
+    
+    def _setup_service_endpoints(self) -> None:
+        """Configure service endpoints for flexible orchestrator"""
+        self._service_endpoints = {
+            'training_dashboard': ServiceEndpoint(
+                name='Revolutionary Training Dashboard',
+                port=8010,
+                path='/'
+            ),
+            'training_api': ServiceEndpoint(
+                name='Training API',
+                port=8010,
+                path='/api'
+            ),
+            'training_stats': ServiceEndpoint(
+                name='Training Statistics',
+                port=8010,
+                path='/stats'
+            )
+        }
+    
+    def _setup_enhanced_endpoints(self) -> None:
+        """Configure service endpoints for enhanced orchestrator"""
+        self._service_endpoints = {
+            'enhanced_training': ServiceEndpoint(
+                name='Enhanced Training Platform',
+                port=8010,
+                path='/'
+            ),
+            'intelligent_api': ServiceEndpoint(
+                name='Intelligent Training API',
+                port=8010,
+                path='/api'
+            )
+        }
+    
+    def _setup_placeholder_endpoints(self) -> None:
+        """Configure placeholder endpoints when training engine unavailable"""
+        self._service_endpoints = {
+            'placeholder': ServiceEndpoint(
+                name='Training System Placeholder',
+                port=8010,
+                path='/'
+            )
+        }
+    
+    def get_service_endpoints(self) -> Dict[str, ServiceEndpoint]:
+        """Get configured service endpoints"""
+        return self._service_endpoints
+    
+    def is_available(self) -> bool:
+        """Check if training engine is operational"""
+        return self._operational
+
+class RevolutionaryShellArchitecture:
+    """
+    Professional shell architecture with modular training integration
+    """
+    
+    def __init__(self):
+        self.import_manager = ProfessionalImportManager()
+        self.training_engine = RevolutionaryTrainingEngine(self.import_manager)
+        self._initialize_components()
+    
+    def _initialize_components(self) -> None:
+        """Initialize all shell components with professional error handling"""
+        try:
+            # Initialize training engine
+            training_available = self.training_engine.initialize()
+            
+            if training_available:
+                logger.info("🚀 Revolutionary training engine operational")
+            else:
+                logger.warning("⚠️ Training engine in fallback mode")
+            
+            # Initialize photometric integration
+            self._initialize_photometric_integration()
+            
+            # Initialize API integrations
+            self._initialize_api_integrations()
+            
+        except Exception as e:
+            logger.error(f"Component initialization failed: {e}")
+    
+    def _initialize_photometric_integration(self) -> None:
+        """Initialize photometric stereo integration"""
+        try:
+            photometric_imports = self.import_manager.safe_import(
+                'photometric_integration',
+                ['integrate_photometric_stereo']
+            )
+            
+            if photometric_imports:
+                logger.info("✅ Photometric integration available")
+            else:
+                logger.warning("⚠️ Photometric integration unavailable")
+                
+        except Exception as e:
+            logger.error(f"Photometric integration failed: {e}")
+    
+    def _initialize_api_integrations(self) -> None:
+        """Initialize API service integrations"""
+        # Will be implemented based on your specific API needs
+        pass
+    
+    def handle_training_navigation(self, command: str) -> str:
+        """
+        Professional training navigation with endpoint resolution
+        
+        Args:
+            command: Navigation command
+            
+        Returns:
+            URL to open for training interface
+        """
+        endpoints = self.training_engine.get_service_endpoints()
+        
+        command_mapping = {
+            'train_model': 'training_dashboard',
+            'advanced_training': 'enhanced_training',
+            'training_stats': 'training_stats',
+            'dataset_manager': 'training_dashboard',
+            'model_validation': 'training_api'
+        }
+        
+        endpoint_key = command_mapping.get(command, 'training_dashboard')
+        
+        if endpoint_key in endpoints:
+            endpoint = endpoints[endpoint_key]
+            logger.info(f"Routing {command} to {endpoint.url}")
+            return endpoint.url
+        else:
+            # Fallback to primary training endpoint
+            primary_endpoint = next(iter(endpoints.values()))
+            logger.warning(f"Command {command} not mapped, using primary endpoint: {primary_endpoint.url}")
+            return primary_endpoint.url
+
+# PROFESSIONAL SHELL INTEGRATION IMPLEMENTATION
+# Add this to your RevolutionaryMainShell class:
+
+def integrate_professional_training_system(shell_instance):
+    """
+    Professional integration function for Revolutionary Shell
+    
+    Args:
+        shell_instance: Instance of RevolutionaryMainShell
+        
+    Returns:
+        Configured shell architecture
+    """
+    try:
+        # Initialize professional architecture
+        shell_arch = RevolutionaryShellArchitecture()
+        
+        # Attach to shell instance
+        shell_instance.training_architecture = shell_arch
+        shell_instance.training_engine = shell_arch.training_engine
+        shell_instance.training_engine_available = shell_arch.training_engine.is_available()
+        
+        # Professional navigation handler
+        def professional_training_navigation(command):
+            return shell_arch.handle_training_navigation(command)
+        
+        shell_instance.handle_training_navigation = professional_training_navigation
+        
+        logger.info("🎯 Professional training integration complete")
+        return shell_arch
+        
+    except Exception as e:
+        logger.error(f"Professional integration failed: {e}")
+        return None
+
+# USAGE IN REVOLUTIONARY SHELL:
+# Replace the problematic imports and initialization with:
+
+"""
+# In revolutionary_shell.py, replace the import section with:
+
+# Professional import management
+from professional_shell_integration import integrate_professional_training_system
+
+# In RevolutionaryMainShell.__init__():
+def __init__(self):
+    super().__init__()
+    
+    # ... existing initialization ...
+    
+    # Professional training integration
+    self.training_architecture = integrate_professional_training_system(self)
+    
+    # ... rest of initialization ...
+
+# In handle_navigation_command method:
+def handle_navigation_command(self, command):
+    try:
+        # Clear main content
+        for widget in self.main_content.winfo_children():
+            widget.destroy()
+            
+        # Route training commands professionally
+        if command in ['train_model', 'advanced_training', 'training_stats', 'dataset_manager']:
+            if hasattr(self, 'handle_training_navigation'):
+                url = self.handle_training_navigation(command)
+                self.open_url_robust(url)
+                return
+        
+        # ... handle other commands ...
+        
+    except Exception as e:
+        logger.error(f"Navigation error: {e}")
+        self.create_welcome_screen()
+"""

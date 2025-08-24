@@ -1,0 +1,527 @@
+# Add these imports to the top of your revolutionary_shell.py
+import asyncio
+import threading
+from pathlib import Path
+import sys
+
+# Add the integration module path
+sys.path.append(str(Path(__file__).parent.parent / "services"))
+from revolutionary_shell_integration import (
+    RevolutionaryShellIntegration,
+    TrainingState,
+    ServiceStatus
+)
+
+class RevolutionaryMainShell(ctk.CTk):
+    """Enhanced with Professional Command Center Integration"""
+    
+    def __init__(self):
+        super().__init__()
+        
+        # ... your existing initialization code ...
+        
+        # Professional Integration System
+        self.integration_system: Optional[RevolutionaryShellIntegration] = None
+        self.async_loop: Optional[asyncio.AbstractEventLoop] = None
+        self.integration_thread: Optional[threading.Thread] = None
+        self.system_initialized = False
+        
+        # Professional Status Management
+        self.service_status_indicators = {}
+        self.dataset_management_panel = None
+        self.training_control_panel = None
+        self.progress_monitors = {}
+        
+        # Initialize integration system
+        self._initialize_professional_integration()
+    
+    def _initialize_professional_integration(self) -> None:
+        """Initialize professional command center integration"""
+        try:
+            # Start async event loop in separate thread
+            self.integration_thread = threading.Thread(
+                target=self._run_integration_loop,
+                daemon=True,
+                name="IntegrationAsyncLoop"
+            )
+            self.integration_thread.start()
+            
+            # Initialize UI components for command center
+            self._setup_command_center_ui()
+            
+            logger.info("🚀 Professional command center integration initiated")
+            
+        except Exception as e:
+            logger.error(f"❌ Integration initialization failed: {e}")
+            messagebox.showerror("Integration Error", f"Failed to initialize command center: {e}")
+    
+    def _run_integration_loop(self) -> None:
+        """Professional async event loop for integration system"""
+        try:
+            self.async_loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(self.async_loop)
+            
+            # Initialize integration system
+            config_path = Path("revolutionary_config.json")
+            self.integration_system = RevolutionaryShellIntegration(config_path)
+            
+            # Register callbacks
+            self.integration_system.register_status_callback(self._handle_status_update)
+            self.integration_system.register_progress_callback(self._handle_progress_update)
+            
+            # Run initialization
+            self.async_loop.run_until_complete(self._async_system_initialization())
+            
+            # Keep loop alive
+            self.async_loop.run_forever()
+            
+        except Exception as e:
+            logger.error(f"❌ Integration loop error: {e}")
+    
+    async def _async_system_initialization(self) -> None:
+        """Asynchronous system initialization"""
+        try:
+            success, report = await self.integration_system.initialize_system()
+            
+            # Update UI thread-safely
+            self.after(0, lambda: self._update_initialization_status(success, report))
+            
+        except Exception as e:
+            logger.error(f"❌ Async initialization error: {e}")
+            self.after(0, lambda: messagebox.showerror("Initialization Error", str(e)))
+    
+    def _setup_command_center_ui(self) -> None:
+        """Setup professional command center UI components"""
+        
+        # Create command center frame
+        self.command_center_frame = ctk.CTkFrame(self.main_frame)
+        self.command_center_frame.grid(row=0, column=0, columnspan=3, sticky="ew", padx=20, pady=10)
+        
+        # Service Status Panel
+        self._create_service_status_panel()
+        
+        # Dataset Management Panel
+        self._create_dataset_management_panel()
+        
+        # Training Control Panel
+        self._create_training_control_panel()
+        
+        # Progress Monitoring Panel
+        self._create_progress_monitoring_panel()
+    
+    def _create_service_status_panel(self) -> None:
+        """Create professional service status monitoring panel"""
+        
+        status_frame = ctk.CTkFrame(self.command_center_frame)
+        status_frame.grid(row=0, column=0, sticky="ew", padx=10, pady=5)
+        
+        ctk.CTkLabel(
+            status_frame,
+            text="🔍 Service Status",
+            font=ctk.CTkFont(size=16, weight="bold")
+        ).grid(row=0, column=0, columnspan=4, pady=5)
+        
+        # Service indicators
+        services = [
+            ("ML Training Studio", "ml_training_studio"),
+            ("Revolutionary Orchestrator", "revolutionary_precision_orchestrator"),
+            ("PWA Backend", "pwa_backend"),
+            ("Annotation Server", "annotation_server")
+        ]
+        
+        for i, (display_name, service_key) in enumerate(services):
+            # Service name
+            ctk.CTkLabel(status_frame, text=display_name).grid(row=1, column=i, padx=5)
+            
+            # Status indicator
+            status_indicator = ctk.CTkLabel(
+                status_frame,
+                text="⚪",
+                font=ctk.CTkFont(size=20)
+            )
+            status_indicator.grid(row=2, column=i, padx=5)
+            
+            self.service_status_indicators[service_key] = status_indicator
+    
+    def _create_dataset_management_panel(self) -> None:
+        """Create professional dataset management interface"""
+        
+        dataset_frame = ctk.CTkFrame(self.command_center_frame)
+        dataset_frame.grid(row=1, column=0, sticky="ew", padx=10, pady=5)
+        
+        ctk.CTkLabel(
+            dataset_frame,
+            text="📊 Dataset Management",
+            font=ctk.CTkFont(size=16, weight="bold")
+        ).grid(row=0, column=0, columnspan=3, pady=5)
+        
+        # Dataset creation controls
+        ctk.CTkLabel(dataset_frame, text="Dataset Name:").grid(row=1, column=0, sticky="w", padx=5)
+        self.dataset_name_entry = ctk.CTkEntry(dataset_frame, width=200)
+        self.dataset_name_entry.grid(row=1, column=1, padx=5)
+        
+        ctk.CTkLabel(dataset_frame, text="Model Type:").grid(row=2, column=0, sticky="w", padx=5)
+        self.model_type_combo = ctk.CTkComboBox(
+            dataset_frame,
+            values=["edge_detection", "corner_detection", "surface_damage", "photometric_fusion"],
+            width=200
+        )
+        self.model_type_combo.grid(row=2, column=1, padx=5)
+        
+        # Action buttons
+        self.create_dataset_btn = ctk.CTkButton(
+            dataset_frame,
+            text="🚀 Create Dataset",
+            command=self._create_new_dataset,
+            state="disabled"
+        )
+        self.create_dataset_btn.grid(row=1, column=2, rowspan=2, padx=10)
+        
+        # Dataset status display
+        self.dataset_status_label = ctk.CTkLabel(
+            dataset_frame,
+            text="Status: System Initializing...",
+            font=ctk.CTkFont(size=12)
+        )
+        self.dataset_status_label.grid(row=3, column=0, columnspan=3, pady=5)
+    
+    def _create_training_control_panel(self) -> None:
+        """Create professional training control interface"""
+        
+        training_frame = ctk.CTkFrame(self.command_center_frame)
+        training_frame.grid(row=2, column=0, sticky="ew", padx=10, pady=5)
+        
+        ctk.CTkLabel(
+            training_frame,
+            text="🏆 Revolutionary Training Control",
+            font=ctk.CTkFont(size=16, weight="bold")
+        ).grid(row=0, column=0, columnspan=3, pady=5)
+        
+        # Training configuration
+        ctk.CTkLabel(training_frame, text="Target Accuracy:").grid(row=1, column=0, sticky="w", padx=5)
+        self.accuracy_slider = ctk.CTkSlider(
+            training_frame,
+            from_=0.95,
+            to=0.999,
+            number_of_steps=49
+        )
+        self.accuracy_slider.set(0.999)
+        self.accuracy_slider.grid(row=1, column=1, padx=5, sticky="ew")
+        
+        self.accuracy_label = ctk.CTkLabel(training_frame, text="99.9%")
+        self.accuracy_label.grid(row=1, column=2, padx=5)
+        
+        # Training options
+        self.photometric_var = ctk.BooleanVar(value=True)
+        self.photometric_check = ctk.CTkCheckBox(
+            training_frame,
+            text="Enable Photometric Stereo",
+            variable=self.photometric_var
+        )
+        self.photometric_check.grid(row=2, column=0, sticky="w", padx=5)
+        
+        self.precision_var = ctk.BooleanVar(value=True)
+        self.precision_check = ctk.CTkCheckBox(
+            training_frame,
+            text="24-Point Precision",
+            variable=self.precision_var
+        )
+        self.precision_check.grid(row=2, column=1, sticky="w", padx=5)
+        
+        # Training button
+        self.start_training_btn = ctk.CTkButton(
+            training_frame,
+            text="🎯 Start Revolutionary Training",
+            command=self._start_revolutionary_training,
+            state="disabled"
+        )
+        self.start_training_btn.grid(row=2, column=2, padx=10)
+        
+        # Bind accuracy slider
+        self.accuracy_slider.configure(command=self._update_accuracy_label)
+    
+    def _create_progress_monitoring_panel(self) -> None:
+        """Create professional progress monitoring interface"""
+        
+        progress_frame = ctk.CTkFrame(self.command_center_frame)
+        progress_frame.grid(row=3, column=0, sticky="ew", padx=10, pady=5)
+        
+        ctk.CTkLabel(
+            progress_frame,
+            text="📈 Training Progress Monitor",
+            font=ctk.CTkFont(size=16, weight="bold")
+        ).grid(row=0, column=0, columnspan=2, pady=5)
+        
+        # Progress bar
+        self.training_progress = ctk.CTkProgressBar(progress_frame, width=400)
+        self.training_progress.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky="ew")
+        self.training_progress.set(0)
+        
+        # Status labels
+        self.progress_status_label = ctk.CTkLabel(
+            progress_frame,
+            text="Status: Idle",
+            font=ctk.CTkFont(size=12)
+        )
+        self.progress_status_label.grid(row=2, column=0, sticky="w", padx=10)
+        
+        self.progress_metrics_label = ctk.CTkLabel(
+            progress_frame,
+            text="Metrics: --",
+            font=ctk.CTkFont(size=12)
+        )
+        self.progress_metrics_label.grid(row=2, column=1, sticky="e", padx=10)
+    
+    def _update_initialization_status(self, success: bool, report: Dict[str, Any]) -> None:
+        """Update UI with initialization status"""
+        try:
+            if success:
+                self.system_initialized = True
+                self.create_dataset_btn.configure(state="normal")
+                self.dataset_status_label.configure(text="Status: System Ready")
+                
+                # Update service indicators
+                service_status = report.get('service_status', {})
+                for service_key, indicator in self.service_status_indicators.items():
+                    status = service_status.get(service_key, 'unknown')
+                    if status == 'online':
+                        indicator.configure(text="🟢")
+                    elif status == 'degraded':
+                        indicator.configure(text="🟡")
+                    else:
+                        indicator.configure(text="🔴")
+                
+                logger.info("✅ Command center initialization completed")
+                
+            else:
+                self.dataset_status_label.configure(
+                    text=f"Status: Initialization Failed - {report.get('error', 'Unknown error')}"
+                )
+                messagebox.showerror("System Error", "Failed to initialize command center")
+                
+        except Exception as e:
+            logger.error(f"❌ Status update error: {e}")
+    
+    def _handle_status_update(self, status_data: Dict[str, Any]) -> None:
+        """Handle professional status updates from integration system"""
+        try:
+            # Update UI thread-safely
+            self.after(0, lambda: self._update_ui_status(status_data))
+        except Exception as e:
+            logger.error(f"❌ Status update handler error: {e}")
+    
+    def _handle_progress_update(self, progress_data: Dict[str, Any]) -> None:
+        """Handle professional training progress updates"""
+        try:
+            # Update UI thread-safely
+            self.after(0, lambda: self._update_training_progress(progress_data))
+        except Exception as e:
+            logger.error(f"❌ Progress update handler error: {e}")
+    
+    def _update_ui_status(self, status_data: Dict[str, Any]) -> None:
+        """Update UI elements with status information"""
+        try:
+            workflow_state = status_data.get('workflow_state')
+            
+            if workflow_state == 'dataset_ready':
+                self.start_training_btn.configure(state="normal")
+                self.dataset_status_label.configure(text="Status: Dataset Ready for Training")
+                
+            elif workflow_state == 'training_active':
+                self.start_training_btn.configure(state="disabled")
+                self.progress_status_label.configure(text="Status: Revolutionary Training Active")
+                
+            elif workflow_state == 'training_completed':
+                self.start_training_btn.configure(state="normal")
+                self.progress_status_label.configure(text="Status: Training Completed Successfully")
+                
+                # Show completion dialog
+                messagebox.showinfo(
+                    "Training Complete",
+                    "🏆 Revolutionary training completed successfully!"
+                )
+                
+            elif workflow_state == 'error_state':
+                error_msg = status_data.get('error', 'Unknown error')
+                self.dataset_status_label.configure(text=f"Status: Error - {error_msg}")
+                messagebox.showerror("Training Error", f"Error occurred: {error_msg}")
+                
+        except Exception as e:
+            logger.error(f"❌ UI status update error: {e}")
+    
+    def _update_training_progress(self, progress_data: Dict[str, Any]) -> None:
+        """Update training progress display"""
+        try:
+            progress = progress_data.get('progress', 0.0)
+            metrics = progress_data.get('metrics', {})
+            
+            # Update progress bar
+            self.training_progress.set(progress)
+            
+            # Update metrics display
+            if metrics:
+                accuracy = metrics.get('current_accuracy', 0.0)
+                self.progress_metrics_label.configure(
+                    text=f"Accuracy: {accuracy:.3f} | Progress: {progress:.1%}"
+                )
+            
+        except Exception as e:
+            logger.error(f"❌ Progress update error: {e}")
+    
+    def _update_accuracy_label(self, value) -> None:
+        """Update accuracy label with slider value"""
+        accuracy_percent = f"{float(value)*100:.1f}%"
+        self.accuracy_label.configure(text=accuracy_percent)
+    
+    def _create_new_dataset(self) -> None:
+        """Professional dataset creation workflow"""
+        if not self.system_initialized:
+            messagebox.showwarning("System Not Ready", "Please wait for system initialization")
+            return
+        
+        name = self.dataset_name_entry.get().strip()
+        model_type = self.model_type_combo.get()
+        
+        if not name:
+            messagebox.showwarning("Input Required", "Please enter a dataset name")
+            return
+        
+        # Disable button during creation
+        self.create_dataset_btn.configure(state="disabled", text="Creating...")
+        
+        # Execute async operation
+        if self.async_loop and self.integration_system:
+            asyncio.run_coroutine_threadsafe(
+                self._async_create_dataset(name, model_type),
+                self.async_loop
+            )
+    
+    async def _async_create_dataset(self, name: str, model_type: str) -> None:
+        """Asynchronous dataset creation"""
+        try:
+            success, result = await self.integration_system.create_new_dataset(
+                name, model_type, f"Professional dataset for {model_type}"
+            )
+            
+            # Update UI thread-safely
+            self.after(0, lambda: self._handle_dataset_creation_result(success, result))
+            
+        except Exception as e:
+            logger.error(f"❌ Async dataset creation error: {e}")
+            self.after(0, lambda: self._handle_dataset_creation_result(False, {"error": str(e)}))
+    
+    def _handle_dataset_creation_result(self, success: bool, result: Dict[str, Any]) -> None:
+        """Handle dataset creation result"""
+        try:
+            # Re-enable button
+            self.create_dataset_btn.configure(state="normal", text="🚀 Create Dataset")
+            
+            if success:
+                dataset_id = result.get('dataset_id')
+                management_url = result.get('management_url', 'localhost:8007')
+                
+                messagebox.showinfo(
+                    "Dataset Created",
+                    f"✅ Dataset created successfully!\n\nDataset ID: {dataset_id}\n\n"
+                    f"Click OK to open dataset management interface."
+                )
+                
+                # Open dataset management interface
+                import webbrowser
+                webbrowser.open(f"http://{management_url}")
+                
+            else:
+                error_msg = result.get('error', 'Unknown error')
+                messagebox.showerror("Dataset Creation Failed", f"Failed to create dataset:\n{error_msg}")
+                
+        except Exception as e:
+            logger.error(f"❌ Dataset creation result handler error: {e}")
+    
+    def _start_revolutionary_training(self) -> None:
+        """Professional revolutionary training initiation"""
+        if not self.system_initialized:
+            messagebox.showwarning("System Not Ready", "Please wait for system initialization")
+            return
+        
+        # Get training configuration
+        target_accuracy = self.accuracy_slider.get()
+        enable_photometric = self.photometric_var.get()
+        enable_24_point = self.precision_var.get()
+        
+        training_config = {
+            'target_accuracy': target_accuracy,
+            'enable_photometric': enable_photometric,
+            'enable_24_point': enable_24_point
+        }
+        
+        # Confirm training start
+        response = messagebox.askyesno(
+            "Start Revolutionary Training",
+            f"🎯 Start revolutionary training with:\n\n"
+            f"Target Accuracy: {target_accuracy:.1%}\n"
+            f"Photometric Stereo: {'Enabled' if enable_photometric else 'Disabled'}\n"
+            f"24-Point Precision: {'Enabled' if enable_24_point else 'Disabled'}\n\n"
+            f"This will begin advanced training with professional-grade precision."
+        )
+        
+        if response:
+            # Disable training button
+            self.start_training_btn.configure(state="disabled", text="Initializing...")
+            
+            # Execute async training
+            if self.async_loop and self.integration_system:
+                asyncio.run_coroutine_threadsafe(
+                    self._async_start_training(training_config),
+                    self.async_loop
+                )
+    
+    async def _async_start_training(self, training_config: Dict[str, Any]) -> None:
+        """Asynchronous revolutionary training execution"""
+        try:
+            success, session_id = await self.integration_system.execute_revolutionary_training_workflow(
+                training_configuration=training_config
+            )
+            
+            # Update UI thread-safely
+            self.after(0, lambda: self._handle_training_start_result(success, session_id))
+            
+        except Exception as e:
+            logger.error(f"❌ Async training start error: {e}")
+            self.after(0, lambda: self._handle_training_start_result(False, str(e)))
+    
+    def _handle_training_start_result(self, success: bool, session_id: str) -> None:
+        """Handle training start result"""
+        try:
+            if success:
+                self.progress_status_label.configure(
+                    text=f"Status: Training Session {session_id[:8]}... Active"
+                )
+                logger.info(f"🚀 Revolutionary training started: {session_id}")
+            else:
+                self.start_training_btn.configure(state="normal", text="🎯 Start Revolutionary Training")
+                messagebox.showerror("Training Failed", f"Failed to start training:\n{session_id}")
+                
+        except Exception as e:
+            logger.error(f"❌ Training start result handler error: {e}")
+    
+    def on_closing(self) -> None:
+        """Professional cleanup on application close"""
+        try:
+            # Shutdown integration system
+            if self.integration_system:
+                self.integration_system.shutdown_system()
+            
+            # Stop async loop
+            if self.async_loop and self.async_loop.is_running():
+                self.async_loop.call_soon_threadsafe(self.async_loop.stop)
+            
+            # Wait for integration thread
+            if self.integration_thread and self.integration_thread.is_alive():
+                self.integration_thread.join(timeout=3)
+            
+            # Close application
+            self.destroy()
+            
+        except Exception as e:
+            logger.error(f"❌ Application shutdown error: {e}")
+            self.destroy()

@@ -1,0 +1,53 @@
+Before you get into it, claudesjournal.txt is your memory.
+
+OK buddy.  We need to take this session and use it to clean up the project folder.  Since I am using an AI to help me through all this, I don't always get continuation.  Sometimes, actually quite a bit, I get variances that create something that is the same thing but different on different sessions and it has caused positive and negative reactions.  The negative being that my project folder is a mess, PWA needs to be update, python script locations need to be in a spot where it's most suited for, & etc...  There are alot of scripts in the service folder of our project and moving them requires re-writing a small amount of code to make sure we don't cause things to stop working.
+
+Now, I know when you use the filesystem extension, token use goes through the roof.  It's nuts.  Especially if you don't think about it.  I know that you need to know what's in the scripts to know if it's currently being used by the app.  I don't know how to expedite the process and make it so we don't run out of tokens before we finish.  But, I do know quite a bit and can give you Insight.  Last session, you had me run a script that sort of combined some of the training scripts and because of that, I wanna make sure it was the right thing to do.
+
+I'm also going to try and activate your memory again. I think I know what was causing the errors.  When you use MCP's, you have a certain set of things you want to know right away.  The 2 things that seem to show up in the logs are:
+
+Prompts/list
+Resources/list
+
+Now, I'm not certain those are the culprits, but, because I'm not using Anthropic extensions, calling those functions and getting a response that isn't expected, may be causing issues.  I created a shim to see if that helps that situation out.  I'm hoping it will.  These MCP's will help out ALOT if we can get past introducing them and how many tokens they require just to get you settled in.
+
+So, plan of attack is organisation & logistics.  I'm going to try and give you a list of scripts that are important and my observations.  However, before you do anything, clear it with me first.  There are duplicate scripts that say different things and going through everything systematically will hopefully find the ones that aren't needed.  So here goes.
+
+Start up scripts:
+project root = RCG
+
+1. RCG/start_dev_services.py
+2. RCG/services/start_server.py
+3. RCG/src/ui/Revolutionary_shell.py
+
+Important scripts:
+
+1. RCG/services/training_orchestrator.py
+2. RCG/services/training_enhancement.py
+3. RCG/services/training_pipeline.py
+4. RCG/services/dataset_organization_engine.py
+5. RCG/services/integrated_training_module.py
+6. RCG/services/enterprise_training_integration.py
+7. RCG/services/augmentation_service.py
+8. RCG/services/annotation_server.py
+9. RCG/services/pwa_backend_api.py
+10. RCG/services/templates/dashboard.html
+11. RCG/services/templates/dataset_management.html
+12. RCG/services/remplates/base.html
+13. RCG/src/core/ save everything
+14. RCG/src/models/   save these
+15. RCG/src/training/  unsure
+16. RCG/src/ui/ save everything
+17. RCG/src/      annotation_server.db  -  card_grading.db  = unsure
+18. RCG/data/  save everything
+19. RCG/config/  save everything
+20. RCG/database  annotation_server.db & card_grading.db?
+21. RCG/docs/  valuable text files from researching
+22. RCG/scripts/  unsure
+23. RCG/  another annotation_server.db?
+24. RCG/mcp-filesystem-shim.js & mcp-memory-shim.js  - Save
+25. RCG/revolutionary_border_detector.pt - Save
+
+RCG/data/scripts  -  has past scripts that are no longer viable.  again, please double check with me before removing anything.  I'm hoping you will be able to see the pattern and will be able handle re-organizing everything.  My only concern currently figuring out what the enterprise_training_integration did, and what is necessary to do now that it has been run.  I hope it doesn't error when attempting to use the MCP.
+
+Here goes...

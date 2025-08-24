@@ -1,0 +1,102 @@
+❯ sed -n '1650,1750p' training_orchestrator.py
+                        } else {
+                            alert(`❌ Issues found: ${result.issues.join(', ')}`);
+                        }
+                    } catch (error) {
+                        alert(`Validation error: ${error.message}`);
+                    }
+                }
+
+                async function startTraining() {
+                    if (!currentSessionId) return;
+
+                    try {
+                        const response = await fetch(`/api/session/${currentSessionId}/start-training`, {
+                            method: 'POST'
+                        });
+
+                        const result = await response.json();
+                        if (response.ok) {
+                            document.getElementById('progress-panel').style.display = 'block';
+                            connectWebSocket();
+                            alert('🚀 Real YOLO training started!');
+                        } else {
+                            alert(`❌ Error: ${result.detail}`);
+                        }
+                    } catch (error) {
+                        alert(`Training error: ${error.message}`);
+                    }
+                }
+
+                function connectWebSocket() {
+                    if (!currentSessionId) return;
+
+                    const wsUrl = `ws://localhost:8010/ws/${currentSessionId}`;
+                    trainingSocket = new WebSocket(wsUrl);
+
+                    trainingSocket.onmessage = function(event) {
+                        const data = JSON.parse(event.data);
+                        updateProgress(data);
+                    };
+
+                    trainingSocket.onerror = function(error) {
+                        console.error('WebSocket error:', error);
+                    };
+                }
+
+                function updateProgress(data) {
+                    const progressFill = document.getElementById('progress-fill');
+                    const progressText = document.getElementById('progress-text');
+                    const metricsGrid = document.getElementById('metrics-grid');
+
+                    const progress = (data.epoch / data.total_epochs) * 100;
+                    progressFill.style.width = progress + '%';
+                    progressFill.textContent = progress.toFixed(1) + '%';
+
+                    progressText.textContent = `${data.status} - Epoch ${data.epoch}/${data.total_epochs}`;
+
+                    if (data.loss !== undefined) {
+                        metricsGrid.innerHTML = `
+                            <div class="metric">
+                                <div class="metric-value">${data.loss.toFixed(4)}</div>
+                                <div>Loss</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${(data.precision || 0).toFixed(3)}</div>
+                                <div>Precision</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${(data.recall || 0).toFixed(3)}</div>
+                                <div>Recall</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${(data.mAP50 || 0).toFixed(3)}</div>
+                                <div>mAP50</div>
+                            </div>
+                        `;
+                    }
+
+                    if (data.status === 'completed') {
+                        alert('🎉 Training completed successfully!');
+                    } else if (data.status === 'error') {
+                        alert(`❌ Training failed: ${data.message}`);
+                    }
+                }
+                async function loadVisualFileBrowser() {
+                    const sessionId = currentSessionId;
+                    const response = await fetch(`/api/session/${sessionId}/files/visual`);
+                    const data = await response.json();
+
+                    populateImageThumbnails(data.images);
+                    populatePredictedPreviews(data.predicted_labels);
+                    populateGroundTruthPreviews(data.ground_truth);
+                    updateFileStatistics(data.statistics);
+                }
+
+                function populateImageThumbnails(images) {
+                    const container = document.getElementById('image-thumbnails');
+                    container.innerHTML = images.map(img => `
+                        <div class="thumbnail-item" data-id="${img.id}">
+                            <img src="${img.thumbnail_url}" alt="${img.filename}" />
+                            <div class="thumbnail-metadata">
+                                <span class="filename">${img.filename}</span>

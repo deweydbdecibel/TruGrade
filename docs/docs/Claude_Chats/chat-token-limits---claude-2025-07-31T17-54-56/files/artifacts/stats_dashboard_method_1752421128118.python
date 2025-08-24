@@ -1,0 +1,81 @@
+def get_stats_dashboard_html(self):
+    """Generate stats dashboard HTML"""
+    
+    # Get quick stats
+    db = SessionLocal()
+    total_runs = db.query(TrainingRun).count()
+    active_runs = db.query(TrainingRun).filter(TrainingRun.status == "running").count()
+    recent_runs = db.query(TrainingRun).order_by(TrainingRun.start_time.desc()).limit(5).all()
+    total_datasets = db.query(Dataset).count()
+    db.close()
+    
+    recent_runs_html = ""
+    for run in recent_runs:
+        recent_runs_html += f"""
+        <tr>
+            <td>{run.model_type}</td>
+            <td>{run.status}</td>
+            <td>{run.start_time.strftime('%H:%M:%S')}</td>
+            <td>{run.best_metric or 'N/A'}</td>
+        </tr>
+        """
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>🚀 Training Stats</title>
+        <style>
+            body {{ font-family: system-ui; margin: 40px; background: #f5f7fa; }}
+            .container {{ max-width: 1200px; margin: 0 auto; }}
+            .stat-card {{ background: white; padding: 30px; border-radius: 12px; 
+                         margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }}
+            .stat-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }}
+            .stat-item {{ text-align: center; }}
+            .stat-number {{ font-size: 2.5em; font-weight: bold; color: #4ecdc4; }}
+            .stat-label {{ color: #666; margin-top: 8px; }}
+            table {{ width: 100%; border-collapse: collapse; }}
+            th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #eee; }}
+            th {{ background: #f8f9ff; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🚀 Revolutionary Training Stats</h1>
+            
+            <div class="stat-card">
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">{total_runs}</div>
+                        <div class="stat-label">Total Runs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{active_runs}</div>
+                        <div class="stat-label">Active</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{total_datasets}</div>
+                        <div class="stat-label">Datasets</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{len(self.active_runs)}</div>
+                        <div class="stat-label">Live Processes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Recent Training Runs</h3>
+                <table>
+                    <thead>
+                        <tr><th>Model</th><th>Status</th><th>Started</th><th>Best Metric</th></tr>
+                    </thead>
+                    <tbody>
+                        {recent_runs_html}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+    </html>
+    """

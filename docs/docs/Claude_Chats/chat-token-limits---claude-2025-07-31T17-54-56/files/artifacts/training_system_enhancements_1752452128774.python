@@ -1,0 +1,470 @@
+#!/usr/bin/env python3
+"""
+🚀 Revolutionary Training System Enhancements
+============================================
+
+CPU optimization + Model Hub integration + JSON annotation support
+for your existing training_system.py
+
+Add these enhancements to your current training_system.py
+"""
+
+import torch
+import multiprocessing as mp
+from pathlib import Path
+import json
+import cv2
+import numpy as np
+from ultralytics import YOLO
+import yaml
+from datetime import datetime
+import shutil
+
+# Import your model hub
+from model_management import RevolutionaryModelHub
+
+class CPUTrainingEngine:
+    """CPU-optimized training engine for your existing system"""
+    
+    def __init__(self):
+        self.device = torch.device("cpu")
+        self.cpu_cores = mp.cpu_count()
+        self.optimal_workers = min(8, self.cpu_cores - 1)
+        
+        # Set CPU optimizations
+        torch.set_num_threads(self.optimal_workers)
+        
+        # Initialize model hub
+        self.model_hub = RevolutionaryModelHub()
+        
+        print(f"🚀 CPU Training Engine initialized")
+        print(f"📊 Using {self.optimal_workers}/{self.cpu_cores} CPU cores")
+        
+    def get_cpu_optimized_params(self, model_type: str):
+        """Get CPU-optimized parameters for different model types"""
+        
+        base_params = {
+            "device": "cpu",
+            "workers": self.optimal_workers,
+            "batch": 4,  # CPU-friendly batch size
+            "patience": 10,
+            "save_period": 5
+        }
+        
+        # Model-specific optimizations
+        if model_type == "border_detection":
+            return {
+                **base_params,
+                "model": "yolo11n.pt",  # Lightest YOLO
+                "imgsz": 640,
+                "epochs": 50
+            }
+        elif model_type == "corner_analysis":
+            return {
+                **base_params,
+                "model": "yolo11s.pt",  # Slightly larger for corners
+                "imgsz": 512,
+                "epochs": 75
+            }
+        else:
+            return base_params
+            
+    def prepare_json_dataset(self, dataset_path: str, model_type: str):
+        """Convert JSON annotations to YOLO format"""
+        
+        dataset_path = Path(dataset_path)
+        
+        # Create YOLO format structure
+        yolo_dir = dataset_path / "yolo_format"
+        yolo_images = yolo_dir / "images"
+        yolo_labels = yolo_dir / "labels"
+        
+        yolo_images.mkdir(parents=True, exist_ok=True)
+        yolo_labels.mkdir(parents=True, exist_ok=True)
+        
+        # Find JSON files
+        json_files = list(dataset_path.glob("**/*.json"))
+        converted_count = 0
+        
+        for json_file in json_files:
+            # Find corresponding image
+            img_extensions = ['.jpg', '.jpeg', '.png', '.bmp']
+            img_file = None
+            
+            for ext in img_extensions:
+                potential_img = json_file.parent / f"{json_file.stem}{ext}"
+                if potential_img.exists():
+                    img_file = potential_img
+                    break
+                    
+            if img_file and img_file.exists():
+                # Load and convert annotation
+                with open(json_file) as f:
+                    annotation = json.load(f)
+                
+                yolo_annotation = self.convert_json_to_yolo(
+                    annotation, img_file, model_type
+                )
+                
+                if yolo_annotation:
+                    # Copy image
+                    shutil.copy2(img_file, yolo_images / img_file.name)
+                    
+                    # Save YOLO label
+                    label_file = yolo_labels / f"{json_file.stem}.txt"
+                    with open(label_file, 'w') as f:
+                        f.write(yolo_annotation)
+                    
+                    converted_count += 1
+                    
+        print(f"✅ Converted {converted_count} JSON annotations to YOLO format")
+        
+        # Create dataset YAML
+        class_names = self.get_class_names(model_type)
+        dataset_yaml = yolo_dir / "dataset.yaml"
+        
+        yaml_content = {
+            'path': str(yolo_dir),
+            'train': 'images',
+            'val': 'images',
+            'nc': len(class_names),
+            'names': class_names
+        }
+        
+        with open(dataset_yaml, 'w') as f:
+            yaml.dump(yaml_content, f)
+            
+        return str(dataset_yaml), converted_count
+        
+    def convert_json_to_yolo(self, annotation: dict, img_path: Path, model_type: str):
+        """Convert JSON annotation to YOLO format based on model type"""
+        
+        # Get image dimensions
+        img = cv2.imread(str(img_path))
+        if img is None:
+            return None
+            
+        h, w = img.shape[:2]
+        yolo_lines = []
+        
+        if model_type == "border_detection":
+            # Convert border annotations
+            if 'outer_border' in annotation:
+                border = annotation['outer_border']
+                if self.is_valid_border(border):
+                    yolo_line = self.border_to_yolo(border, w, h, class_id=0)
+                    if yolo_line:
+                        yolo_lines.append(yolo_line)
+                        
+            if 'inner_border' in annotation:
+                border = annotation['inner_border']
+                if self.is_valid_border(border):
+                    yolo_line = self.border_to_yolo(border, w, h, class_id=1)
+                    if yolo_line:
+                        yolo_lines.append(yolo_line)
+                        
+        elif model_type == "corner_analysis":
+            # Convert corner annotations
+            corners = ['top_left', 'top_right', 'bottom_left', 'bottom_right']
+            for i, corner in enumerate(corners):
+                if corner in annotation:
+                    corner_data = annotation[corner]
+                    if self.is_valid_corner(corner_data):
+                        yolo_line = self.corner_to_yolo(corner_data, w, h, class_id=i)
+                        if yolo_line:
+                            yolo_lines.append(yolo_line)
+                            
+        return '\n'.join(yolo_lines) if yolo_lines else None
+        
+    def is_valid_border(self, border):
+        """Check if border annotation is valid"""
+        required_keys = ['x1', 'y1', 'x2', 'y2']
+        return all(k in border and isinstance(border[k], (int, float)) for k in required_keys)
+        
+    def is_valid_corner(self, corner):
+        """Check if corner annotation is valid"""
+        if isinstance(corner, dict):
+            return 'x' in corner and 'y' in corner
+        return False
+        
+    def border_to_yolo(self, border, img_w, img_h, class_id):
+        """Convert border coordinates to YOLO format"""
+        try:
+            x1, y1, x2, y2 = border['x1'], border['y1'], border['x2'], border['y2']
+            
+            # Calculate YOLO format (center_x, center_y, width, height)
+            x_center = (x1 + x2) / 2 / img_w
+            y_center = (y1 + y2) / 2 / img_h
+            width = abs(x2 - x1) / img_w
+            height = abs(y2 - y1) / img_h
+            
+            # Clamp values to [0, 1]
+            x_center = max(0, min(1, x_center))
+            y_center = max(0, min(1, y_center))
+            width = max(0, min(1, width))
+            height = max(0, min(1, height))
+            
+            return f"{class_id} {x_center:.6f} {y_center:.6f} {width:.6f} {height:.6f}"
+        except:
+            return None
+            
+    def corner_to_yolo(self, corner, img_w, img_h, class_id):
+        """Convert corner coordinates to YOLO format"""
+        try:
+            x, y = corner['x'], corner['y']
+            
+            # Use small bounding box around corner point
+            box_size = 0.02  # 2% of image size
+            
+            x_center = x / img_w
+            y_center = y / img_h
+            width = box_size
+            height = box_size
+            
+            # Clamp values
+            x_center = max(0, min(1, x_center))
+            y_center = max(0, min(1, y_center))
+            
+            return f"{class_id} {x_center:.6f} {y_center:.6f} {width:.6f} {height:.6f}"
+        except:
+            return None
+            
+    def get_class_names(self, model_type: str):
+        """Get class names for different model types"""
+        
+        class_maps = {
+            "border_detection": ["outer_border", "inner_border"],
+            "corner_analysis": ["top_left", "top_right", "bottom_left", "bottom_right"],
+            "edge_detection": ["top_edge", "right_edge", "bottom_edge", "left_edge"],
+            "surface_analysis": ["scratch", "dent", "discoloration"],
+            "defect_detection": ["corner_damage", "edge_damage", "surface_damage"]
+        }
+        
+        return class_maps.get(model_type, ["class_0", "class_1"])
+
+class ModelHubIntegration:
+    """Integration layer between training system and model hub"""
+    
+    def __init__(self):
+        self.model_hub = RevolutionaryModelHub()
+        
+    def register_training_run(self, config: dict, workspace_path: str):
+        """Register a training run in the model hub"""
+        
+        # Create training run metadata
+        run_metadata = {
+            "config": config,
+            "workspace_path": workspace_path,
+            "started_at": datetime.now().isoformat(),
+            "status": "running"
+        }
+        
+        # Save to hub
+        runs_dir = self.model_hub.base_path / "training" / "active_runs"
+        runs_dir.mkdir(parents=True, exist_ok=True)
+        
+        run_file = runs_dir / f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        with open(run_file, 'w') as f:
+            json.dump(run_metadata, f, indent=2)
+            
+        return str(run_file)
+        
+    def register_completed_model(self, model_path: str, model_type: str, 
+                                training_config: dict, results: dict):
+        """Register a completed model in the hub"""
+        
+        metadata = {
+            "training_config": training_config,
+            "results": results,
+            "cpu_optimized": True,
+            "architecture": training_config.get("model", "unknown")
+        }
+        
+        return self.model_hub.register_model(
+            model_path, 
+            model_type, 
+            "experimental",
+            metadata
+        )
+        
+    def get_available_models(self, model_type: str = None):
+        """Get available models for deployment"""
+        return self.model_hub.list_models(model_type=model_type)
+
+# Enhanced training functions for your existing system
+def enhanced_train_model(config: dict, dataset_path: str):
+    """Enhanced training function with CPU optimization and model hub integration"""
+    
+    print(f"🚀 Starting enhanced training: {config['model_type']}")
+    
+    # Initialize engines
+    cpu_engine = CPUTrainingEngine()
+    hub_integration = ModelHubIntegration()
+    
+    # Register training run
+    workspace_path = f"models/training/{config['model_type']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    run_file = hub_integration.register_training_run(config, workspace_path)
+    
+    try:
+        # Prepare dataset
+        dataset_yaml, converted_count = cpu_engine.prepare_json_dataset(
+            dataset_path, config['model_type']
+        )
+        
+        if converted_count == 0:
+            raise ValueError("No valid annotations found in dataset")
+            
+        print(f"📊 Prepared {converted_count} training samples")
+        
+        # Get CPU-optimized parameters
+        train_params = cpu_engine.get_cpu_optimized_params(config['model_type'])
+        train_params.update({
+            'data': dataset_yaml,
+            'project': workspace_path,
+            'name': config['model_type'],
+            'exist_ok': True
+        })
+        
+        # Override with user config
+        train_params.update(config)
+        
+        # Initialize YOLO model
+        model = YOLO(train_params['model'])
+        
+        print(f"🔧 Training with CPU optimization ({cpu_engine.optimal_workers} workers)")
+        
+        # Start training
+        results = model.train(**train_params)
+        
+        # Find best model
+        best_model_path = Path(workspace_path) / config['model_type'] / "weights" / "best.pt"
+        
+        if best_model_path.exists():
+            # Register completed model
+            hub_path = hub_integration.register_completed_model(
+                str(best_model_path),
+                config['model_type'],
+                config,
+                {"results": str(results), "samples": converted_count}
+            )
+            
+            print(f"✅ Model registered in hub: {hub_path}")
+            
+        return {
+            "status": "completed",
+            "results": results,
+            "workspace": workspace_path,
+            "samples_trained": converted_count,
+            "model_path": str(best_model_path) if best_model_path.exists() else None
+        }
+        
+    except Exception as e:
+        print(f"❌ Training failed: {e}")
+        return {
+            "status": "failed",
+            "error": str(e),
+            "workspace": workspace_path
+        }
+
+def get_system_capabilities():
+    """Get system capabilities for the training interface"""
+    
+    cpu_engine = CPUTrainingEngine()
+    
+    return {
+        "cpu_cores": cpu_engine.cpu_cores,
+        "optimal_workers": cpu_engine.optimal_workers,
+        "device": "CPU (Optimized)",
+        "supported_formats": ["JSON annotations", "YOLO format"],
+        "model_types": [
+            "border_detection",
+            "corner_analysis", 
+            "edge_detection",
+            "surface_analysis",
+            "defect_detection"
+        ],
+        "optimizations": [
+            "Multi-core CPU utilization",
+            "Memory-efficient batching",
+            "Automatic JSON conversion",
+            "Model hub integration"
+        ]
+    }
+
+# Add these new API endpoints to your existing training_system.py
+def setup_enhanced_routes(app):
+    """Add enhanced routes to your existing FastAPI app"""
+    
+    @app.get("/api/system/capabilities")
+    async def get_capabilities():
+        """Get enhanced system capabilities"""
+        return get_system_capabilities()
+        
+    @app.post("/api/training/enhanced-start")
+    async def enhanced_training_start(config: dict):
+        """Start enhanced training with CPU optimization"""
+        
+        # Validate dataset path
+        dataset_path = config.get("dataset_path")
+        if not dataset_path or not Path(dataset_path).exists():
+            raise HTTPException(status_code=400, detail="Invalid dataset path")
+            
+        # Start enhanced training
+        results = enhanced_train_model(config, dataset_path)
+        return results
+        
+    @app.get("/api/models/available")
+    async def get_available_models():
+        """Get available models from hub"""
+        hub_integration = ModelHubIntegration()
+        return hub_integration.get_available_models()
+        
+    @app.get("/api/models/{model_type}")
+    async def get_models_by_type(model_type: str):
+        """Get models by type"""
+        hub_integration = ModelHubIntegration()
+        return hub_integration.get_available_models(model_type)
+
+# Usage instructions for integration
+integration_instructions = """
+🔧 INTEGRATION INSTRUCTIONS
+
+1. Add imports to your training_system.py:
+   ```python
+   from training_enhancements import enhanced_train_model, setup_enhanced_routes, get_system_capabilities
+   ```
+
+2. Add enhanced routes to your setup_routes() method:
+   ```python
+   # In your RevolutionaryTrainingSystem.setup_routes() method
+   setup_enhanced_routes(self.app)
+   ```
+
+3. Update your training start endpoint:
+   ```python
+   @self.app.post("/api/training/start-enhanced")
+   async def start_enhanced_training(config: Dict):
+       return enhanced_train_model(config, config['dataset_path'])
+   ```
+
+4. Add system info to your dashboard:
+   ```javascript
+   // In your dashboard JavaScript
+   fetch('/api/system/capabilities')
+   .then(response => response.json())
+   .then(capabilities => {
+       console.log('Enhanced capabilities:', capabilities);
+   });
+   ```
+
+✅ Your existing training system will now have:
+- CPU optimization (11700k utilization)
+- JSON annotation support (your 568 cards)
+- Model hub integration
+- Enhanced performance tracking
+"""
+
+if __name__ == "__main__":
+    print("🚀 Revolutionary Training System Enhancements")
+    print("=" * 50)
+    print(integration_instructions)

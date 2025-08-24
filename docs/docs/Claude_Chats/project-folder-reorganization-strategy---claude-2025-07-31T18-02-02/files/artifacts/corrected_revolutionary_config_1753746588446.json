@@ -1,0 +1,163 @@
+{
+  "database": {
+    "postgresql": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "card_grading",
+      "user": "revolutionary_user",
+      "password": "revolutionary_pass"
+    }
+  },
+  "cache": {
+    "valkey": {
+      "host": "localhost",
+      "port": 6380,
+      "fallback_redis_port": 6379
+    }
+  },
+  "services": {
+    "pwa_backend": {
+      "port": 5000,
+      "script": "pwa_backend_api.py",
+      "description": "Mobile PWA with photometric stereo integration",
+      "ssl_enabled": true
+    },
+    "annotation_server": {
+      "port": 8000,
+      "script": "annotation_server.py",
+      "description": "Ground truth annotation pipeline with continuous learning"
+    },
+    "augmentation_service": {
+      "port": 8002,
+      "script": "augmentation_service.py",
+      "description": "Photometric augmentation and synthetic data generation"
+    },
+    "training_orchestrator": {
+      "port": 8010,
+      "script": "training_orchestrator.py",
+      "description": "Modular training conductor - zero hardcoded assumptions",
+      "priority": "primary",
+      "architectures_supported": [
+        "yolo_detection",
+        "yolo_segmentation",
+        "yolo_obb"
+      ],
+      "task_types": [
+        "border_detection",
+        "corner_analysis",
+        "edge_analysis",
+        "surface_analysis"
+      ]
+    },
+    "ml_training_studio": {
+      "port": 8007,
+      "script": "dataset_organization_engine.py",
+      "description": "Revolutionary ML Training Studio - Comprehensive dataset management with modular training capabilities",
+      "priority": "primary",
+      "architectures_supported": [
+        "yolo_detection",
+        "yolo_segmentation",
+        "yolo_obb",
+        "detectron2",
+        "mask_rcnn",
+        "custom_fusion"
+      ],
+      "task_types": [
+        "edge_detection",
+        "corner_detection",
+        "edge_damage",
+        "corner_damage",
+        "surface_damage",
+        "centering_analysis",
+        "photometric_fusion",
+        "multi_modal"
+      ],
+      "annotation_formats": [
+        "coco_json",
+        "yolo_txt",
+        "csv_tabular",
+        "custom_json",
+        "detectron2",
+        "mask_rcnn"
+      ],
+      "features": [
+        "intelligent_format_conversion",
+        "active_learning_pipeline",
+        "professional_training_controls",
+        "modular_dataset_organization"
+      ]
+    },
+    "revolutionary_precision_orchestrator": {
+      "port": 8011,
+      "script": "revolutionary_precision_orchestrator.py",
+      "description": "Revolutionary Precision Training Orchestrator - Professional-grade Mask R-CNN + Detectron2 ensemble",
+      "priority": "revolutionary",
+      "architectures_supported": [
+        "mask_rcnn_primary",
+        "detectron2_precision",
+        "ensemble_fusion",
+        "photometric_fusion",
+        "transformer_vision"
+      ],
+      "precision_features": [
+        "24_point_measurement",
+        "sub_pixel_accuracy",
+        "uncertainty_quantification",
+        "active_learning_pipeline",
+        "bayesian_confidence_estimation"
+      ],
+      "target_accuracy": 0.999,
+      "professional_grade": true
+    }
+  },
+  "hardware": {
+    "cpu_optimization": {
+      "enabled": true,
+      "target_processor": "intel_11700k",
+      "workers": 8,
+      "memory_limit": "16GB"
+    },
+    "gpu_acceleration": {
+      "enabled": "auto_detect",
+      "fallback_to_cpu": true
+    }
+  },
+  "deployment": {
+    "environment": "development",
+    "log_level": "INFO",
+    "health_check_interval": 30,
+    "auto_restart": true,
+    "monitoring": {
+      "metrics_enabled": true,
+      "prometheus_port": 9090
+    }
+  },
+  "security": {
+    "cors_origins": ["*"],
+    "api_rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 100
+    },
+    "ssl_certificates": {
+      "cert_path": "certificates/localhost+2.pem",
+      "key_path": "certificates/localhost+2-key.pem"
+    }
+  },
+  "revolutionary_features": {
+    "photometric_stereo": {
+      "enabled": true,
+      "processing_timeout": 30,
+      "max_concurrent_analyses": 4
+    },
+    "continuous_learning": {
+      "enabled": true,
+      "feedback_collection": true,
+      "model_update_frequency": "daily"
+    },
+    "multi_modal_fusion": {
+      "enabled": true,
+      "confidence_weighting": true,
+      "ensemble_methods": ["voting", "stacking", "bayesian"]
+    }
+  }
+}

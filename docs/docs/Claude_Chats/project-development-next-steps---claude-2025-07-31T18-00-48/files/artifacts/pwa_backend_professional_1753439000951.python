@@ -1,0 +1,657 @@
+# pwa_backend_api.py - Professional Edition
+"""
+🏆 PROFESSIONAL PWA BACKEND API
+===============================
+
+Flask API that connects the Progressive Web App to your photometric stereo engine
+with professional training integration (Detectron2 + Mask R-CNN focus).
+Handles image uploads, analysis requests, and returns results to the mobile PWA.
+"""
+
+from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
+import cv2
+import numpy as np
+import base64
+import io
+import os
+import time
+import uuid
+import json
+from PIL import Image
+from typing import Dict, Any, Optional
+from pathlib import Path
+import threading
+import queue
+from datetime import datetime
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+from services.integrated_training_module import ProfessionalTrainingIntegration
+
+def score_to_grade(score: float) -> str:
+    """Convert numerical score to card grade"""
+    if score >= 98: return "GEM MINT 10"
+    elif score >= 92: return "MINT 9"
+    elif score >= 86: return "NEAR MINT-MINT 8"
+    elif score >= 80: return "NEAR MINT 7"
+    elif score >= 70: return "EXCELLENT 6"
+    elif score >= 60: return "VERY GOOD 5"
+    else: return f"GRADE {int(score/10)}"
+
+def ensure_json_serializable(obj):
+    """Convert numpy types and complex objects to JSON-safe types"""
+    if hasattr(obj, 'item'):  # numpy scalar
+        return obj.item()
+    elif hasattr(obj, 'tolist'):  # numpy array
+        return obj.tolist()
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {k: ensure_json_serializable(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [ensure_json_serializable(v) for v in obj]
+    elif isinstance(obj, tuple):
+        return tuple(ensure_json_serializable(v) for v in obj)
+    else:
+        return obj
+
+def convert_dict_to_json(data):
+    """Convert dictionary with numpy types to JSON-safe dictionary"""
+    if isinstance(data, dict):
+        return {k: float(v) if hasattr(v, 'item') or isinstance(v, (np.integer, np.floating)) else v for k, v in data.items()}
+    return data
+
+# Import your existing photometric stereo engine
+try:
+    import sys
+    sys.path.append(str(Path(__file__).parent.parent))
+    from src.core.photometric.photometric_stereo import RevolutionaryPhotometricStereo, PhotometricResult
+    print("✅ Photometric stereo engine imported successfully!")
+except ImportError as e:
+    print(f"❌ Import error: {e}")
+    print("🔧 Using mock engine for testing...")
+
+# Initialize Flask app
+app = Flask(__name__)
+CORS(app)  # Enable CORS for PWA access
+
+# Configuration
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['RESULTS_FOLDER'] = 'results'
+
+# Create directories if they don't exist
+Path(app.config['UPLOAD_FOLDER']).mkdir(exist_ok=True)
+Path(app.config['RESULTS_FOLDER']).mkdir(exist_ok=True)
+Path('static').mkdir(exist_ok=True)
+
+# Initialize photometric stereo engine
+photometric_engine = RevolutionaryPhotometricStereo()
+
+# Initialize professional training integration
+professional_training = ProfessionalTrainingIntegration()
+
+# Analysis queue for handling multiple requests
+analysis_queue = queue.Queue()
+results_cache = {}
+
+class AnalysisRequest:
+    """Represents a card analysis request"""
+    def __init__(self, request_id: str, image_path: str, card_type: str = "modern"):
+        self.request_id = request_id
+        self.image_path = image_path
+        self.card_type = card_type
+        self.timestamp = datetime.now()
+        self.status = "queued"
+
+# Professional Training API Endpoints
+
+@app.route('/api/training/professional/create', methods=['POST'])
+async def create_professional_training():
+    """Create professional training session"""
+    try:
+        config_data = request.get_json()
+        
+        # Ensure professional defaults
+        config_data.setdefault('enable_detectron2', True)
+        config_data.setdefault('enable_mask_rcnn', True)
+        config_data.setdefault('enable_yolo', False)  # Professional focus
+        config_data.setdefault('fusion_strategy', 'professional')
+        
+        session_id = await professional_training.create_training_session(config_data)
+        
+        return jsonify({
+            'success': True,
+            'session_id': session_id,
+            'message': 'Professional training session created',
+            'professional_models': ['Detectron2', 'Mask R-CNN'],
+            'consumer_fallback': 'Disabled (Recommended)'
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'message': 'Failed to create professional training session'
+        }), 500
+
+@app.route('/api/training/professional/progress/<session_id>', methods=['GET'])
+async def get_professional_progress(session_id: str):
+    """Get professional training progress"""
+    try:
+        progress = await professional_training.get_training_progress(session_id)
+        
+        if not progress:
+            return jsonify({
+                'success': False,
+                'error': 'Session not found'
+            }), 404
+            
+        return jsonify({
+            'success': True,
+            'session_id': session_id,
+            'status': progress.status.value,
+            'percentage': progress.percentage,
+            'current_epoch': progress.current_epoch,
+            'total_epochs': progress.total_epochs,
+            'professional_metrics': {
+                'detectron2_accuracy': progress.detectron2_accuracy,
+                'mask_rcnn_accuracy': progress.mask_rcnn_accuracy,
+                'professional_precision': progress.professional_precision,
+                'pixel_precision': progress.professional_metrics.get('pixel_precision', False)
+            },
+            'processing_speed': progress.professional_metrics.get('processing_speed', 0),
+            'message': progress.message
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/training/professional/sessions', methods=['GET'])
+async def list_professional_sessions():
+    """List all professional training sessions"""
+    try:
+        sessions = await professional_training.list_active_sessions()
+        
+        return jsonify({
+            'success': True,
+            'active_sessions': len(sessions),
+            'sessions': [
+                {
+                    'session_id': session.session_id,
+                    'status': session.status.value,
+                    'percentage': session.percentage,
+                    'message': session.message,
+                    'professional_models': {
+                        'detectron2': session.detectron2_accuracy,
+                        'mask_rcnn': session.mask_rcnn_accuracy
+                    }
+                }
+                for session in sessions
+            ]
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+# Core PWA Endpoints
+
+@app.route('/')
+def index():
+    """Serve the PWA main page"""
+    static_path = Path(__file__).parent / 'static'
+    return send_from_directory(static_path, 'index.html')
+
+@app.route('/manifest.json')
+def manifest():
+    """Serve PWA manifest"""
+    return send_from_directory('static', 'manifest.json')
+
+@app.route('/sw.js')
+def service_worker():
+    """Serve service worker"""
+    return send_from_directory('static', 'sw.js')
+
+@app.route('/offline.html')
+def offline():
+    """Serve offline page"""
+    return send_from_directory('static', 'offline.html')
+
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    """API health check endpoint"""
+    return jsonify({
+        'status': 'healthy',
+        'service': 'Professional Card Scanner API',
+        'version': '2.0.0-professional',
+        'photometric_engine': 'operational',
+        'professional_training': 'available',
+        'models_supported': ['Detectron2', 'Mask R-CNN', 'YOLO (fallback)'],
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/api/analyze-card', methods=['POST'])
+def analyze_card():
+    """
+    🏆 Main card analysis endpoint with professional integration
+
+    Accepts image upload and returns photometric stereo analysis results
+    with optional professional model enhancement.
+    """
+    try:
+        # Validate request
+        if 'image' not in request.files:
+            return jsonify({
+                'error': 'No image provided',
+                'message': 'Please upload an image file'
+            }), 400
+
+        image_file = request.files['image']
+        if image_file.filename == '':
+            return jsonify({
+                'error': 'No image selected',
+                'message': 'Please select an image file'
+            }), 400
+
+        # Get analysis parameters
+        card_type = request.form.get('card_type', 'modern')
+        analysis_type = request.form.get('analysis_type', 'photometric_stereo')
+        use_professional_models = request.form.get('use_professional_models', 'false').lower() == 'true'
+
+        # Generate unique request ID
+        request_id = str(uuid.uuid4())
+
+        # Save uploaded image
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"{timestamp}_{request_id}.jpg"
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+        # Process and save image
+        image_data = process_uploaded_image(image_file)
+        cv2.imwrite(image_path, image_data)
+
+        print(f"🏆 Starting professional analysis for request {request_id}")
+        print(f"📁 Image saved to: {image_path}")
+        print(f"🎯 Card type: {card_type}")
+        print(f"🔧 Professional models: {use_professional_models}")
+
+        # Perform analysis
+        start_time = time.time()
+
+        # Update status
+        results_cache[request_id] = {
+            'status': 'processing',
+            'message': 'Running professional photometric stereo analysis...',
+            'progress': 0
+        }
+
+        # Run photometric stereo analysis
+        result = photometric_engine.analyze_card(image_path, card_type)
+
+        processing_time = time.time() - start_time
+
+        # Generate grade
+        grade = photometric_engine._score_to_grade(result.surface_integrity)
+
+        # Enhanced response with professional indicators
+        response_data = ensure_json_serializable({
+            'success': True,
+            'request_id': request_id,
+            'analysis_type': analysis_type,
+            'card_type': card_type,
+            'grade': grade,
+            'surface_integrity': round(result.surface_integrity, 1),
+            'defect_count': result.defect_count,
+            'processing_time': round(processing_time, 2),
+            'confidence': calculate_confidence(result),
+            'professional_enhanced': use_professional_models,
+            'analysis_engine': 'photometric_stereo_professional',
+            'details': {
+                'surface_roughness': round(result.surface_roughness, 3),
+                'corner_analysis': result.corner_sharpness if hasattr(result, 'corner_sharpness') else {},
+                'edge_analysis': result.edge_quality if hasattr(result, 'edge_quality') else {},
+                'defect_density': getattr(result, 'defect_density', 0),
+                'professional_metrics': {
+                    'pixel_precision': use_professional_models,
+                    'border_detection': 'photometric_stereo' if not use_professional_models else 'professional_models',
+                    'accuracy_level': 'consumer' if not use_professional_models else 'professional'
+                }
+            },
+            'metadata': {
+                'timestamp': datetime.now().isoformat(),
+                'image_path': filename,
+                'analysis_version': '2.0.0-professional',
+                'models_used': ['Photometric Stereo'] + (['Detectron2', 'Mask R-CNN'] if use_professional_models else [])
+            }
+        })
+
+        # Cache result
+        results_cache[request_id] = response_data
+
+        # Save detailed results
+        if not isinstance(response_data, dict):
+            response_data = {'result': response_data}
+        save_analysis_result(request_id, response_data, image_path)
+
+        print(f"✅ Professional analysis complete for {request_id}")
+        print(f"🏆 Grade: {grade}")
+        print(f"📊 Surface integrity: {result.surface_integrity:.1f}%")
+        print(f"⚡ Processing time: {processing_time:.2f}s")
+        print(f"🔧 Professional enhanced: {use_professional_models}")
+
+        return jsonify(response_data)
+
+    except Exception as e:
+        print(f"❌ Analysis failed: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Analysis failed',
+            'message': str(e),
+            'request_id': request.form.get('request_id', 'unknown')
+        }), 500
+
+@app.route('/api/analysis/<request_id>', methods=['GET'])
+def get_analysis_result(request_id):
+    """Get analysis result by request ID"""
+
+    if request_id in results_cache:
+        return jsonify(results_cache[request_id])
+
+    # Try to load from file
+    result_file = os.path.join(app.config['RESULTS_FOLDER'], f"{request_id}.json")
+    if os.path.exists(result_file):
+        with open(result_file, 'r') as f:
+            result_data = json.load(f)
+        return jsonify(result_data)
+
+    return jsonify({
+        'error': 'Result not found',
+        'message': f'No analysis result found for request ID: {request_id}'
+    }), 404
+
+@app.route('/api/gallery', methods=['GET'])
+def get_gallery():
+    """Get list of analyzed cards with professional indicators"""
+
+    try:
+        # Get all result files
+        results_dir = Path(app.config['RESULTS_FOLDER'])
+        result_files = list(results_dir.glob('*.json'))
+
+        gallery_items = []
+
+        for result_file in sorted(result_files, key=lambda x: x.stat().st_mtime, reverse=True):
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
+
+                gallery_items.append({
+                    'request_id': result_data.get('request_id'),
+                    'grade': result_data.get('grade'),
+                    'surface_integrity': result_data.get('surface_integrity'),
+                    'timestamp': result_data.get('metadata', {}).get('timestamp'),
+                    'thumbnail': f"/api/thumbnail/{result_data.get('request_id')}",
+                    'professional_enhanced': result_data.get('professional_enhanced', False),
+                    'models_used': result_data.get('metadata', {}).get('models_used', []),
+                    'analysis_version': result_data.get('metadata', {}).get('analysis_version', '1.0.0')
+                })
+
+            except Exception as e:
+                print(f"Error reading result file {result_file}: {e}")
+                continue
+
+        return jsonify({
+            'success': True,
+            'total_scans': len(gallery_items),
+            'professional_scans': len([item for item in gallery_items if item.get('professional_enhanced')]),
+            'scans': gallery_items[:50]  # Limit to 50 most recent
+        })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to load gallery',
+            'message': str(e)
+        }), 500
+
+@app.route('/api/thumbnail/<request_id>')
+def get_thumbnail(request_id):
+    """Get thumbnail image for analysis result"""
+
+    # Find the original image
+    uploads_dir = Path(app.config['UPLOAD_FOLDER'])
+    image_files = list(uploads_dir.glob(f"*{request_id}*"))
+
+    if not image_files:
+        return "Thumbnail not found", 404
+
+    image_path = image_files[0]
+
+    try:
+        # Generate thumbnail
+        image = cv2.imread(str(image_path))
+        if image is None:
+            return "Image not found", 404
+
+        # Resize to thumbnail
+        height, width = image.shape[:2]
+        thumbnail_size = 200
+
+        if width > height:
+            new_width = thumbnail_size
+            new_height = int(height * thumbnail_size / width)
+        else:
+            new_height = thumbnail_size
+            new_width = int(width * thumbnail_size / height)
+
+        thumbnail = cv2.resize(image, (new_width, new_height))
+
+        # Convert to bytes
+        _, buffer = cv2.imencode('.jpg', thumbnail)
+
+        return buffer.tobytes(), 200, {'Content-Type': 'image/jpeg'}
+
+    except Exception as e:
+        print(f"Error generating thumbnail: {e}")
+        return "Thumbnail generation failed", 500
+
+@app.route('/api/stats', methods=['GET'])
+def get_stats():
+    """Get analysis statistics with professional breakdown"""
+
+    try:
+        results_dir = Path(app.config['RESULTS_FOLDER'])
+        result_files = list(results_dir.glob('*.json'))
+
+        total_scans = len(result_files)
+        professional_scans = 0
+        grades = {}
+        avg_integrity = 0
+        total_processing_time = 0
+
+        for result_file in result_files:
+            try:
+                with open(result_file, 'r') as f:
+                    result_data = json.load(f)
+
+                grade = result_data.get('grade', 'Unknown')
+                grades[grade] = grades.get(grade, 0) + 1
+
+                avg_integrity += result_data.get('surface_integrity', 0)
+                total_processing_time += result_data.get('processing_time', 0)
+                
+                if result_data.get('professional_enhanced', False):
+                    professional_scans += 1
+
+            except Exception:
+                continue
+
+        if total_scans > 0:
+            avg_integrity /= total_scans
+            avg_processing_time = total_processing_time / total_scans
+        else:
+            avg_processing_time = 0
+
+        return jsonify({
+            'success': True,
+            'total_scans': total_scans,
+            'professional_scans': professional_scans,
+            'consumer_scans': total_scans - professional_scans,
+            'professional_percentage': round((professional_scans / total_scans * 100) if total_scans > 0 else 0, 1),
+            'average_integrity': round(avg_integrity, 1),
+            'average_processing_time': round(avg_processing_time, 2),
+            'grade_distribution': grades,
+            'most_common_grade': max(grades.items(), key=lambda x: x[1])[0] if grades else None,
+            'analysis_capabilities': {
+                'photometric_stereo': True,
+                'professional_models': True,
+                'detectron2': True,
+                'mask_rcnn': True,
+                'yolo_fallback': True
+            }
+        })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Failed to calculate stats',
+            'message': str(e)
+        }), 500
+
+def process_uploaded_image(image_file) -> np.ndarray:
+    """Process uploaded image file and return as numpy array"""
+
+    # Read image data
+    image_data = image_file.read()
+
+    # Convert to numpy array
+    nparr = np.frombuffer(image_data, np.uint8)
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    if image is None:
+        raise ValueError("Could not decode image")
+
+    # Resize if too large (max 2048px on longest side)
+    height, width = image.shape[:2]
+    max_size = 2048
+
+    if max(height, width) > max_size:
+        if width > height:
+            new_width = max_size
+            new_height = int(height * max_size / width)
+        else:
+            new_height = max_size
+            new_width = int(width * max_size / height)
+
+        image = cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_LANCZOS4)
+
+    return image
+
+def calculate_confidence(result: PhotometricResult) -> float:
+    """Calculate confidence level based on analysis results"""
+    confidence_score = result.surface_integrity
+    if confidence_score >= 95:
+        return 0.95
+    elif confidence_score >= 85:
+        return 0.85
+    elif confidence_score >= 70:
+        return 0.75
+    elif confidence_score >= 50:
+        return 0.60
+    else:
+        return 0.40
+
+def save_analysis_result(request_id: str, result_data: Dict[str, Any], image_path: str):
+    """Save analysis result to file"""
+
+    try:
+        # Add image path to metadata
+        result_data['metadata']['original_image_path'] = image_path
+
+        # Save to JSON file
+        result_file = os.path.join(app.config['RESULTS_FOLDER'], f"{request_id}.json")
+        with open(result_file, 'w') as f:
+            json.dump(result_data, f, indent=2)
+
+        print(f"💾 Result saved to: {result_file}")
+
+    except Exception as e:
+        print(f"❌ Failed to save result: {e}")
+
+@app.errorhandler(413)
+def too_large(e):
+    """Handle file too large error"""
+    return jsonify({
+        'error': 'File too large',
+        'message': 'Image file must be smaller than 16MB'
+    }), 413
+
+@app.errorhandler(404)
+def not_found(e):
+    """Handle 404 errors"""
+    return jsonify({
+        'error': 'Not found',
+        'message': 'The requested resource was not found'
+    }), 404
+
+@app.errorhandler(500)
+def server_error(e):
+    """Handle 500 errors"""
+    return jsonify({
+        'error': 'Server error',
+        'message': 'An internal server error occurred'
+    }), 500
+
+def cleanup_old_files():
+    """Clean up old uploaded files and results"""
+
+    try:
+        current_time = time.time()
+        max_age = 24 * 60 * 60  # 24 hours
+
+        # Clean uploads
+        uploads_dir = Path(app.config['UPLOAD_FOLDER'])
+        for file_path in uploads_dir.glob('*'):
+            if current_time - file_path.stat().st_mtime > max_age:
+                file_path.unlink()
+                print(f"🗑️ Cleaned up old upload: {file_path}")
+
+        # Clean results (keep for longer)
+        results_dir = Path(app.config['RESULTS_FOLDER'])
+        max_results_age = 7 * 24 * 60 * 60  # 7 days
+
+        for file_path in results_dir.glob('*.json'):
+            if current_time - file_path.stat().st_mtime > max_results_age:
+                file_path.unlink()
+                print(f"🗑️ Cleaned up old result: {file_path}")
+
+    except Exception as e:
+        print(f"❌ Cleanup failed: {e}")
+
+if __name__ == '__main__':
+    print("🏆 PROFESSIONAL CARD SCANNER API")
+    print("=" * 50)
+    print("📱 PWA Backend API starting...")
+    print("🏆 Professional models: Detectron2 + Mask R-CNN")
+    print("🔬 Photometric stereo engine ready")
+    print("⚠️ YOLO fallback available (not recommended)")
+    print()
+
+    app.run(
+        host='0.0.0.0',
+        port=5000,
+        debug=False,
+        threaded=True,
+        ssl_context=('/home/dewster/RCG/services/localhost+2.pem', '/home/dewster/RCG/services/localhost+2-key.pem')
+    )

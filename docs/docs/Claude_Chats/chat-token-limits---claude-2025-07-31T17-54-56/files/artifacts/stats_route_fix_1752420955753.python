@@ -1,0 +1,28 @@
+# Add this route to your training_system.py setup_routes() method
+
+@self.app.get("/stats")
+async def get_stats():
+    """Training system statistics"""
+    db = SessionLocal()
+    
+    # Quick stats
+    total_runs = db.query(TrainingRun).count()
+    active_runs = db.query(TrainingRun).filter(TrainingRun.status == "running").count()
+    completed_runs = db.query(TrainingRun).filter(TrainingRun.status == "completed").count()
+    total_datasets = db.query(Dataset).count()
+    
+    db.close()
+    
+    return {
+        "status": "operational",
+        "training_runs": {
+            "total": total_runs,
+            "active": active_runs,
+            "completed": completed_runs
+        },
+        "datasets": {
+            "total": total_datasets
+        },
+        "active_training_processes": len(self.active_runs),
+        "server_uptime": time.time() - getattr(self, 'start_time', time.time())
+    }

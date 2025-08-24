@@ -1,0 +1,102 @@
+❯ sed -n '1450,1550p' training_orchestrator.py
+                        const result = await response.json();
+
+                        document.getElementById('prediction-status').innerHTML =
+                            `✅ ${result.uploaded_count} predictions uploaded (${format} format)`;
+
+                        createPredictionGrid(result.predictions);
+
+                    } catch (error) {
+                        alert(`Upload error: ${error.message}`);
+                    }
+                }
+
+                async function uploadLabels() {
+                    if (!currentSessionId) return;
+
+                    const files = document.getElementById('label-files').files;
+                    const format = document.getElementById('label_format').value;
+
+                    // Check if any of these files exist in predictions
+                    const fileNames = Array.from(files).map(f => f.name);
+                    const checkResponse = await fetch(`/api/session/${currentSessionId}/check-files`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({files: fileNames, section: 'predictions'})
+                    });
+                    
+                    const checkResult = await checkResponse.json();
+                    if (checkResult.exists && checkResult.files.length > 0) {
+                        if (!confirm(`Warning: The following files already exist in predictions:\n${checkResult.files.join('\n')}\n\nAre you sure you want to add them as ground truth?`)) {
+                            return;
+                        }
+                    }
+
+                    const formData = new FormData();
+                    formData.append('label_format', format);
+                    for (let file of files) {
+                        formData.append('files', file);
+                    }
+
+                    try {
+                        const response = await fetch(`/api/session/${currentSessionId}/upload-labels`, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await response.json();
+
+                        // Update status
+                        document.getElementById('label-status').innerHTML =
+                            `✅ ${result.uploaded} labels uploaded (${result.label_format} format)`;
+
+                        // Replace upload zone with thumbnail grid
+                        createLabelThumbnailGrid(result.files);
+
+                    } catch (error) {
+                        alert(`Upload error: ${error.message}`);
+                    }
+                }
+
+                function createImageThumbnailGrid(files) {
+                    const uploadZone = document.getElementById('image-files').parentElement.parentElement;
+
+                    const fileList = document.createElement('div');
+                    fileList.className = 'file-list-container';
+                    fileList.innerHTML = `
+                        <div class="list-header">
+                            <span>📸 ${files.length} Images</span>
+                            <button class="btn-small" onclick="addMoreImages()">+ Add More</button>
+                        </div>
+                        <div class="scrollable-file-list">
+                            ${files.map((file, index) => `
+                                <div class="file-item" data-filename="${file.filename}">
+                                    <span class="filename">${file.filename}</span>
+                                    <span class="filesize">${formatFileSize(file.size)}</span>
+                                    <button class="remove-btn" onclick="removeFile('image', '${file.filename}')">×</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+
+                    const oldUploadZone = uploadZone.querySelector('.upload-zone');
+                    oldUploadZone.replaceWith(fileList);
+                }
+
+                function createPredictionGrid(files) {
+                    const uploadZone = document.getElementById('prediction-files').parentElement.parentElement;
+
+                    const fileList = document.createElement('div');
+                    fileList.className = 'file-list-container';
+                    fileList.innerHTML = `
+                        <div class="list-header">
+                            <span>🎯 ${files.length} Predictions</span>
+                            <button class="btn-small" onclick="alert('Use the file input above to add more')">+ Add More</button>
+                        </div>
+                        <div class="scrollable-file-list">
+                            ${files.map((file, index) => `
+                                <div class="file-item" data-filename="${file.filename}">
+                                    <span class="filename">${file.filename}</span>
+                                    <span class="confidence">${((file.confidence_score || 0.85) * 100).toFixed(1)}%</span>
+                                    <button class="remove-btn" onclick="removeFile('prediction', '${file.filename}')">×</button>
+                                </div>

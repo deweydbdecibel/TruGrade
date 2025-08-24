@@ -1,0 +1,359 @@
+#!/usr/bin/env python3
+"""
+Professional Navigation Routing Architecture Fix
+===============================================
+
+Enterprise-grade navigation routing system with intelligent endpoint resolution
+and comprehensive error handling for Revolutionary Card Grader Pro.
+
+Critical Issue: Navigation routing to deprecated port 8003 instead of operational port 8010
+Solution: Professional routing architecture with configuration-driven endpoints
+"""
+
+def handle_navigation_command(self, command):
+    """
+    Professional navigation command handler with enterprise routing architecture
+    
+    Implements intelligent endpoint resolution, comprehensive error handling,
+    and configuration-driven service discovery for optimal performance.
+    
+    Args:
+        command (str): Navigation command identifier
+        
+    Returns:
+        None: Performs navigation action or displays appropriate interface
+        
+    Raises:
+        NavigationError: When routing fails or service unavailable
+    """
+    try:
+        # Professional UI State Management
+        self._clear_main_content_with_validation()
+        
+        # Enterprise Training System Routing Architecture
+        training_commands = {
+            "train_model", 
+            "advanced_training", 
+            "training_stats", 
+            "dataset_manager",
+            "model_validation"
+        }
+        
+        if command in training_commands:
+            # Professional Training System Router
+            routing_success = self._route_to_training_system(command)
+            if routing_success:
+                return
+            else:
+                enterprise_logger.error(f"Training system routing failed for command: {command}")
+                self._display_routing_error("Training System Unavailable")
+                return
+        
+        # Professional Interface Routing Matrix
+        interface_routing_matrix = {
+            "load_card": self.show_card_loader,
+            "border_calibration": self.show_border_calibration,
+            "photometric_scan": self.show_photometric_scanner,
+            "ai_analysis": self.show_ai_analysis,
+            "grade_card": self.show_grading_interface,
+            "blockchain_auth": self.show_blockchain_auth,
+            "market_intel": self.show_market_intelligence,
+            "upgrade_premium": self.show_premium_upgrade
+        }
+        
+        # Execute Interface Routing with Professional Error Handling
+        if command in interface_routing_matrix:
+            interface_method = interface_routing_matrix[command]
+            self._execute_interface_method_safely(interface_method, command)
+        else:
+            # Professional Fallback Strategy
+            enterprise_logger.warning(f"Unknown navigation command: {command}")
+            self.show_coming_soon(command)
+            
+    except Exception as e:
+        # Enterprise-Grade Exception Management
+        enterprise_logger.error(f"Navigation system failure: {e}")
+        self._handle_navigation_system_failure(e)
+
+def _clear_main_content_with_validation(self):
+    """
+    Professional main content clearing with comprehensive validation
+    
+    Implements safe widget destruction with memory management optimization
+    and state validation for enterprise-grade reliability.
+    """
+    try:
+        if hasattr(self, 'main_content') and self.main_content:
+            for widget in self.main_content.winfo_children():
+                try:
+                    widget.destroy()
+                except Exception as widget_error:
+                    enterprise_logger.warning(f"Widget destruction error: {widget_error}")
+        else:
+            enterprise_logger.warning("Main content container not found during clear operation")
+    except Exception as e:
+        enterprise_logger.error(f"Main content clearing failed: {e}")
+
+def _route_to_training_system(self, command: str) -> bool:
+    """
+    Professional training system routing with intelligent endpoint resolution
+    
+    Implements configuration-driven service discovery, health validation,
+    and intelligent fallback strategies for optimal user experience.
+    
+    Args:
+        command (str): Training command identifier
+        
+    Returns:
+        bool: True if routing successful, False if routing failed
+    """
+    try:
+        # Professional Endpoint Resolution Architecture
+        training_endpoint_matrix = {
+            "train_model": "",
+            "advanced_training": "",
+            "training_stats": "/stats",
+            "dataset_manager": "/dataset",
+            "model_validation": "/validation"
+        }
+        
+        # Configuration-Driven URL Construction
+        base_url = config.TRAINING_ORCHESTRATOR_URL  # http://localhost:8010
+        endpoint_path = training_endpoint_matrix.get(command, "")
+        target_url = f"{base_url}{endpoint_path}"
+        
+        # Professional Service Health Validation
+        if self._validate_training_service_health():
+            enterprise_logger.info(f"Routing {command} to professional training system: {target_url}")
+            
+            # Execute Professional URL Navigation
+            self._execute_secure_url_navigation(target_url)
+            return True
+        else:
+            enterprise_logger.error("Training service health validation failed")
+            return False
+            
+    except Exception as e:
+        enterprise_logger.error(f"Training system routing failure: {e}")
+        return False
+
+def _validate_training_service_health(self) -> bool:
+    """
+    Professional service health validation with comprehensive diagnostics
+    
+    Implements intelligent health checking, timeout management,
+    and service discovery for enterprise-grade reliability.
+    
+    Returns:
+        bool: True if service healthy, False if service unavailable
+    """
+    try:
+        import requests
+        from requests.adapters import HTTPAdapter
+        from urllib3.util.retry import Retry
+        
+        # Professional HTTP Session Configuration
+        session = requests.Session()
+        
+        # Enterprise-Grade Retry Strategy
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=0.5,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["HEAD", "GET", "OPTIONS"]
+        )
+        
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+        
+        # Professional Health Check Request
+        health_endpoint = f"{config.TRAINING_ORCHESTRATOR_URL}/api/health"
+        
+        response = session.get(
+            health_endpoint,
+            timeout=5,
+            headers={'User-Agent': 'RevolutionaryCardGrader/2.0.0-enterprise'}
+        )
+        
+        if response.status_code == 200:
+            enterprise_logger.info("Training service health validation: PASSED")
+            return True
+        else:
+            enterprise_logger.warning(f"Training service health check returned status: {response.status_code}")
+            return False
+            
+    except requests.exceptions.RequestException as e:
+        enterprise_logger.warning(f"Training service unreachable: {e}")
+        return False
+    except Exception as e:
+        enterprise_logger.error(f"Health validation system failure: {e}")
+        return False
+
+def _execute_secure_url_navigation(self, url: str) -> None:
+    """
+    Professional secure URL navigation with comprehensive error handling
+    
+    Implements cross-platform URL opening, security validation,
+    and user experience optimization for enterprise applications.
+    
+    Args:
+        url (str): Target URL for navigation
+    """
+    try:
+        # Professional URL Validation
+        if not self._validate_url_security(url):
+            enterprise_logger.error(f"URL security validation failed: {url}")
+            return
+        
+        # Cross-Platform URL Opening Architecture
+        platform_system = platform.system().lower()
+        
+        navigation_strategies = {
+            'linux': lambda: subprocess.run(['xdg-open', url], check=True),
+            'darwin': lambda: subprocess.run(['open', url], check=True),
+            'windows': lambda: subprocess.run(['start', url], shell=True, check=True)
+        }
+        
+        if platform_system in navigation_strategies:
+            navigation_strategies[platform_system]()
+            enterprise_logger.info(f"Professional URL navigation successful: {url}")
+        else:
+            # Professional Fallback Strategy
+            webbrowser.open(url)
+            enterprise_logger.info(f"Fallback URL navigation executed: {url}")
+            
+    except subprocess.CalledProcessError as e:
+        enterprise_logger.error(f"System URL navigation failed: {e}")
+        # Intelligent Fallback Execution
+        try:
+            webbrowser.open(url)
+            enterprise_logger.info("Fallback navigation successful")
+        except Exception as fallback_error:
+            enterprise_logger.error(f"All navigation strategies failed: {fallback_error}")
+    except Exception as e:
+        enterprise_logger.error(f"URL navigation system failure: {e}")
+
+def _validate_url_security(self, url: str) -> bool:
+    """
+    Professional URL security validation with enterprise-grade protection
+    
+    Implements comprehensive security checks, protocol validation,
+    and malicious URL detection for optimal security posture.
+    
+    Args:
+        url (str): URL to validate
+        
+    Returns:
+        bool: True if URL secure, False if security risk detected
+    """
+    try:
+        from urllib.parse import urlparse
+        
+        # Professional URL Parsing
+        parsed_url = urlparse(url)
+        
+        # Enterprise Security Validation Matrix
+        security_validations = [
+            # Protocol Security Check
+            parsed_url.scheme in ['http', 'https'],
+            
+            # Hostname Security Check
+            parsed_url.hostname in ['localhost', '127.0.0.1'] or 
+            (parsed_url.hostname and '.' in parsed_url.hostname),
+            
+            # Port Security Check
+            not parsed_url.port or (1024 <= parsed_url.port <= 65535)
+        ]
+        
+        validation_result = all(security_validations)
+        
+        if validation_result:
+            enterprise_logger.debug(f"URL security validation passed: {url}")
+        else:
+            enterprise_logger.warning(f"URL security validation failed: {url}")
+            
+        return validation_result
+        
+    except Exception as e:
+        enterprise_logger.error(f"URL security validation system failure: {e}")
+        return False
+
+def _execute_interface_method_safely(self, interface_method: Callable, command: str) -> None:
+    """
+    Professional interface method execution with comprehensive error handling
+    
+    Implements safe method invocation, exception management,
+    and user experience optimization for enterprise applications.
+    
+    Args:
+        interface_method (Callable): Interface method to execute
+        command (str): Command identifier for diagnostic purposes
+    """
+    try:
+        # Professional Method Validation
+        if not callable(interface_method):
+            enterprise_logger.error(f"Invalid interface method for command: {command}")
+            self.show_coming_soon(command)
+            return
+        
+        # Safe Method Execution
+        interface_method()
+        enterprise_logger.info(f"Interface method executed successfully: {command}")
+        
+    except Exception as e:
+        enterprise_logger.error(f"Interface method execution failed for {command}: {e}")
+        # Professional Error Recovery
+        self._display_interface_error(command, str(e))
+
+def _handle_navigation_system_failure(self, error: Exception) -> None:
+    """
+    Professional navigation system failure handler with comprehensive recovery
+    
+    Implements intelligent error recovery, user notification,
+    and system state restoration for optimal user experience.
+    
+    Args:
+        error (Exception): Navigation system error
+    """
+    try:
+        # Professional Error Categorization
+        error_type = type(error).__name__
+        error_message = str(error)
+        
+        enterprise_logger.error(f"Navigation system failure: {error_type} - {error_message}")
+        
+        # Intelligent Recovery Strategy
+        self.create_welcome_screen()
+        
+        # User Notification (if UI available)
+        if hasattr(self, 'show_status_message'):
+            self.show_status_message(
+                "Navigation system temporarily unavailable. Please try again.",
+                message_type="warning"
+            )
+            
+    except Exception as recovery_error:
+        enterprise_logger.critical(f"Navigation recovery system failure: {recovery_error}")
+
+# PROFESSIONAL INTEGRATION INSTRUCTIONS
+"""
+CRITICAL FIX IMPLEMENTATION:
+
+1. Locate handle_navigation_command method in revolutionary_shell.py
+2. Replace entire method with the professional implementation above
+3. Add the helper methods to the RevolutionaryMainShell class
+4. Verify config.TRAINING_ORCHESTRATOR_URL points to port 8010
+
+EXPECTED RESULT:
+- Navigation routes to http://localhost:8010 (operational)
+- Professional error handling and logging
+- Enterprise-grade security validation
+- Comprehensive health checking
+
+DEPLOYMENT VERIFICATION:
+1. Restart revolutionary shell
+2. Click "🤖 AI TRAINING" 
+3. Verify navigation to localhost:8010
+4. Confirm training orchestrator interface loads
+"""

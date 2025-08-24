@@ -1,0 +1,105 @@
+2025-07-14T23:13:36.849Z [info] [mcp-server-generator] Initializing server...
+2025-07-14T23:13:36.849Z [info] [memory] Initializing server...
+2025-07-14T23:13:36.850Z [info] [sequential-thinking] Initializing server...
+2025-07-14T23:13:36.850Z [info] [filesystem] Initializing server...
+2025-07-14T23:13:36.861Z [info] [mcp-server-generator] Using MCP server command: /usr/bin/node with args and path: {
+  args: [ '/home/dewster/Public/mcprotocol/creator-server.js', [length]: 1 ],
+  paths: [
+    '/usr/local/bin',
+    '/usr/bin',
+    '/bin',
+    '/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/lib/claude-desktop/node_modules/.bin',
+    '/run/user/1000/fnm_multishells/1421_1752525589873/bin',
+    '/usr/local/sbin',
+    '/usr/local/bin',
+    '/usr/bin',
+    '/usr/bin/site_perl',
+    '/usr/bin/vendor_perl',
+    '/usr/bin/core_perl',
+    [length]: 13
+  ]
+}
+2025-07-14T23:13:36.866Z [info] [mcp-server-generator] Server started and connected successfully
+2025-07-14T23:13:36.867Z [info] [memory] Using MCP server command: /usr/bin/npx with args and path: {
+  args: [
+    '-y',
+    'mcp-knowledge-graph',
+    '--memory-path',
+    '/home/dewster/RCG/data/memory.jsonl',
+    [length]: 4
+  ],
+  paths: [
+    '/usr/local/bin',
+    '/usr/bin',
+    '/bin',
+    '/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/lib/claude-desktop/node_modules/.bin',
+    '/run/user/1000/fnm_multishells/1421_1752525589873/bin',
+    '/usr/local/sbin',
+    '/usr/local/bin',
+    '/usr/bin',
+    '/usr/bin/site_perl',
+    '/usr/bin/vendor_perl',
+    '/usr/bin/core_perl',
+    [length]: 13
+  ]
+}
+2025-07-14T23:13:36.870Z [info] [memory] Server started and connected successfully
+2025-07-14T23:13:36.870Z [info] [sequential-thinking] Using MCP server command: /usr/bin/node with args and path: {
+  args: [
+    '/usr/lib/node_modules/@modelcontextprotocol/server-sequential-thinking/dist/index.js',
+    [length]: 1
+  ],
+  paths: [
+    '/usr/local/bin',
+    '/usr/bin',
+    '/bin',
+    '/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/lib/claude-desktop/node_modules/.bin',
+    '/run/user/1000/fnm_multishells/1421_1752525589873/bin',
+    '/usr/local/sbin',
+    '/usr/local/bin',
+    '/usr/bin',
+    '/usr/bin/site_perl',
+    '/usr/bin/vendor_perl',
+    '/usr/bin/core_perl',
+    [length]: 13
+  ]
+}
+2025-07-14T23:13:36.874Z [info] [sequential-thinking] Server started and connected successfully
+2025-07-14T23:13:36.874Z [info] [filesystem] Using MCP server command: /usr/bin/npx with args and path: {
+  args: [
+    '-y',
+    '@modelcontextprotocol/server-filesystem',
+    '/home/dewster/RCG',
+    [length]: 3
+  ],
+  paths: [
+    '/usr/local/bin',
+    '/usr/bin',
+    '/bin',
+    '/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/bin',
+    '/tmp/.mount_ClaudeUOSWa2/usr/lib/claude-desktop/node_modules/.bin',
+    '/run/user/1000/fnm_multishells/1421_1752525589873/bin',
+    '/usr/local/sbin',
+    '/usr/local/bin',
+    '/usr/bin',
+    '/usr/bin/site_perl',
+    '/usr/bin/vendor_perl',
+    '/usr/bin/core_perl',
+    [length]: 13
+  ]
+}
+2025-07-14T23:13:36.878Z [info] [filesystem] Server started and connected successfully
+2025-07-14T23:13:36.879Z [info] [mcp-server-generator] Message from client: {"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"claude-ai","version":"0.1.0"}},"jsonrpc":"2.0","id":0}
+2025-07-14T23:13:36.879Z [info] [memory] Message from client: {"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"claude-ai","version":"0.1.0"}},"jsonrpc":"2.0","id":0}
+2025-07-14T23:13:36.879Z [info] [sequential-thinking] Message from client: {"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"claude-ai","version":"0.1.0"}},"jsonrpc":"2.0","id":0}
+2025-07-14T23:13:36.879Z [info] [filesystem] Message from client: {"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"claude-ai","version":"0.1.0"}},"jsonrpc":"2.0","id":0}
+2025-07-14T23:13:36.915Z [info] [sequential-thinking] Message from server: {"jsonrpc":"2.0","id":0,"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"sequential-thinking-server","version":"0.2.0"}}}
+2025-07-14T23:13:36.916Z [info] [sequential-thinking] Message from client: {"method":"notifications/initialized","jsonrpc":"2.0"}
+2025-07-14T23:13:36.918Z [info] [sequential-thinking] Message from client: {"method":"tools/list","params":{},"jsonrpc":"2.0","id":1}

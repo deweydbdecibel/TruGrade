@@ -1,0 +1,251 @@
+#!/usr/bin/env python3
+"""
+Revolutionary Card Grader Pro - Desktop Interface
+================================================
+
+Enterprise-grade desktop application for revolutionary card grading with integrated
+photometric stereo analysis, AI training orchestration, and advanced calibration tools.
+
+Architecture: Modular design with clean separation of concerns, robust error handling,
+and professional software engineering practices.
+"""
+
+# Standard Library Imports - Core Python functionality
+import sys
+import os
+import json
+import math
+import time
+import threading
+import asyncio
+import argparse
+import platform
+import subprocess
+import webbrowser
+from datetime import datetime
+from pathlib import Path
+from typing import Optional, Dict, Any, Callable, List
+
+# Third-Party UI Framework Imports
+import customtkinter as ctk
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+
+# Computer Vision and Image Processing
+import cv2
+import numpy as np
+from PIL import Image, ImageTk, ImageDraw, ImageFilter
+
+# Network and API Communication
+import requests
+
+# Professional Path Management and Module Resolution
+class ProfessionalPathManager:
+    """Enterprise-grade path management for modular architecture"""
+    
+    def __init__(self):
+        self.project_root = Path(__file__).parent.parent.parent
+        self.services_path = self.project_root / "services"
+        self.src_path = self.project_root / "src"
+        self.ui_path = self.src_path / "ui"
+        self._configure_python_path()
+    
+    def _configure_python_path(self) -> None:
+        """Configure Python import paths with professional structure"""
+        critical_paths = [
+            str(self.project_root),
+            str(self.services_path),
+            str(self.src_path),
+            str(self.src_path / "core"),
+            str(self.ui_path)
+        ]
+        
+        for path in critical_paths:
+            if path not in sys.path:
+                sys.path.insert(0, path)
+
+# Initialize Professional Path Management
+_path_manager = ProfessionalPathManager()
+
+# Local Application Imports - After path configuration
+try:
+    from revolutionary_border_calibration import RevolutionaryBorderCalibration
+except ImportError as e:
+    print(f"⚠️ Border calibration module unavailable: {e}")
+    RevolutionaryBorderCalibration = None
+
+# Professional Training System Integration
+class TrainingSystemIntegration:
+    """Professional training system integration with graceful degradation"""
+    
+    def __init__(self):
+        self.available_modules = {}
+        self.integration_status = {}
+        self._attempt_training_imports()
+    
+    def _attempt_training_imports(self) -> None:
+        """Attempt to import training modules with comprehensive error handling"""
+        
+        # Training Orchestrator Integration
+        try:
+            from training_orchestrator import FlexibleTrainingOrchestrator, TrainingConfig
+            self.available_modules['orchestrator'] = {
+                'FlexibleTrainingOrchestrator': FlexibleTrainingOrchestrator,
+                'TrainingConfig': TrainingConfig
+            }
+            self.integration_status['orchestrator'] = 'operational'
+            print("✅ Training orchestrator integration successful")
+        except ImportError as e:
+            self.integration_status['orchestrator'] = 'unavailable'
+            print(f"⚠️ Training orchestrator unavailable: {e}")
+        
+        # Enhanced Training Integration (Optional)
+        try:
+            from enhanced_orchestrator import IntelligentTrainingOrchestrator, setup_intelligent_routes
+            self.available_modules['enhanced'] = {
+                'IntelligentTrainingOrchestrator': IntelligentTrainingOrchestrator,
+                'setup_intelligent_routes': setup_intelligent_routes
+            }
+            self.integration_status['enhanced'] = 'operational'
+            print("✅ Enhanced training integration successful")
+        except ImportError as e:
+            self.integration_status['enhanced'] = 'unavailable'
+            print(f"⚠️ Enhanced training integration unavailable: {e}")
+        
+        # Integrated Training Module (Future Extension)
+        try:
+            # Placeholder for future integrated training module
+            # from integrated_training_module import (
+            #     RevolutionaryTrainingIntegration,
+            #     TrainingProgress,
+            #     IntegratedTrainingStatus,
+            #     create_integrated_training_interface
+            # )
+            self.integration_status['integrated'] = 'planned'
+            print("📋 Integrated training module planned for future implementation")
+        except ImportError:
+            self.integration_status['integrated'] = 'unavailable'
+    
+    def get_primary_orchestrator(self):
+        """Get the primary training orchestrator with fallback hierarchy"""
+        if 'orchestrator' in self.available_modules:
+            return self.available_modules['orchestrator']['FlexibleTrainingOrchestrator']
+        elif 'enhanced' in self.available_modules:
+            return self.available_modules['enhanced']['IntelligentTrainingOrchestrator']
+        else:
+            return None
+    
+    def get_integration_status(self) -> Dict[str, str]:
+        """Get comprehensive integration status report"""
+        return self.integration_status.copy()
+    
+    def is_training_available(self) -> bool:
+        """Check if any training integration is available"""
+        return any(status == 'operational' for status in self.integration_status.values())
+
+# Initialize Professional Training Integration
+training_integration = TrainingSystemIntegration()
+
+# Global Debug Configuration
+DEBUG = False
+os.environ['RCG_DEBUG'] = str(DEBUG).lower()
+
+# Professional Logging Configuration
+import logging
+
+class RevolutionaryLogger:
+    """Professional logging system for revolutionary card grader"""
+    
+    def __init__(self):
+        self.logger = logging.getLogger('RevolutionaryCardGrader')
+        self._configure_logging()
+    
+    def _configure_logging(self):
+        """Configure professional logging with appropriate levels"""
+        level = logging.DEBUG if DEBUG else logging.INFO
+        
+        formatter = logging.Formatter(
+            '%(asctime)s | %(name)s | %(levelname)s | %(message)s',
+            datefmt='%H:%M:%S'
+        )
+        
+        # Console handler for development
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        
+        self.logger.addHandler(console_handler)
+        self.logger.setLevel(level)
+    
+    def info(self, message: str) -> None:
+        """Log informational message"""
+        self.logger.info(message)
+    
+    def warning(self, message: str) -> None:
+        """Log warning message"""
+        self.logger.warning(message)
+    
+    def error(self, message: str) -> None:
+        """Log error message"""
+        self.logger.error(message)
+    
+    def debug(self, message: str) -> None:
+        """Log debug message"""
+        self.logger.debug(message)
+
+# Initialize Professional Logging
+revolutionary_logger = RevolutionaryLogger()
+
+# Drag and Drop Support Detection
+try:
+    import tkinterdnd2
+    DND_AVAILABLE = True
+    revolutionary_logger.info("✅ Drag & Drop support available")
+except ImportError:
+    DND_AVAILABLE = False
+    revolutionary_logger.warning("⚠️ Drag & Drop support unavailable (tkinterdnd2 not installed)")
+
+# Professional Module Availability Report
+def generate_module_availability_report() -> Dict[str, Any]:
+    """Generate comprehensive module availability report for diagnostics"""
+    
+    report = {
+        'core_dependencies': {
+            'customtkinter': 'available',
+            'opencv': 'available',
+            'pillow': 'available',
+            'numpy': 'available',
+            'requests': 'available'
+        },
+        'optional_dependencies': {
+            'tkinterdnd2': 'available' if DND_AVAILABLE else 'unavailable'
+        },
+        'application_modules': {
+            'border_calibration': 'available' if RevolutionaryBorderCalibration else 'unavailable'
+        },
+        'training_integration': training_integration.get_integration_status(),
+        'path_configuration': {
+            'project_root': str(_path_manager.project_root),
+            'services_path': str(_path_manager.services_path),
+            'python_path_configured': True
+        }
+    }
+    
+    return report
+
+# Initialize and Log Module Availability
+module_report = generate_module_availability_report()
+revolutionary_logger.info("🚀 Revolutionary Card Grader Pro - Module Initialization Complete")
+
+if DEBUG:
+    revolutionary_logger.debug("📊 Module Availability Report:")
+    for category, modules in module_report.items():
+        revolutionary_logger.debug(f"  {category}: {modules}")
+
+# Export Professional Interface
+__all__ = [
+    'training_integration',
+    'revolutionary_logger', 
+    'module_report',
+    'DND_AVAILABLE',
+    'RevolutionaryBorderCalibration'
+]

@@ -1,0 +1,101 @@
+~/RCG/services main*
+❯ sed -n '1352,1450p' training_orchestrator.py
+                async function createSession() {
+                    const config = {
+                        session_name: document.getElementById('session_name').value || 'Border Detection Model',
+                        architecture: document.getElementById('architecture').value,
+                        task_type: document.getElementById('task_type').value,
+                        card_side: 'front',
+                        border_type: document.getElementById('border_type').value,
+                        num_classes: parseInt(document.getElementById('num_classes').value),
+                        epochs: parseInt(document.getElementById('epochs').value),
+                        batch_size: parseInt(document.getElementById('batch_size').value),
+                        device: document.getElementById('device').value,
+                        workers: parseInt(document.getElementById('workers').value),
+                        image_size: parseInt(document.getElementById('image_size').value)
+                    };
+
+                    try {
+                        const response = await fetch('/api/session/create', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(config)
+                        });
+
+                        const result = await response.json();
+                        if (response.ok) {
+                            currentSessionId = result.session_id;
+                            document.getElementById('session-panel').style.display = 'block';
+                            alert(`✅ Session created: ${result.session_id}`);
+                        } else {
+                            alert(`❌ Error: ${result.detail}`);
+                        }
+                    } catch (error) {
+                        alert(`❌ Error: ${error.message}`);
+                    }
+                }
+
+                async function uploadImages() {
+                    if (!currentSessionId) return;
+
+                    const files = document.getElementById('image-files').files;
+                    const formData = new FormData();
+
+                    for (let file of files) {
+                        formData.append('files', file);
+                    }
+
+                    try {
+                        const response = await fetch(`/api/session/${currentSessionId}/upload-images`, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await response.json();
+
+                        // Update status
+                        document.getElementById('image-status').innerHTML =
+                            `✅ ${result.uploaded} images uploaded (${result.total_images} total)`;
+
+                        // Replace upload zone with thumbnail grid
+                        createImageThumbnailGrid(result.files);
+
+                    } catch (error) {
+                        alert(`Upload error: ${error.message}`);
+                    }
+                }
+
+                async function uploadPredictions() {
+                    if (!currentSessionId) return;
+
+                    const files = document.getElementById('prediction-files').files;
+                    const format = document.getElementById('prediction_format').value;
+                    
+                    // Check if any of these files exist in ground truth
+                    const fileNames = Array.from(files).map(f => f.name);
+                    const checkResponse = await fetch(`/api/session/${currentSessionId}/check-files`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({files: fileNames, section: 'ground-truth'})
+                    });
+                    
+                    const checkResult = await checkResponse.json();
+                    if (checkResult.exists && checkResult.files.length > 0) {
+                        if (!confirm(`Warning: The following files already exist in ground truth:\n${checkResult.files.join('\n')}\n\nAre you sure you want to add them as predictions?`)) {
+                            return;
+                        }
+                    }
+
+                    const formData = new FormData();
+                    formData.append('prediction_format', format);
+                    for (let file of files) {
+                        formData.append('files', file);
+                    }
+
+                    try {
+                        const response = await fetch(`/api/session/${currentSessionId}/predicted-labels`, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await response.json();

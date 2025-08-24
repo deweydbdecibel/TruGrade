@@ -1,0 +1,102 @@
+❯ sed -n '1550,1650p' training_orchestrator.py
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+
+                    const oldUploadZone = uploadZone.querySelector('.upload-zone');
+                    oldUploadZone.replaceWith(fileList);
+                }
+
+                function createLabelThumbnailGrid(files) {
+                    const uploadZone = document.getElementById('label-files').parentElement.parentElement;
+
+                    const fileList = document.createElement('div');
+                    fileList.className = 'file-list-container';
+                    fileList.innerHTML = `
+                        <div class="list-header">
+                            <span>📝 ${files.length} Labels</span>
+                            <button class="btn-small" onclick="addMoreGroundTruthLabels()">+ Add More</button>
+                        </div>
+                        <div class="scrollable-file-list">
+                            ${files.map((file, index) => `
+                                <div class="file-item" data-filename="${file.filename}">
+                                    <span class="filename">${file.filename}</span>
+                                    <span class="format">${file.format || 'YOLO'}</span>
+                                    <button class="remove-btn" onclick="removeFile('label', '${file.filename}')">×</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+
+                    const oldUploadZone = uploadZone.querySelector('.upload-zone');
+                    oldUploadZone.replaceWith(fileList);
+                }
+
+                function updatePredictionsGrid(predictions) {
+                    const grid = document.getElementById('predictions-grid');
+                    const header = document.querySelector('.predictions-section .grid-header span');
+
+                    header.textContent = `🎯 Predicted Labels (${predictions.length})`;
+
+                    grid.innerHTML = predictions.map(pred => `
+                        <div class="prediction-item" data-filename="${pred.filename}">
+                            <div class="prediction-icon ${pred.status}">🤖</div>
+                            <div class="prediction-info">
+                                <span class="filename">${pred.filename}</span>
+                                <span class="confidence">${(pred.confidence || 85)}% confidence</span>
+                            </div>
+                            <div class="prediction-actions">
+                                <button class="review-btn" onclick="reviewPrediction('${pred.filename}')">Review</button>
+                                <button class="remove-btn" onclick="removeFile('prediction', '${pred.filename}')">×</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                function addMoreImages() {
+                    document.getElementById('image-files').click();
+                }
+
+                function addMoreGroundTruthLabels() {
+                    document.getElementById('label-files').click();
+                }
+
+                function addMorePredictedLabels() {
+                    document.getElementById('prediction-files').click();
+                }
+
+                function removeFile(type, filename) {
+                    // Remove file from session and update display
+                    if (confirm(`Remove ${filename}?`)) {
+                        // API call to remove file
+                        fetch(`/api/session/${currentSessionId}/remove-file`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({type: type, filename: filename})
+                        }).then(() => {
+                            // Remove from display
+                            document.querySelector(`[data-filename="${filename}"]`).remove();
+                        });
+                    }
+                }
+
+                function formatFileSize(bytes) {
+                    if (bytes === 0) return '0 Bytes';
+                    const k = 1024;
+                    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                }
+
+                async function validateSession() {
+                    if (!currentSessionId) return;
+
+                    try {
+                        const response = await fetch(`/api/session/${currentSessionId}/validate`);
+                        const result = await response.json();
+
+                        if (result.ready) {
+                            document.getElementById('start-btn').disabled = false;
+                            alert('✅ Session validated and ready for training!');
+                        } else {

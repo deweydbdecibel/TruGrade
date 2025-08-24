@@ -1,0 +1,110 @@
+{
+  "trugrade_dataset_registry": {
+    "description": "TruGrade Professional Dataset Registry",
+    "version": "1.0.0",
+    "transferred_from": "data/ directory structure",
+    
+    "available_datasets": {
+      "revolutionary_datasets": {
+        "rev_dataset_1753805308_33187544": {
+          "dataset_id": "rev_dataset_1753805308_33187544",
+          "name": "Revolutionary_Card_Dataset",
+          "model_type": "dual_border_detection",
+          "description": "Advanced card border detection with photometric fusion",
+          "created_at": "2025-07-29T11:08:28.846947",
+          "status": "ready_for_upload",
+          "transferred_from": "data/revolutionary_datasets/rev_dataset_1753805308_33187544/"
+        },
+        "edge_detection_dataset": {
+          "name": "Edge Detection Training Dataset",
+          "type": "edge_detection",
+          "created_at": "2025-08-02T07:45:57",
+          "status": "available",
+          "transferred_from": "data/revolutionary_datasets/edge_detection/20250802_074557_edgetraining_edge_detection/"
+        },
+        "photometric_fusion_dataset": {
+          "name": "Photometric Fusion Dataset",
+          "type": "photometric_fusion", 
+          "created_at": "2025-08-01T06:37:03",
+          "status": "available",
+          "transferred_from": "data/revolutionary_datasets/photometric_fusion/20250801_063703_fuckthis_photometric_fusion/"
+        }
+      },
+      
+      "training_datasets": {
+        "568_card_dataset": {
+          "name": "568 Card Training Dataset",
+          "description": "Comprehensive card dataset for YOLO training",
+          "image_count": 568,
+          "format": "YOLO",
+          "classes": ["outer_border", "inner_border"],
+          "split": {"train": "80%", "val": "20%"},
+          "transferred_from": "data/Scripts/prepare_and_train.py"
+        },
+        "calibration_dataset": {
+          "name": "Border Calibration Dataset",
+          "description": "Calibration data for border detection",
+          "files": [
+            "01_front_calibration.json",
+            "card002F_calibration.json",
+            "card003F_calibration.json",
+            "card004F_calibration.json",
+            "card006F_calibration.json",
+            "card007F_calibration.json",
+            "card008F_calibration.json",
+            "card300F_calibration.json",
+            "card301F_calibration.json",
+            "card302F_calibration.json",
+            "card303F_calibration.json",
+            "card304F_calibration.json",
+            "card305F_calibration.json",
+            "card306F_calibration.json"
+          ],
+          "transferred_from": "data/training/"
+        },
+        "dual_class_training": {
+          "name": "Combined Dual Class Training",
+          "description": "Dual border detection training data",
+          "images": ["01_front.jpg", "card002F.jpg", "card006F.jpg", "card007F.jpg", "card008F.jpg"],
+          "labels": ["01_front.txt", "card002F.txt", "card006F.txt", "card007F.txt", "card008F.txt"],
+          "transferred_from": "data/training/combined_dual_class/"
+        }
+      },
+      
+      "legacy_datasets": {
+        "setone_564": {
+          "name": "Set One 564 Dataset",
+          "description": "Legacy training dataset",
+          "status": "archived",
+          "transferred_from": "data/datasets/Setone/564/"
+        }
+      }
+    },
+    
+    "dataset_formats": {
+      "yolo": {
+        "description": "YOLO format for object detection",
+        "structure": {
+          "images": "training images",
+          "labels": "YOLO format annotations",
+          "dataset.yaml": "configuration file"
+        }
+      },
+      "calibration": {
+        "description": "JSON calibration data format",
+        "structure": {
+          "calibration_points": "border detection points",
+          "metadata": "image and processing information"
+        }
+      },
+      "revolutionary": {
+        "description": "Revolutionary dataset format",
+        "structure": {
+          "metadata.json": "dataset configuration",
+          "images/": "training images",
+          "corrections/": "manual corrections"
+        }
+      }
+    }
+  }
+}

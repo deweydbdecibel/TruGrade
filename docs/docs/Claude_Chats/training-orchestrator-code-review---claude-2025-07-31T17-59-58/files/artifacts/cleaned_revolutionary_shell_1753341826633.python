@@ -1,0 +1,1138 @@
+#!/usr/bin/env python3
+"""
+Revolutionary Card Grader Pro - Desktop Interface
+================================================
+
+Streamlined desktop application for revolutionary card grading with integrated
+photometric stereo analysis and training orchestration.
+
+Version: 3.0.0-streamlined
+"""
+
+# ==================== CORE PYTHON FOUNDATION ====================
+import sys
+import os
+import json
+import math
+import time
+import threading
+import subprocess
+import webbrowser
+from datetime import datetime
+from pathlib import Path
+from typing import Optional, Dict, Any, List
+
+# ==================== USER INTERFACE FRAMEWORK ====================
+import customtkinter as ctk
+import tkinter as tk
+from tkinter import ttk, filedialog, messagebox
+
+# ==================== COMPUTER VISION & IMAGE PROCESSING ====================
+import cv2
+import numpy as np
+from PIL import Image, ImageTk, ImageDraw, ImageFilter
+
+# ==================== NETWORK & API COMMUNICATION ====================
+import requests
+
+# ==================== ENTERPRISE PATH MANAGEMENT ====================
+class EnterprisePathManager:
+    """Professional path management for enterprise-grade module resolution"""
+
+    def __init__(self):
+        self.project_root = Path(__file__).parent.parent.parent
+        self.services_path = self.project_root / "services"
+        self.src_path = self.project_root / "src"
+        self._configure_professional_paths()
+
+    def _configure_professional_paths(self) -> None:
+        """Configure Python import paths with enterprise standards"""
+        critical_paths = [
+            str(self.project_root),
+            str(self.services_path),
+            str(self.src_path),
+            str(self.src_path / "core"),
+            str(self.src_path / "ui")
+        ]
+
+        for path in critical_paths:
+            if path not in sys.path:
+                sys.path.insert(0, path)
+
+# Initialize Enterprise Path Management
+_path_manager = EnterprisePathManager()
+
+# ==================== ADVANCED MODULE INTEGRATION ====================
+class ModuleIntegrationManager:
+    """Enterprise-grade module integration with intelligent fallback strategies"""
+
+    def __init__(self):
+        self.integration_status = {}
+        self.available_modules = {}
+        self._initialize_integrations()
+
+    def _initialize_integrations(self) -> None:
+        """Initialize all module integrations with comprehensive error handling"""
+        # Border Calibration Integration
+        self._integrate_border_calibration()
+        self._log_integration_status()
+
+    def _integrate_border_calibration(self) -> None:
+        """Integrate revolutionary border calibration with graceful degradation"""
+        try:
+            from revolutionary_border_calibration import RevolutionaryBorderCalibration
+            self.available_modules['border_calibration'] = RevolutionaryBorderCalibration
+            self.integration_status['border_calibration'] = 'operational'
+        except ImportError as e:
+            self.available_modules['border_calibration'] = None
+            self.integration_status['border_calibration'] = f'unavailable: {e}'
+
+    def _log_integration_status(self) -> None:
+        """Generate professional integration status report"""
+        print("🚀 Revolutionary Card Grader Pro - Enterprise Module Integration")
+        print("=" * 70)
+
+        for module, status in self.integration_status.items():
+            status_icon = "✅" if status == 'operational' else "⚠️"
+            module_name = module.replace('_', ' ').title()
+            print(f"   {status_icon} {module_name}: {status}")
+
+        print("=" * 70)
+
+    def get_module(self, module_name: str) -> Any:
+        """Retrieve integrated module with None fallback"""
+        return self.available_modules.get(module_name)
+
+    def is_operational(self, module_name: str) -> bool:
+        """Check if specific module integration is operational"""
+        return self.integration_status.get(module_name) == 'operational'
+
+# Initialize Enterprise Module Integration
+module_manager = ModuleIntegrationManager()
+
+# ==================== PROFESSIONAL CONFIGURATION ====================
+class RevolutionaryConfiguration:
+    """Enterprise-grade configuration management"""
+
+    DEBUG = os.getenv('RCG_DEBUG', 'false').lower() == 'true'
+    VERSION = "3.0.0-streamlined"
+    ENVIRONMENT = "production"
+
+    # Service Endpoints Configuration
+    TRAINING_ORCHESTRATOR_PORT = 8010
+    TRAINING_ORCHESTRATOR_URL = f"http://localhost:{TRAINING_ORCHESTRATOR_PORT}"
+    PWA_BACKEND_URL = "https://localhost:5000"
+
+    # Feature Flags
+    ENABLE_PHOTOMETRIC_STEREO = True
+    ENABLE_BORDER_CALIBRATION = module_manager.is_operational('border_calibration')
+
+    @classmethod
+    def configure_environment(cls) -> None:
+        """Configure application environment variables"""
+        os.environ['RCG_DEBUG'] = str(cls.DEBUG).lower()
+        os.environ['RCG_VERSION'] = cls.VERSION
+        os.environ['RCG_ENVIRONMENT'] = cls.ENVIRONMENT
+
+# Initialize Professional Configuration
+config = RevolutionaryConfiguration()
+config.configure_environment()
+
+# ==================== ENTERPRISE EXPORTS ====================
+RevolutionaryBorderCalibration = module_manager.get_module('border_calibration')
+DEBUG = config.DEBUG
+
+# ==================== REVOLUTIONARY THEME SYSTEM ====================
+class RevolutionaryTheme:
+    """Ultra-premium theme system for revolutionary card grader"""
+
+    # REVOLUTIONARY COLOR PALETTE - Future-Forward
+    VOID_BLACK = "#0A0A0B"           # Deep space background
+    QUANTUM_DARK = "#141519"         # Primary dark surfaces
+    NEURAL_GRAY = "#1C1E26"          # Secondary surfaces
+    GHOST_WHITE = "#F8F9FA"          # Primary text
+    PLASMA_BLUE = "#00D4FF"          # Revolutionary accent
+    NEON_CYAN = "#00F5FF"            # Active states
+    ELECTRIC_PURPLE = "#8B5CF6"      # Premium features
+    QUANTUM_GREEN = "#00FF88"        # Success/Analysis
+    PLASMA_ORANGE = "#FF6B35"        # Alerts/Warnings
+    GOLD_ELITE = "#FFD700"           # Premium grades
+
+    # TYPOGRAPHY - Future-Ready
+    FONT_FAMILY = "SF Pro Display"   # Apple's premium font
+    FONT_FAMILY_FALLBACK = "Segoe UI"
+
+class RevolutionaryButton(ctk.CTkButton):
+    """Ultra-premium button with revolutionary styling"""
+
+    def __init__(self, parent, text="", icon=None, style="primary", **kwargs):
+
+        # Revolutionary button styles
+        styles = {
+            "primary": {
+                "fg_color": RevolutionaryTheme.PLASMA_BLUE,
+                "hover_color": RevolutionaryTheme.NEON_CYAN,
+                "text_color": RevolutionaryTheme.VOID_BLACK,
+                "border_width": 0,
+                "corner_radius": 12,
+                "font": (RevolutionaryTheme.FONT_FAMILY_FALLBACK, 14, "bold")
+            },
+            "glass": {
+                "fg_color": ("gray20", "gray20"),
+                "hover_color": ("gray15", "gray15"),
+                "text_color": RevolutionaryTheme.GHOST_WHITE,
+                "border_width": 1,
+                "border_color": RevolutionaryTheme.PLASMA_BLUE,
+                "corner_radius": 16,
+                "font": (RevolutionaryTheme.FONT_FAMILY_FALLBACK, 13, "normal")
+            },
+            "premium": {
+                "fg_color": RevolutionaryTheme.ELECTRIC_PURPLE,
+                "hover_color": "#9D5CFF",
+                "text_color": RevolutionaryTheme.GHOST_WHITE,
+                "border_width": 0,
+                "corner_radius": 20,
+                "font": (RevolutionaryTheme.FONT_FAMILY_FALLBACK, 16, "bold")
+            }
+        }
+
+        config = styles.get(style, styles["primary"])
+
+        # Set defaults if not provided
+        if 'width' not in kwargs:
+            kwargs['width'] = 200
+        if 'height' not in kwargs:
+            kwargs['height'] = 45
+
+        super().__init__(
+            parent,
+            text=text,
+            **config,
+            **kwargs
+        )
+
+class RevolutionaryNavigationPanel(ctk.CTkFrame):
+    """Ultra-modern navigation with spatial computing ready design"""
+
+    def __init__(self, parent, command_callback=None):
+        if DEBUG:
+            print("🔧 Initializing Revolutionary Navigation Panel...")
+        super().__init__(
+            parent,
+            fg_color=RevolutionaryTheme.NEURAL_GRAY,
+            corner_radius=0,
+            width=320
+        )
+
+        self.command_callback = command_callback
+        if DEBUG:
+            print("📋 Setting up scrollable navigation...")
+        self.setup_scrollable_navigation()
+        if DEBUG:
+            print("✅ Navigation panel setup complete!")
+
+    def setup_scrollable_navigation(self):
+        """Setup scrollable navigation with enhanced mouse wheel support"""
+        if DEBUG:
+            print("💥 Deploying enhanced navigation scroll...")
+
+        # Create scrollable frame
+        self.scrollable_frame = ctk.CTkScrollableFrame(
+            self,
+            fg_color="transparent",
+            corner_radius=0,
+            scrollbar_button_color=RevolutionaryTheme.PLASMA_BLUE
+        )
+        self.scrollable_frame.pack(fill="both", expand=True, padx=5, pady=5)
+
+        # Enhanced scroll function
+        def enhanced_scroll(event):
+            """Enhanced mouse wheel scroll with better compatibility"""
+            try:
+                # Try to get the canvas from the scrollable frame
+                canvas = None
+                if hasattr(self.scrollable_frame, '_parent_canvas'):
+                    canvas = self.scrollable_frame._parent_canvas
+                elif hasattr(self.scrollable_frame, '_parent_frame'):
+                    # Alternative canvas detection
+                    for child in self.scrollable_frame._parent_frame.winfo_children():
+                        if str(type(child)).endswith("Canvas'>"):
+                            canvas = child
+                            break
+
+                if canvas:
+                    # Scroll based on delta direction
+                    scroll_amount = -1 if event.delta > 0 else 1
+                    canvas.yview_scroll(scroll_amount * 3, "units")
+                    if DEBUG:
+                        print(f"🚀 Enhanced scroll: {scroll_amount * 3}")
+                    return "break"
+                else:
+                    # Fallback: try to scroll the scrollable frame directly
+                    if hasattr(self.scrollable_frame, 'yview_scroll'):
+                        scroll_amount = -1 if event.delta > 0 else 1
+                        self.scrollable_frame.yview_scroll(scroll_amount, "units")
+                        return "break"
+                    
+            except Exception as e:
+                if DEBUG:
+                    print(f"💥 Scroll error: {e}")
+
+        # Comprehensive binding strategy
+        def bind_scroll_everywhere():
+            """Bind scroll to multiple widgets for maximum compatibility"""
+            widgets_to_bind = [self.scrollable_frame, self]
+            
+            # Add canvas when it becomes available
+            def find_and_bind_canvas():
+                try:
+                    if hasattr(self.scrollable_frame, '_parent_canvas'):
+                        canvas = self.scrollable_frame._parent_canvas
+                        if canvas and canvas not in widgets_to_bind:
+                            widgets_to_bind.append(canvas)
+                    
+                    # Also try to find canvas in children
+                    for child in self.scrollable_frame.winfo_children():
+                        if 'canvas' in str(type(child)).lower():
+                            if child not in widgets_to_bind:
+                                widgets_to_bind.append(child)
+                except:
+                    pass
+
+            # Initial canvas search
+            find_and_bind_canvas()
+            
+            # Bind to all widgets
+            for widget in widgets_to_bind:
+                if widget:
+                    try:
+                        widget.unbind("<MouseWheel>")
+                        widget.bind("<MouseWheel>", enhanced_scroll)
+                        if DEBUG:
+                            print(f"🔫 Bound scroll to: {type(widget).__name__}")
+                    except Exception as e:
+                        if DEBUG:
+                            print(f"❌ Binding failed for {type(widget).__name__}: {e}")
+            
+            # Schedule another search for canvas (it might not be ready yet)
+            self.after(500, find_and_bind_canvas)
+
+        # Initial binding
+        bind_scroll_everywhere()
+        
+        # Re-bind after short delay to catch late-created widgets
+        self.after(200, bind_scroll_everywhere)
+        self.after(1000, bind_scroll_everywhere)  # Final attempt
+
+        # Setup navigation content
+        self.setup_navigation()
+        if DEBUG:
+            print("💥 Enhanced navigation scroll deployed!")
+
+    def setup_navigation(self):
+        """Setup revolutionary navigation interface"""
+
+        # Header with logo
+        header_frame = ctk.CTkFrame(
+            self.scrollable_frame,
+            fg_color="transparent",
+            height=120
+        )
+        header_frame.pack(fill="x", padx=15, pady=(15, 0))
+
+        # Revolutionary logo/title
+        logo_label = ctk.CTkLabel(
+            header_frame,
+            text="🏆",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 48)
+        )
+        logo_label.pack(pady=(10, 0))
+
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="CARD GRADER",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 18, "bold"),
+            text_color=RevolutionaryTheme.PLASMA_BLUE
+        )
+        title_label.pack()
+
+        subtitle_label = ctk.CTkLabel(
+            header_frame,
+            text="REVOLUTIONARY EDITION",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 10),
+            text_color=RevolutionaryTheme.GHOST_WHITE
+        )
+        subtitle_label.pack()
+
+        # Revolutionary Pipeline
+        self.create_nav_section("🎯 REVOLUTIONARY PIPELINE", [
+            ("📸 Load Card", "load_card"),
+            ("🎯 Border Calibration", "border_calibration"),
+            ("🔬 Photometric Scan", "photometric_scan"),
+            ("📊 Grade Card", "grade_card")
+        ])
+
+        # AI Training & Learning
+        self.create_nav_section("🤖 AI TRAINING & LEARNING", [
+            ("🚀 Train Models", "train_model"),
+            ("📊 Continuous Learning", "continuous_status")
+        ])
+
+        # Advanced Features
+        self.create_nav_section("🚀 ADVANCED FEATURES", [
+            ("💰 Market Intelligence", "market_intel"),
+            ("📈 Investment Analytics", "investment_analytics"),
+            ("🌐 Global Database", "global_database"),
+            ("🔗 Blockchain Auth", "blockchain_auth")
+        ])
+
+        # System Controls
+        self.create_nav_section("⚙️ SYSTEM CONTROLS", [
+            ("🎨 Interface Settings", "interface_settings"),
+            ("🔧 Calibration", "calibration_settings"),
+            ("☁️ Cloud Sync", "cloud_sync"),
+            ("📋 Export Data", "export_settings")
+        ])
+
+        # Premium upgrade section
+        self.create_premium_section()
+
+    def create_nav_section(self, title, items):
+        """Create a navigation section with premium buttons"""
+
+        if DEBUG:
+            print(f"🔧 Creating navigation section: {title}")
+
+        section_frame = ctk.CTkFrame(
+            self.scrollable_frame,
+            fg_color=RevolutionaryTheme.QUANTUM_DARK,
+            corner_radius=16,
+            border_width=1,
+            border_color=RevolutionaryTheme.NEURAL_GRAY
+        )
+        section_frame.pack(fill="x", padx=10, pady=(15, 0))
+
+        # Section title
+        title_label = ctk.CTkLabel(
+            section_frame,
+            text=title,
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 12, "bold"),
+            text_color=RevolutionaryTheme.GHOST_WHITE,
+            wraplength=280
+        )
+        title_label.pack(padx=15, pady=(12, 8), anchor="w")
+
+        # Navigation items
+        for icon_text, command in items:
+            if DEBUG:
+                print(f"  🔘 Creating button: {icon_text}")
+            nav_button = RevolutionaryButton(
+                section_frame,
+                text=icon_text,
+                style="glass",
+                width=270,
+                height=38,
+                command=lambda cmd=command: self.execute_command(cmd)
+            )
+            nav_button.pack(padx=15, pady=(0, 6), fill="x")
+            nav_button.pack_propagate(False)
+
+        if DEBUG:
+            print(f"✅ Section '{title}' created with {len(items)} buttons")
+
+    def create_premium_section(self):
+        """Create premium upgrade section"""
+
+        premium_frame = ctk.CTkFrame(
+            self.scrollable_frame,
+            fg_color=RevolutionaryTheme.ELECTRIC_PURPLE,
+            corner_radius=20,
+            border_width=2,
+            border_color=RevolutionaryTheme.GOLD_ELITE
+        )
+        premium_frame.pack(fill="x", padx=15, pady=25)
+
+        # Premium content
+        premium_label = ctk.CTkLabel(
+            premium_frame,
+            text="💎 PREMIUM FEATURES",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 14, "bold"),
+            text_color=RevolutionaryTheme.GOLD_ELITE
+        )
+        premium_label.pack(pady=(20, 5))
+
+        features_label = ctk.CTkLabel(
+            premium_frame,
+            text="• Molecular Authentication\n• Real-time Market Data\n• Batch Processing\n• API Access",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 11),
+            text_color=RevolutionaryTheme.GHOST_WHITE,
+            justify="left"
+        )
+        features_label.pack(pady=(0, 15))
+
+        upgrade_button = RevolutionaryButton(
+            premium_frame,
+            text="⚡ UPGRADE NOW",
+            style="premium",
+            width=200,
+            command=lambda: self.execute_command("upgrade_premium")
+        )
+        upgrade_button.pack(pady=(0, 20))
+
+    def execute_command(self, command):
+        """Execute navigation command"""
+        print(f"🎯 Navigation Button Clicked: {command}")
+
+        if self.command_callback:
+            self.command_callback(command)
+        else:
+            print("⚠️ No command callback set!")
+
+class APIStatusIntegration:
+    """Professional API status integration"""
+    
+    def __init__(self, main_shell):
+        self.shell = main_shell
+        self.api_url = config.PWA_BACKEND_URL
+        self.connected = False
+        self.start_api_monitoring()
+        
+        if DEBUG:
+            print("🔗 API Integration initialized for Revolutionary Shell")
+
+    def start_api_monitoring(self):
+        """Start API monitoring with initial delay"""
+        def monitor():
+            time.sleep(3)
+            while True:
+                try:
+                    self.update_api_status()
+                    time.sleep(30)
+                except Exception as e:
+                    print(f"API monitoring error: {e}")
+                    time.sleep(60)
+        
+        monitor_thread = threading.Thread(target=monitor, daemon=True)
+        monitor_thread.start()
+
+    def update_api_status(self):
+        """Update API status - silent monitoring"""
+        try:
+            response = requests.get(f"{self.api_url}/api/health", timeout=5, verify=False)
+            self.connected = (response.status_code == 200)
+        except:
+            self.connected = False
+
+class RevolutionaryMainShell(ctk.CTk):
+    """Revolutionary main application shell - Streamlined Edition"""
+
+    def __init__(self):
+        super().__init__()
+        
+        # Initialize core components
+        self.current_image_data = None
+        self.loaded_images = []
+        self.continuous_learning_status = "Stopped"
+        
+        self.setup_window()
+        self.setup_theme()
+        self.setup_layout()
+        self.setup_components()
+        self.add_api_status()
+
+        # Photometric integration
+        try:
+            from src.core.photometric.photometric_integration import integrate_photometric_stereo
+            self.photometric_integration = integrate_photometric_stereo(self)
+            if DEBUG and self.photometric_integration:
+                print("🚀 Photometric integration successful!")
+        except Exception as e:
+            if DEBUG:
+                print(f"⚠️ Photometric integration failed: {e}")
+            self.photometric_integration = None
+
+    def setup_window(self):
+        """Setup revolutionary window properties"""
+        self.title("🏆 Revolutionary Card Grader Pro")
+        self.geometry("1600x1000")
+        self.minsize(1200, 800)
+        self.center_window()
+
+    def center_window(self):
+        """Center window on screen"""
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f"{width}x{height}+{x}+{y}")
+
+    def setup_theme(self):
+        """Setup revolutionary theme"""
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
+        self.configure(fg_color=RevolutionaryTheme.VOID_BLACK)
+
+    def setup_layout(self):
+        """Setup revolutionary layout system"""
+        # Configure grid weights for responsive behavior
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=0, minsize=320)
+        self.grid_columnconfigure(1, weight=1, minsize=600)
+
+        # Navigation panel on left
+        self.nav_panel = RevolutionaryNavigationPanel(
+            self,
+            command_callback=self.handle_navigation_command
+        )
+        self.nav_panel.grid(row=1, column=0, sticky="nsew")
+        self.nav_panel.grid_propagate(False)
+
+        # Main content area
+        self.main_content = ctk.CTkFrame(
+            self,
+            fg_color=RevolutionaryTheme.QUANTUM_DARK,
+            corner_radius=0
+        )
+        self.main_content.grid(row=1, column=1, sticky="nsew", padx=(5, 0))
+        self.main_content.grid_propagate(False)
+
+        # Configure main content grid
+        self.main_content.grid_rowconfigure(0, weight=1)
+        self.main_content.grid_columnconfigure(0, weight=1)
+
+    def setup_components(self):
+        """Setup revolutionary UI components"""
+        self.create_welcome_screen()
+
+    def add_api_status(self):
+        """Add API status display"""
+        try:
+            self.api_box = ctk.CTkFrame(
+                self,
+                width=250,
+                height=80,
+                corner_radius=10,
+                fg_color="#1a1a1a",
+                border_width=2,
+                border_color="#00ff00"
+            )
+            self.api_box.place(x=10, y=10)
+            
+            self.api_text = ctk.CTkLabel(
+                self.api_box,
+                text="🔗 Checking API...",
+                font=("Arial", 12),
+                text_color="yellow"
+            )
+            self.api_text.pack(pady=5)
+            
+            self.test_btn = ctk.CTkButton(
+                self.api_box,
+                text="🔬 Test API",
+                width=100,
+                height=25,
+                command=self.test_api
+            )
+            self.test_btn.pack(pady=5)
+            
+            self.after(1000, self.check_api_forever)
+            
+        except Exception as e:
+            print(f"Could not add API status: {e}")
+
+    def check_api_forever(self):
+        """Keep checking API status"""
+        self.check_api_once()
+        self.after(10000, self.check_api_forever)
+    
+    def check_api_once(self):
+        """Check API status once"""
+        try:
+            response = requests.get(f"{config.PWA_BACKEND_URL}/api/health", timeout=3, verify=False)
+            if response.status_code == 200:
+                self.api_text.configure(text="✅ API Connected!", text_color="green")
+            else:
+                self.api_text.configure(text="⚠️ API Problem", text_color="orange")
+        except:
+            self.api_text.configure(text="❌ API Offline", text_color="red")
+
+    def test_api(self):
+        """Test the API with detailed error reporting"""
+        try:
+            print("🧪 Starting API test...")
+            
+            # Test health check
+            try:
+                response = requests.get(f"{config.PWA_BACKEND_URL}/api/health", timeout=5, verify=False)
+                print(f"✅ Health check: {response.status_code}")
+            except Exception as e:
+                messagebox.showerror("API Error", f"Health check failed: {e}")
+                return
+            
+            # Test image analysis
+            image_path = filedialog.askopenfilename(
+                title="Pick Card Image for Analysis",
+                filetypes=[("Image files", "*.jpg *.jpeg *.png *.bmp"), ("All files", "*.*")]
+            )
+            
+            if not image_path:
+                return
+            
+            print(f"📸 Selected image: {image_path}")
+            
+            try:
+                self.test_btn.configure(text="⏳ Testing...")
+                
+                with open(image_path, 'rb') as f:
+                    files = {'image': f}
+                    response = requests.post(
+                        f"{config.PWA_BACKEND_URL}/api/analyze-card",
+                        files=files, 
+                        timeout=30,
+                        verify=False
+                    )
+                    
+                    if response.status_code == 200:
+                        result = response.json()
+                        messagebox.showinfo(
+                            "✅ Analysis Success!", 
+                            f"🔬 Photometric Analysis Complete!\n\n"
+                            f"📊 Surface: {result.get('surface_integrity', 'N/A')}%\n"
+                            f"🔍 Defects: {result.get('defect_count', 'N/A')}\n"
+                            f"⚡ Time: {result.get('processing_time', 'N/A')}s"
+                        )
+                    else:
+                        messagebox.showerror("API Error", f"Analysis failed: {response.status_code}")
+                        
+            except Exception as e:
+                messagebox.showerror("API Error", f"Analysis failed: {str(e)}")
+            
+            self.test_btn.configure(text="🔬 Test API")
+            
+        except Exception as e:
+            messagebox.showerror("Test Error", f"Complete test failed: {str(e)}")
+            self.test_btn.configure(text="🔬 Test API")
+
+    def handle_navigation_command(self, command):
+        """Handle navigation commands with streamlined routing"""
+        try:
+            # Clear main content
+            for widget in self.main_content.winfo_children():
+                widget.destroy()
+
+            # Route commands
+            if command == "load_card":
+                self.show_card_loader()
+            elif command == "border_calibration":
+                self.show_border_calibration()
+            elif command == "photometric_scan":
+                self.show_photometric_scanner()
+            elif command == "grade_card":
+                self.show_grading_interface()
+            elif command == "train_model":
+                self.open_url_robust(config.TRAINING_ORCHESTRATOR_URL)
+                return
+            elif command == "continuous_status":
+                self.show_continuous_status()
+                return
+            elif command == "market_intel":
+                self.show_market_intelligence()
+            elif command == "upgrade_premium":
+                self.show_premium_upgrade()
+            else:
+                self.show_coming_soon(command)
+                
+        except Exception as e:
+            print(f"❌ Navigation error: {e}")
+            self.create_welcome_screen()
+
+    def open_url_robust(self, url):
+        """Professional cross-platform URL launcher"""
+        try:
+            print(f"🎯 Initiating browser launch: {url}")
+
+            if os.name == 'posix':  # Linux/Mac
+                subprocess.run(['xdg-open', url], check=True)
+            elif os.name == 'nt':   # Windows
+                subprocess.run(['start', url], shell=True, check=True)
+            else:
+                webbrowser.open(url)
+
+        except Exception as e:
+            print(f"❌ Browser error: {e}")
+            try:
+                webbrowser.open(url)
+            except Exception as e2:
+                print(f"❌ Webbrowser fallback failed: {e2}")
+
+    def start_continuous_learning(self):
+        """Start continuous learning"""
+        try:
+            response = requests.post(f"{config.TRAINING_ORCHESTRATOR_URL}/api/continuous-training/start", timeout=5)
+            if response.status_code == 200:
+                result = response.json()
+                self.continuous_learning_status = result.get('status', 'Started')
+                messagebox.showinfo("Success", f"Continuous learning: {self.continuous_learning_status}")
+            else:
+                messagebox.showerror("Error", f"Failed to start: {response.status_code}")
+        except Exception as e:
+            messagebox.showerror("Connection Error", f"Cannot connect to training server: {str(e)}")
+
+    def stop_continuous_learning(self):
+        """Stop continuous learning"""
+        try:
+            response = requests.post(f"{config.TRAINING_ORCHESTRATOR_URL}/api/continuous-training/stop", timeout=5)
+            if response.status_code == 200:
+                result = response.json()
+                self.continuous_learning_status = result.get('status', 'Stopped')
+                messagebox.showinfo("Success", f"Continuous learning: {self.continuous_learning_status}")
+            else:
+                messagebox.showerror("Error", f"Failed to stop: {response.status_code}")
+        except Exception as e:
+            messagebox.showerror("Connection Error", f"Cannot connect to training server: {str(e)}")
+
+    def show_continuous_status(self):
+        """Show continuous learning status"""
+        # Clear main content
+        for widget in self.main_content.winfo_children():
+            widget.destroy()
+
+        status_frame = ctk.CTkFrame(self.main_content, fg_color="transparent")
+        status_frame.pack(fill="both", expand=True, padx=40, pady=40)
+
+        # Status display
+        title_label = ctk.CTkLabel(
+            status_frame,
+            text="🔄 CONTINUOUS LEARNING STATUS",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 32, "bold"),
+            text_color=RevolutionaryTheme.PLASMA_BLUE
+        )
+        title_label.pack(pady=(50, 30))
+
+        status_label = ctk.CTkLabel(
+            status_frame,
+            text=f"Current Status: {self.continuous_learning_status}",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 18),
+            text_color=RevolutionaryTheme.GHOST_WHITE
+        )
+        status_label.pack(pady=20)
+
+        # Control buttons
+        button_frame = ctk.CTkFrame(status_frame, fg_color="transparent")
+        button_frame.pack(pady=30)
+
+        start_btn = RevolutionaryButton(
+            button_frame,
+            text="🚀 Start Learning",
+            style="primary",
+            width=200,
+            command=self.start_continuous_learning
+        )
+        start_btn.pack(side="left", padx=10)
+
+        stop_btn = RevolutionaryButton(
+            button_frame,
+            text="⏹️ Stop Learning",
+            style="glass",
+            width=200,
+            command=self.stop_continuous_learning
+        )
+        stop_btn.pack(side="left", padx=10)
+
+    def show_border_calibration(self):
+        """Show revolutionary border calibration interface"""
+        print("🎯 Loading Revolutionary Border Calibration...")
+
+        # Clear main content
+        for widget in self.main_content.winfo_children():
+            widget.destroy()
+
+        try:
+            self.border_calibration_module = RevolutionaryBorderCalibration(
+                self.main_content,
+                command_callback=self.handle_navigation_command,
+                photometric_callback=self.send_to_photometric_stereo
+            )
+            self.border_calibration_module.pack(fill="both", expand=True)
+            print("✅ Border calibration module loaded successfully!")
+
+        except Exception as e:
+            print(f"❌ Border calibration error: {e}")
+            error_frame = ctk.CTkFrame(self.main_content, fg_color="transparent")
+            error_frame.pack(fill="both", expand=True, padx=40, pady=40)
+
+            error_label = ctk.CTkLabel(
+                error_frame,
+                text=f"❌ Border Calibration Error\n\n{str(e)}\n\nCheck console for details.",
+                font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 16),
+                text_color=RevolutionaryTheme.PLASMA_ORANGE
+            )
+            error_label.pack(pady=100)
+
+    def send_to_photometric_stereo(self, calibration_data):
+        """Send calibrated borders to photometric stereo engine"""
+        print("🔬 REVOLUTIONARY PIPELINE ACTIVATED!")
+        print(f"📊 Calibrated Borders: {len(calibration_data.get('calibrated_borders', []))}")
+        print("🚀 CALIBRATED BORDERS → PHOTOMETRIC STEREO READY!")
+
+    def show_card_loader(self):
+        """Show revolutionary card manager"""
+        for widget in self.main_content.winfo_children():
+            widget.destroy()
+
+        try:
+            from src.ui.revolutionary_card_manager import RevolutionaryCardManager
+            card_manager = RevolutionaryCardManager(
+                self.main_content,
+                main_app_callback=self
+            )
+            card_manager.pack(fill="both", expand=True)
+        except Exception as e:
+            print(f"❌ Card manager error: {e}")
+            self.show_coming_soon("Card Loader")
+
+    def show_photometric_scanner(self):
+        """Show photometric scanner interface"""
+        if not hasattr(self, 'current_image_path') or not self.current_image_path:
+            messagebox.showwarning("No Card Loaded", "Please load a card image first!")
+            self.show_card_loader()
+            return
+
+        if hasattr(self, 'photometric_integration') and self.photometric_integration:
+            calibration_data = {
+                'image_path': self.current_image_path,
+                'original_image': None,
+                'calibrated_borders': [],
+                'calibration_metadata': {
+                    'model_used': None,
+                    'human_corrections': 0,
+                    'total_borders': 0,
+                    'calibration_timestamp': 'direct_analysis'
+                }
+            }
+            print("🔬 Starting revolutionary photometric stereo analysis...")
+            self.photometric_integration.process_calibrated_borders(calibration_data)
+        else:
+            messagebox.showerror("Integration Error", "Photometric stereo integration not available!")
+
+    def show_grading_interface(self):
+        """Show grading interface"""
+        self.show_coming_soon("Grading Interface")
+
+    def show_market_intelligence(self):
+        """Show market intelligence interface"""
+        self.show_coming_soon("Market Intelligence")
+
+    def show_premium_upgrade(self):
+        """Show premium upgrade interface"""
+        self.show_coming_soon("Premium Upgrade")
+
+    def create_welcome_screen(self):
+        """Create revolutionary welcome screen"""
+        welcome_frame = ctk.CTkFrame(
+            self.main_content,
+            fg_color="transparent"
+        )
+        welcome_frame.pack(fill="both", expand=True, padx=40, pady=40)
+
+        welcome_frame.grid_rowconfigure(1, weight=1)
+        welcome_frame.grid_columnconfigure(0, weight=1)
+
+        # Hero section
+        hero_frame = ctk.CTkFrame(
+            welcome_frame,
+            fg_color=RevolutionaryTheme.NEURAL_GRAY,
+            corner_radius=30,
+            border_width=2,
+            border_color=RevolutionaryTheme.PLASMA_BLUE
+        )
+        hero_frame.grid(row=0, column=0, sticky="ew", pady=(0, 30))
+
+        # Hero content
+        hero_title = ctk.CTkLabel(
+            hero_frame,
+            text="WELCOME TO THE FUTURE",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 36, "bold"),
+            text_color=RevolutionaryTheme.PLASMA_BLUE
+        )
+        hero_title.pack(pady=(40, 10))
+
+        hero_subtitle = ctk.CTkLabel(
+            hero_frame,
+            text="Revolutionary Card Grading with AI Training & Continuous Learning",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 18),
+            text_color=RevolutionaryTheme.GHOST_WHITE
+        )
+        hero_subtitle.pack(pady=(0, 10))
+
+        hero_description = ctk.CTkLabel(
+            hero_frame,
+            text="Train your own AI models with perfectly calibrated cards.\nRevolutionary accuracy with continuous improvement.",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 14),
+            text_color=RevolutionaryTheme.GHOST_WHITE,
+            justify="center"
+        )
+        hero_description.pack(pady=(0, 30))
+
+        # Action buttons
+        action_frame = ctk.CTkFrame(hero_frame, fg_color="transparent")
+        action_frame.pack(pady=(0, 40))
+
+        start_button = RevolutionaryButton(
+            action_frame,
+            text="🤖 TRAIN AI MODELS",
+            style="primary",
+            width=250,
+            height=60,
+            command=lambda: self.handle_navigation_command("train_model")
+        )
+        start_button.pack(side="left", padx=(0, 20))
+
+        load_button = RevolutionaryButton(
+            action_frame,
+            text="📸 LOAD CARD",
+            style="glass",
+            width=200,
+            height=60,
+            command=lambda: self.handle_navigation_command("load_card")
+        )
+        load_button.pack(side="left")
+
+        # Features grid
+        features_frame = ctk.CTkFrame(
+            welcome_frame,
+            fg_color="transparent"
+        )
+        features_frame.grid(row=1, column=0, sticky="nsew", pady=(0, 0))
+        
+        features_frame.grid_columnconfigure(0, weight=1)
+        features_frame.grid_columnconfigure(1, weight=1)
+        features_frame.grid_columnconfigure(2, weight=1)
+
+        # Feature cards
+        features = [
+            ("🔬", "Photometric Stereo", "Sub-second analysis with 0.28s processing"),
+            ("🤖", "Continuous Learning", "AI improves automatically from annotations"),
+            ("🎯", "Precision Calibration", "Hand-tuned border detection for accuracy")
+        ]
+
+        for i, (icon, title, desc) in enumerate(features):
+            feature_card = ctk.CTkFrame(
+                features_frame,
+                fg_color=RevolutionaryTheme.QUANTUM_DARK,
+                corner_radius=20,
+                border_width=1,
+                border_color=RevolutionaryTheme.NEURAL_GRAY
+            )
+            feature_card.grid(row=0, column=i, sticky="nsew", padx=10, pady=20)
+
+            ctk.CTkLabel(
+                feature_card,
+                text=icon,
+                font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 32)
+            ).pack(pady=(20, 10))
+
+            ctk.CTkLabel(
+                feature_card,
+                text=title,
+                font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 16, "bold"),
+                text_color=RevolutionaryTheme.PLASMA_BLUE
+            ).pack(pady=(0, 10))
+
+            ctk.CTkLabel(
+                feature_card,
+                text=desc,
+                font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 12),
+                text_color=RevolutionaryTheme.GHOST_WHITE,
+                wraplength=200,
+                justify="center"
+            ).pack(pady=(0, 20), padx=20)
+
+    def show_coming_soon(self, feature):
+        """Show coming soon interface"""
+        coming_frame = ctk.CTkFrame(
+            self.main_content,
+            fg_color="transparent"
+        )
+        coming_frame.pack(fill="both", expand=True, padx=40, pady=40)
+
+        # Coming soon content
+        icon_label = ctk.CTkLabel(
+            coming_frame,
+            text="🚧",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 72)
+        )
+        icon_label.pack(pady=(100, 30))
+
+        title_label = ctk.CTkLabel(
+            coming_frame,
+            text=f"{feature.upper().replace('_', ' ')}",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 32, "bold"),
+            text_color=RevolutionaryTheme.PLASMA_BLUE
+        )
+        title_label.pack(pady=(0, 20))
+
+        subtitle_label = ctk.CTkLabel(
+            coming_frame,
+            text="Revolutionary Feature Coming Soon",
+            font=(RevolutionaryTheme.FONT_FAMILY_FALLBACK, 18),
+            text_color=RevolutionaryTheme.GHOST_WHITE
+        )
+        subtitle_label.pack()
+
+def integrate_api_with_revolutionary_shell(shell_instance):
+    """Integrate API services with revolutionary shell"""
+    try:
+        if DEBUG:
+            print("🔗 Integrating Revolutionary Shell with API services...")
+        
+        api_integration = APIStatusIntegration(shell_instance)
+        shell_instance.api_integration = api_integration
+        
+        if DEBUG:
+            print("✅ Revolutionary Shell successfully integrated with API!")
+        
+        return api_integration
+        
+    except Exception as e:
+        print(f"❌ API integration failed: {e}")
+        return None
+
+def main():
+    """Main entry point"""
+    global DEBUG
+    
+    import argparse
+    parser = argparse.ArgumentParser(description='Revolutionary Card Grader Pro')
+    parser.add_argument('--debug', action='store_true', help='Enable verbose debug output')
+    args = parser.parse_args()
+    
+    DEBUG = args.debug
+    os.environ['RCG_DEBUG'] = 'true' if DEBUG else 'false'
+    
+    print("🚀 Revolutionary Card Grader Pro v3.0")
+    
+    if DEBUG:
+        print("🔍 DEBUG MODE ENABLED")
+    
+    # Initialize revolutionary application
+    app = RevolutionaryMainShell()
+    
+    # Integrate with API services
+    api_integration = integrate_api_with_revolutionary_shell(app)
+    
+    print("🔍 Checking API services...")
+    time.sleep(1)
+    
+    if api_integration:
+        if api_integration.connected:
+            print("✅ All systems operational")
+        else:
+            print("⚠️ Offline mode (start API services for full functionality)")
+    
+    # Start the revolutionary experience
+    app.mainloop()
+
+if __name__ == "__main__":
+    main()

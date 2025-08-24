@@ -1,0 +1,70 @@
+ <!-- Label Upload -->
+                        <div class="config-section">
+                            <h3>📝 Upload Labels</h3>
+                            <div class="form-group">
+                                <label>Label Format</label>
+                                <select id="label_format">
+                                    <option value="yolo">YOLO TXT</option>
+                                    <option value="coco">COCO JSON</option>
+                                    <option value="xml">Pascal VOC XML</option>
+                                </select>
+                            </div>
+                            <div class="upload-zone" onclick="document.getElementById('label-files').click()">
+                                <p>Click to upload ground truth labels</p>
+                            </div>
+                            <input type="file" id="label-files" multiple accept=".txt,.json,.xml" style="display: none;" onchange="uploadLabels()">
+                            <div id="label-status"></div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin: 30px 0;">
+                        <button class="btn" onclick="validateSession()">✅ Validate Session</button>
+                        <button class="btn" onclick="startTraining()" id="start-btn" disabled>🚀 Start Training</button>
+                    </div>
+                </div>
+                
+                        <div class="visual-file-browser" id="visual-browser" style="display: none;">
+                            <div class="file-section">
+                                <div class="section-header">
+                                    <h3>📸 Training Images (<span id="image-count">0</span>)</h3>
+                                    <div class="section-controls">
+                                        <button class="btn-primary" onclick="uploadImages()">+ Add Images</button>
+                                        <button class="btn-secondary" onclick="removeSelected('images')">Remove Selected</button>
+                                    </div>
+                                </div>
+                                <div class="thumbnail-grid" id="image-thumbnails"></div>
+                            </div>
+                            
+                            <div class="file-section">
+                                <div class="section-header">
+                                    <h3>🎯 Predicted Labels (<span id="predicted-count">0</span>)</h3>
+                                    <div class="section-controls">
+                                        <button class="btn-primary" onclick="uploadPredictedLabels()">+ Add Predictions</button>
+                                        <button class="btn-secondary" onclick="reviewPredictions()">Review Corrections</button>
+                                    </div>
+                                </div>
+                                <div class="prediction-grid" id="predicted-thumbnails"></div>
+                            </div>
+                            
+                            <div class="file-section">
+                                <div class="section-header">
+                                    <h3>✅ Ground Truth (<span id="ground-truth-count">0</span>)</h3>
+                                    <div class="section-controls">
+                                        <button class="btn-primary" onclick="uploadGroundTruth()">+ Add Ground Truth</button>
+                                        <button class="btn-secondary" onclick="validateLabels()">Validate Labels</button>
+                                    </div>
+                                </div>
+                                <div class="label-grid" id="ground-truth-thumbnails"></div>
+                            </div>
+                        </div>
+                        
+                <!-- Progress Tracking -->
+                <div class="progress-container" id="progress-panel">
+                    <h3>📊 Training Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill">0%</div>
+                    </div>
+                    <div id="progress-text">Initializing...</div>
+                    <div class="metrics-grid" id="metrics-grid"></div>
+                </div>
+            </div>

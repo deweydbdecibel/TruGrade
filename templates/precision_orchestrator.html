@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revolutionary Precision Orchestrator</title>
+    <style>
+        /* CSS styles go here */
+            body { font-family: 'Segoe UI', sans-serif; margin: 0; }
+            .enterprise-dataset-card { border: 1px solid #ddd; padding: 20px; margin: 10px; }
+            .readiness-badge { background: #007bff; color: white; padding: 5px 10px; border-radius: 5px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🏆 Revolutionary Multi-Modal Card Grading Orchestrator</h1>
+            <div id="dataset-selection-grid"></div>
+        </div>
+        <script>
+            class EnterpriseDatasetSelector: {
+                constructor(orchestratorApi) {
+                    this.api = orchestratorApi;
+                    this.selectedDataset = null;
+                }
+
+                async loadAvailableDatasets() {
+                    try {
+                        const response = await fetch(`${this.api}/api/datasets/discover`);
+                        const result = await response.json();
+
+                        if (result.success) {
+                            this.renderDatasetSelection(result.datasets);
+                        } else {
+                            this.displayIntegrationError("Dataset Studio integration failed");
+                        }
+                    } catch (error) {
+                        this.handleConnectionError(error);
+                    }
+                }
+
+                renderDatasetSelection(datasets) {
+                    const container = document.getElementById('dataset-selection-grid');
+
+                    container.innerHTML = datasets.map(dataset => `
+                        <div class="enterprise-dataset-card ${this.getReadinessClass(dataset)}"
+                            onclick="selectDatasetForTraining('${dataset.id}')">
+                            <header class="dataset-header">
+                                <h4>${dataset.name}</h4>
+                                <span class="readiness-badge">${dataset.training_readiness.readiness_tier}</span>
+                            </header>
+
+                            <div class="metrics-dashboard">
+                                <div class="metric">
+                                    <span class="label">Images:</span>
+                                    <span class="value">${dataset.statistics.total_images.toLocaleString()}</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="label">Coverage:</span>
+                                    <span class="value">${(dataset.statistics.annotation_coverage * 100).toFixed(1)}%</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="label">Quality:</span>
+                                    <span class="value">${(dataset.statistics.dataset_quality * 100).toFixed(1)}%</span>
+                                </div>
+                            </div>
+
+                            <div class="compatibility-matrix">
+                                <h5>Compatible Architectures:</h5>
+                                <div class="architecture-tags">
+                                    ${dataset.compatible_architectures.map(arch =>
+                                        `<span class="arch-tag">${arch}</span>`
+                                    ).join('')}
+                                </div>
+                            </div>
+
+                            <div class="training-estimate">
+                                <span class="eta-label">Estimated Duration:</span>
+                                <span class="eta-value">${dataset.estimated_training_duration}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                getReadinessClass(dataset) {
+                    const tier = dataset.training_readiness.readiness_tier;
+                    return `readiness-${tier}`;
+                }
+            }

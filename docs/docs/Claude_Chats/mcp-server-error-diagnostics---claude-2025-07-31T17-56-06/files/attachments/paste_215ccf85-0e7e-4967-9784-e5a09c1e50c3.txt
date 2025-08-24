@@ -1,0 +1,57 @@
+2025-07-14 20:25:21 [info] Starting app {
+  appVersion: '0.11.6',
+  isPackaged: true,
+  platform: 'linux',
+  arch: 'x64',
+  nodeVersion: '22.17.0'
+}
+2025-07-14 20:25:21 [info] Claude Studio: Feature disabled, skipping initialization
+2025-07-14 20:25:21 [info] App is installed, enabling initial check and auto-updates
+2025-07-14 20:25:22 [info] Starting periodic extension update checks (interval: 21600000ms)
+2025-07-14 20:25:22 [info] Checking if UtilityProcess should be used for extension mcp-server-generator
+2025-07-14 20:25:22 [warn] UtilityProcess Check: Extension mcp-server-generator not found in installed extensions
+2025-07-14 20:25:22 [info] Checking if UtilityProcess should be used for extension memory
+2025-07-14 20:25:22 [warn] UtilityProcess Check: Extension memory not found in installed extensions
+2025-07-14 20:25:22 [info] Checking if UtilityProcess should be used for extension sequential-thinking
+2025-07-14 20:25:22 [warn] UtilityProcess Check: Extension sequential-thinking not found in installed extensions
+2025-07-14 20:25:22 [info] Checking if UtilityProcess should be used for extension filesystem
+2025-07-14 20:25:22 [warn] UtilityProcess Check: Extension filesystem not found in installed extensions
+2025-07-14 20:25:22 [info] Fetched 1 blocklists with 0 total entries
+2025-07-14 20:25:22 [info] Saved 1 blocklists with 0 entries
+2025-07-14 20:25:22 [info] Successfully updated 1 blocklists
+2025-07-14 20:50:33 [info] Checking if UtilityProcess should be used for extension mcp-server-generator
+2025-07-14 20:50:33 [warn] UtilityProcess Check: Extension mcp-server-generator not found in installed extensions
+2025-07-14 20:50:33 [info] Checking if UtilityProcess should be used for extension memory
+2025-07-14 20:50:33 [warn] UtilityProcess Check: Extension memory not found in installed extensions
+2025-07-14 20:50:33 [info] Checking if UtilityProcess should be used for extension sequential-thinking
+2025-07-14 20:50:33 [warn] UtilityProcess Check: Extension sequential-thinking not found in installed extensions
+2025-07-14 20:50:33 [info] Checking if UtilityProcess should be used for extension filesystem
+2025-07-14 20:50:33 [warn] UtilityProcess Check: Extension filesystem not found in installed extensions
+2025-07-14 20:50:34 [error] Failed to show toast: {
+  error: Error
+      at t (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:35:7575)
+      at new <anonymous> (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:57511)
+      at u (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:58345)
+      at /tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:57995
+      at t.<anonymous> (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:49923)
+      at t._execute (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:27742)
+      at t.execute (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:27565)
+      at t.flush (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:31962)
+      at listOnTimeout (node:internal/timers:588:17)
+      at process.processTimers (node:internal/timers:523:7) {
+    stack: 'Error\n' +
+      '    at t (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:35:7575)\n' +
+      '    at new <anonymous> (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:57511)\n' +
+      '    at u (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:58345)\n' +
+      '    at /tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:57995\n' +
+      '    at t.<anonymous> (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:49923)\n' +
+      '    at t._execute (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:27742)\n' +
+      '    at t.execute (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:27565)\n' +
+      '    at t.flush (/tmp/.mount_ClaudeXBgJ4H/usr/lib/claude-desktop/app.asar/.vite/build/index-Dwt_NcbE.js:37:31962)\n' +
+      '    at listOnTimeout (node:internal/timers:588:17)\n' +
+      '    at process.processTimers (node:internal/timers:523:7)',
+    message: 'Timeout has occurred',
+    name: 'TimeoutError',
+    info: { meta: null, lastValue: null, seen: 0 }
+  }
+}

@@ -1,0 +1,113 @@
+EXACT PLACEMENT FIX:
+Your code is probably broken because routes got mixed with helper methods. Here's the surgical fix:
+STEP 1: Find your setup_routes() method
+STEP 2: Add ONLY these 2 routes inside setup_routes():
+pythondef setup_routes(self):
+    # ... your existing routes ...
+    
+    @self.app.get("/api/session/{session_id}/files/visual")
+    async def get_visual_file_browser(session_id: str):
+        if session_id not in self.active_sessions:
+            raise HTTPException(status_code=404, detail="Session not found")
+        session = self.active_sessions[session_id]
+        return {
+            "session_id": session_id,
+            "images": await self._generate_image_thumbnails(session.get("images", [])),
+            "ground_truth": await self._generate_label_previews(session.get("labels", [])),
+            "predicted_labels": await self._generate_predicted_previews(session.get("predicted_labels", [])),
+            "statistics": {
+                "total_images": len(session.get("images", [])),
+                "labeled_count": len(session.get("labels", [])),
+                "prediction_coverage": self._calculate_prediction_coverage(session),
+                "correction_rate": self._calculate_correction_rate(session)
+            }
+        }
+
+    @self.app.post("/api/session/{session_id}/predicted-labels")
+    async def upload_predicted_labels(session_id: str, files: List[UploadFile] = File(...)):
+        if session_id not in self.active_sessions:
+            raise HTTPException(status_code=404, detail="Session not found")
+        session = self.active_sessions[session_id]
+        if "predicted_labels" not in session:
+            session["predicted_labels"] = []
+        uploaded_predictions = []
+        for file in files:
+            prediction_data = {
+                "filename": file.filename,
+                "content": await file.read(),
+                "upload_timestamp": datetime.now().isoformat(),
+                "confidence_score": 0.85,
+                "correction_needed": False
+            }
+            session["predicted_labels"].append(prediction_data)
+            uploaded_predictions.append({
+                "filename": file.filename,
+                "status": "uploaded",
+                "size": len(prediction_data["content"])
+            })
+        return {
+            "session_id": session_id,
+            "uploaded_count": len(uploaded_predictions),
+            "predictions": uploaded_predictions,
+            "total_predictions": len(session["predicted_labels"])
+        }
+STEP 3: Add these 5 helper methods OUTSIDE setup_routes() but inside the class:
+pythonclass FlexibleTrainingOrchestrator:
+    def __init__(self):
+        # existing code
+        
+    def setup_routes(self):
+        # routes from step 2
+        
+    # ADD THESE 5 METHODS HERE:
+    async def _generate_image_thumbnails(self, images: List) -> List[Dict]:
+        thumbnails = []
+        for idx, image_data in enumerate(images):
+            thumbnails.append({
+                "id": idx,
+                "filename": image_data.get("filename", f"image_{idx}"),
+                "thumbnail_url": f"/api/thumbnail/{image_data.get('filename', f'image_{idx}')}",
+                "file_size": image_data.get("size", 0),
+                "upload_timestamp": image_data.get("upload_timestamp", "unknown"),
+                "dimensions": "640x480",
+                "format": "jpg"
+            })
+        return thumbnails
+
+    async def _generate_label_previews(self, labels: List) -> List[Dict]:
+        previews = []
+        for idx, label_data in enumerate(labels):
+            previews.append({
+                "id": idx,
+                "filename": label_data.get("filename", f"label_{idx}"),
+                "label_count": 1,
+                "annotation_type": "ground_truth",
+                "confidence": 1.0,
+                "status": "verified"
+            })
+        return previews
+
+    async def _generate_predicted_previews(self, predicted_labels: List) -> List[Dict]:
+        previews = []
+        for idx, prediction_data in enumerate(predicted_labels):
+            previews.append({
+                "id": idx,
+                "filename": prediction_data.get("filename", f"prediction_{idx}"),
+                "confidence_score": prediction_data.get("confidence_score", 0.85),
+                "correction_needed": prediction_data.get("correction_needed", False),
+                "annotation_type": "predicted",
+                "status": "needs_review" if prediction_data.get("correction_needed") else "approved"
+            })
+        return previews
+
+    def _calculate_prediction_coverage(self, session: Dict) -> float:
+        total_images = len(session.get("images", []))
+        predicted_count = len(session.get("predicted_labels", []))
+        return (predicted_count / total_images * 100) if total_images > 0 else 0.0
+
+    def _calculate_correction_rate(self, session: Dict) -> float:
+        predictions = session.get("predicted_labels", [])
+        if not predictions:
+            return 0.0
+        correction_needed = sum(1 for p in predictions if p.get("correction_needed", False))
+        return (correction_needed / len(predictions)) * 100

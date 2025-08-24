@@ -1,0 +1,20 @@
+-Things that need to be completed-
+
+* Drag & Drop Capabilities
+
+1. WINDOW POSITIONING (Multi-monitor issue)
+
+Opens 80% main screen / 20% left screen
+Fix: Better screen detection + window centering logic
+
+2. FILE DIALOG MEMORY
+
+Remember last directory used
+Fix: Store last_directory in settings/config
+
+3. RECENT FILES
+
+Quick access to recently loaded images
+Fix: Recent files menu + persistent storage
+
+PSA/BGS/SGC/other grading company population counts & estimated value @ those grades

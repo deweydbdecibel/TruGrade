@@ -1,0 +1,131 @@
+       if (data.loss !== undefined) {
+                        metricsGrid.innerHTML = `
+                            <div class="metric">
+                                <div class="metric-value">${data.loss.toFixed(4)}</div>
+                                <div>Loss</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${(data.precision || 0).toFixed(3)}</div>
+                                <div>Precision</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${(data.recall || 0).toFixed(3)}</div>
+                                <div>Recall</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">${(data.mAP50 || 0).toFixed(3)}</div>
+                                <div>mAP50</div>
+                            </div>
+                        `;
+                    }
+
+                    if (data.status === 'completed') {
+                        alert('🎉 Training completed successfully!');
+                    } else if (data.status === 'error') {
+                        alert(`❌ Training failed: ${data.message}`);
+                    }
+                }
+                async function loadVisualFileBrowser() {
+                    const sessionId = currentSessionId;
+                    const response = await fetch(`/api/session/${sessionId}/files/visual`);
+                    const data = await response.json();
+                    
+                    populateImageThumbnails(data.images);
+                    populatePredictedPreviews(data.predicted_labels);
+                    populateGroundTruthPreviews(data.ground_truth);
+                    updateFileStatistics(data.statistics);
+                }
+
+                function populateImageThumbnails(images) {
+                    const container = document.getElementById('image-thumbnails');
+                    container.innerHTML = images.map(img => `
+                        <div class="thumbnail-item" data-id="${img.id}">
+                            <img src="${img.thumbnail_url}" alt="${img.filename}" />
+                            <div class="thumbnail-metadata">
+                                <span class="filename">${img.filename}</span>
+                                <span class="file-size">${formatFileSize(img.file_size)}</span>
+                            </div>
+                            <input type="checkbox" class="file-selector" />
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('image-count').textContent = images.length;
+                }
+
+                function populatePredictedPreviews(predictions) {
+                    const container = document.getElementById('predicted-thumbnails');
+                    container.innerHTML = predictions.map(pred => `
+                        <div class="prediction-item ${pred.correction_needed ? 'needs-correction' : 'approved'}" data-id="${pred.id}">
+                            <div class="prediction-header">
+                                <span class="filename">${pred.filename}</span>
+                                <span class="confidence-score">${(pred.confidence_score * 100).toFixed(1)}%</span>
+                            </div>
+                            <div class="prediction-status">${pred.status}</div>
+                            <div class="prediction-actions">
+                                <button onclick="reviewPrediction(${pred.id})">Review</button>
+                                <button onclick="approvePrediction(${pred.id})">Approve</button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('predicted-count').textContent = predictions.length;
+                }
+
+                function populateGroundTruthPreviews(groundTruth) {
+                    const container = document.getElementById('ground-truth-thumbnails');
+                    container.innerHTML = groundTruth.map(gt => `
+                        <div class="label-item" data-id="${gt.id}">
+                            <span class="filename">${gt.filename}</span>
+                            <span class="label-count">${gt.label_count} labels</span>
+                            <span class="status verified">✓ Verified</span>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('ground-truth-count').textContent = groundTruth.length;
+                }
+
+                async function uploadPredictedLabels() {
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.multiple = true;
+                    fileInput.accept = '.txt,.json,.xml';
+                    
+                    fileInput.onchange = async (event) => {
+                        const files = Array.from(event.target.files);
+                        const formData = new FormData();
+                        files.forEach(file => formData.append('files', file));
+                        
+                        const response = await fetch(`/api/session/${currentSessionId}/predicted-labels`, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (response.ok) {
+                            alert(`✅ Uploaded ${result.uploaded_count} predicted labels`);
+                            loadVisualFileBrowser();
+                        } else {
+                            alert(`❌ Upload failed: ${result.detail}`);
+                        }
+                    };
+                    
+                    fileInput.click();
+                }
+
+                function showVisualBrowser() {
+                    document.getElementById('visual-browser').style.display = 'block';
+                    loadVisualFileBrowser();
+                }
+
+                function formatFileSize(bytes) {
+                    if (bytes === 0) return '0 Bytes';
+                    const k = 1024;
+                    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                }
+            </script>
+        </body>
+        </html>
+        '''

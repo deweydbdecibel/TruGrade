@@ -1,0 +1,745 @@
+# TruGrade Professional Platform - Git Ignore
+# Revolutionary Card Grading System Privacy & Security
+
+# ============================================================================
+# CRITICAL PRIVACY & SECURITY - NEVER COMMIT THESE
+# ============================================================================
+
+# API Keys and Secrets
+*.key
+*.pem
+*.p12
+*.pfx
+api_keys.json
+secrets.json
+.env
+.env.local
+.env.production
+config/secrets/
+certificates/
+keys/
+
+# Database Credentials
+database.json
+db_config.json
+connection_strings.json
+
+# Model Files (Proprietary AI Models)
+models/production/*.pt
+models/production/*.pth
+models/production/*.onnx
+models/production/*.pkl
+models/phoenix_hub/*.pt
+models/phoenix_hub/*.pth
+models/training/checkpoints/*.pt
+models/training/checkpoints/*.pth
+
+# Training Data (Proprietary Datasets)
+data/datasets/proprietary/
+data/datasets/private/
+data/training/private/
+data/revolutionary_datasets/*/images/
+data/revolutionary_datasets/*/labels/
+
+# User Data and Personal Information
+user_data/
+personal_info/
+customer_data/
+grading_history/
+user_uploads/
+
+# Business Intelligence Data
+business_data/
+revenue_data/
+market_analysis/private/
+competitive_intelligence/
+
+# ============================================================================
+# PYTHON & DEVELOPMENT
+# ============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# ============================================================================
+# AI/ML SPECIFIC
+# ============================================================================
+
+# PyTorch
+*.pt
+*.pth
+*.tar
+
+# TensorFlow
+*.pb
+saved_model/
+checkpoint
+*.ckpt
+*.meta
+*.index
+
+# Weights & Biases
+wandb/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Jupyter notebooks with outputs
+*.ipynb
+
+# Model checkpoints
+checkpoints/
+*.checkpoint
+
+# Training logs
+logs/
+tensorboard_logs/
+training_logs/
+
+# Large datasets
+*.hdf5
+*.h5
+*.npy
+*.npz
+
+# ============================================================================
+# SYSTEM & IDE FILES
+# ============================================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.target
+.tern-project
+.texlipse
+.cache-main
+.scala_dependencies
+.worksheet
+
+# ============================================================================
+# TRUGRADE SPECIFIC
+# ============================================================================
+
+# Temporary files
+tmp_*
+temp_*
+*.tmp
+*.temp
+
+# Upload directories
+uploads/
+user_uploads/
+card_uploads/
+
+# Cache directories
+cache/
+.cache/
+__cache__/
+
+# Log files
+*.log
+logs/
+log/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration overrides
+config/local/
+config/development/
+config/production/
+config/staging/
+
+# Backup files
+*.backup
+*.bak
+backup/
+backups/
+
+# Test files and results
+test_results/
+test_output/
+coverage_reports/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Runtime files
+*.pid
+*.sock
+*.lock
+
+# ============================================================================
+# DOCKER & DEPLOYMENT
+# ============================================================================
+
+# Docker
+.dockerignore
+Dockerfile.local
+docker-compose.override.yml
+.docker/
+
+# Kubernetes
+*.yaml.local
+*.yml.local
+secrets.yaml
+secrets.yml
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# ============================================================================
+# MONITORING & ANALYTICS
+# ============================================================================
+
+# Prometheus
+prometheus_data/
+
+# Grafana
+grafana_data/
+
+# Elasticsearch
+elasticsearch_data/
+
+# ============================================================================
+# MOBILE & PWA
+# ============================================================================
+
+# PWA build files
+static/build/
+static/dist/
+
+# Mobile app builds
+mobile_builds/
+app_builds/
+
+# ============================================================================
+# BUSINESS & LEGAL
+# ============================================================================
+
+# Legal documents (keep in separate secure repo)
+legal/
+contracts/
+agreements/
+licenses/private/
+
+# Financial data
+financial/
+accounting/
+revenue/
+
+# ============================================================================
+# RESEARCH & DEVELOPMENT
+# ============================================================================
+
+# Research notes (may contain proprietary information)
+research/private/
+experiments/private/
+prototypes/private/
+
+# Patent applications
+patents/
+ip/
+
+# ============================================================================
+# CUSTOMER & BUSINESS DATA
+# ============================================================================
+
+# Customer information
+customers/
+client_data/
+user_profiles/
+
+# Business metrics
+metrics/private/
+analytics/private/
+reports/private/
+
+# ============================================================================
+# INFRASTRUCTURE
+# ============================================================================
+
+# SSL Certificates
+*.crt
+*.cert
+*.ca-bundle
+
+# SSH Keys
+id_rsa
+id_rsa.pub
+*.pem
+
+# Cloud provider configs
+.aws/
+.gcp/
+.azure/
+
+# ============================================================================
+# TEMPORARY DEVELOPMENT FILES
+# ============================================================================
+
+# Temporary development files
+dev_*
+debug_*
+test_*
+scratch_*
+playground_*
+
+# Notes and documentation drafts
+notes/
+drafts/
+todo.txt
+TODO.md
+
+# ============================================================================
+# END OF TRUGRADE .GITIGNORE
+# ============================================================================
+
+# Remember: When in doubt, don't commit it!
+# The revolutionary technology must be protected! 🔥🛡️
+
+# Claude Flow generated files
+.claude/settings.local.json
+.mcp.json
+claude-flow.config.json
+.swarm/
+.hive-mind/
+memory/claude-flow-data.json
+memory/sessions/*
+!memory/sessions/README.md
+memory/agents/*
+!memory/agents/README.md
+coordination/memory_bank/*
+coordination/subtasks/*
+coordination/orchestration/*
+*.db
+*.db-journal
+*.db-wal
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+claude-flow
+claude-flow.bat
+claude-flow.ps1
+hive-mind-prompt-*.txt
+trugrade_env/share/man/man1/ttx.1
+trugrade_env/share/man/man1/isympy.1
+trugrade_env/share/man/man1/ipython.1
+trugrade_env/share/jupyter/nbextensions/open3d/index.js.LICENSE.txt
+trugrade_env/share/jupyter/nbextensions/open3d/index.js
+trugrade_env/share/jupyter/nbextensions/open3d/extension.js
+trugrade_env/share/jupyter/nbextensions/jupyter-js-widgets/extension.js.map
+trugrade_env/share/jupyter/nbextensions/jupyter-js-widgets/extension.js.LICENSE.txt
+trugrade_env/share/jupyter/nbextensions/jupyter-js-widgets/extension.js
+trugrade_env/share/jupyter/nbextensions/dash/main.js
+trugrade_env/share/jupyter/labextensions/open3d/static/third-party-licenses.json
+trugrade_env/share/jupyter/labextensions/open3d/static/style.js
+trugrade_env/share/jupyter/labextensions/open3d/static/remoteEntry.978ca237b2e98d7edb06.js
+trugrade_env/share/jupyter/labextensions/open3d/static/752.c371c3dc80b47b0e5256.js
+trugrade_env/share/jupyter/labextensions/open3d/static/543.1c80835729e2b26eb76d.js.LICENSE.txt
+trugrade_env/share/jupyter/labextensions/open3d/static/543.1c80835729e2b26eb76d.js
+trugrade_env/share/jupyter/labextensions/open3d/static/509.cd497512212c7d678181.js
+trugrade_env/share/jupyter/labextensions/open3d/static/493.f9f9e1870a89c440e367.js
+trugrade_env/share/jupyter/labextensions/open3d/package.json
+trugrade_env/share/jupyter/labextensions/open3d/install.json
+trugrade_env/share/jupyter/labextensions/jupyterlab-plotly/static/style.js
+trugrade_env/share/jupyter/labextensions/jupyterlab-plotly/static/remoteEntry.38ea05461c254e327731.js
+trugrade_env/share/jupyter/labextensions/jupyterlab-plotly/static/340.e7c6cfbf008f29878868.js
+trugrade_env/share/jupyter/labextensions/jupyterlab-plotly/package.json
+trugrade_env/share/jupyter/labextensions/jupyterlab-plotly/install.json
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/third-party-licenses.json
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/style.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/remoteEntry.35b6c65bd99dab37b910.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/898.db11fb1a7e18acb58b5b.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/727.b26a6f3871012a0fd66a.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/722.53e4a64671c3c48de007.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/701.043aefe0b66133629348.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/651.fe40a967a60b543cf15c.js.LICENSE.txt
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/651.fe40a967a60b543cf15c.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/647.8458d9c331000024a14a.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/586.085510630436c2e4273f.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/446.f8696ce72124c78273da.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/439.b350310d057b43cdd50f.js.LICENSE.txt
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/439.b350310d057b43cdd50f.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/420.23ab95819c045f6c36bc.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/static/327.d242f1a99504b2d5b629.js
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/schemas/@jupyter-widgets/jupyterlab-manager/plugin.json
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/schemas/@jupyter-widgets/jupyterlab-manager/package.json.orig
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/package.json
+trugrade_env/share/jupyter/labextensions/@jupyter-widgets/jupyterlab-manager/install.json
+trugrade_env/share/jupyter/lab/extensions/dash-jupyterlab.tgz
+trugrade_env/share/doc/umf/licensing/third-party-programs.txt
+trugrade_env/share/doc/umf/LICENSE.TXT
+trugrade_env/share/doc/tcm/licensing/third-party-programs.txt
+trugrade_env/share/doc/tcm/licensing/license.txt
+trugrade_env/share/doc/tbb/licensing/third-party-programs.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs-safestring.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs-openmp.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs-oneTBB.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs-oneMath.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs-level-zero.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs-IntelMPI.txt
+trugrade_env/share/doc/mkl/licensing/third-party-programs-benchmarks.txt
+trugrade_env/share/doc/compiler/licensing/openmp/third-party-programs.txt
+trugrade_env/pyvenv.cfg
+trugrade_env/opt/compiler/include/omp_lib.h
+trugrade_env/opt/compiler/include/omp.h
+trugrade_env/opt/compiler/include/omp-tools.h
+trugrade_env/lib64
+trugrade_env/include/umf/providers/provider_os_memory.h
+trugrade_env/include/umf/providers/provider_level_zero.h
+trugrade_env/include/umf/providers/provider_fixed_memory.h
+trugrade_env/include/umf/providers/provider_file_memory.h
+trugrade_env/include/umf/providers/provider_devdax_memory.h
+trugrade_env/include/umf/providers/provider_cuda.h
+trugrade_env/include/umf/pools/pool_scalable.h
+trugrade_env/include/umf/pools/pool_proxy.h
+trugrade_env/include/umf/pools/pool_disjoint.h
+trugrade_env/include/umf/memtarget.h
+trugrade_env/include/umf/memspace.h
+trugrade_env/include/umf/mempolicy.h
+trugrade_env/include/umf/memory_provider_ops.h
+trugrade_env/include/umf/memory_provider_gpu.h
+trugrade_env/include/umf/memory_provider.h
+trugrade_env/include/umf/memory_pool_ops.h
+trugrade_env/include/umf/memory_pool.h
+trugrade_env/include/umf/ipc.h
+trugrade_env/include/umf/base.h
+trugrade_env/include/umf.h
+trugrade_env/include/site/python3.10/greenlet/greenlet.h
+trugrade_env/include/mkl_vsl_types.h
+trugrade_env/include/mkl_vsl_subroutine.fi
+trugrade_env/include/mkl_vsl_omp_variant.h
+trugrade_env/include/mkl_vsl_omp_variant.f90
+trugrade_env/include/mkl_vsl_omp_offload.h
+trugrade_env/include/mkl_vsl_omp_offload.f90
+trugrade_env/include/mkl_vsl_functions_64.h
+trugrade_env/include/mkl_vsl_functions.h
+trugrade_env/include/mkl_vsl_defines.h
+trugrade_env/include/mkl_vsl.h
+trugrade_env/include/mkl_vsl.fi
+trugrade_env/include/mkl_vsl.f90
+trugrade_env/include/mkl_vml_types.h
+trugrade_env/include/mkl_vml_omp_variant.h
+trugrade_env/include/mkl_vml_omp_variant.f90
+trugrade_env/include/mkl_vml_omp_offload.h
+trugrade_env/include/mkl_vml_omp_offload.f90
+trugrade_env/include/mkl_vml_functions.h
+trugrade_env/include/mkl_vml_defines.h
+trugrade_env/include/mkl_vml.h
+trugrade_env/include/mkl_vml.fi
+trugrade_env/include/mkl_vml.f90
+trugrade_env/include/mkl_version.h
+trugrade_env/include/mkl_types.h
+trugrade_env/include/mkl_trig_transforms.h
+trugrade_env/include/mkl_trig_transforms.f90
+trugrade_env/include/mkl_trans_names.h
+trugrade_env/include/mkl_trans.h
+trugrade_env/include/mkl_trans.fi
+trugrade_env/include/mkl_spblas_omp_variant.h
+trugrade_env/include/mkl_spblas_omp_offload.h
+trugrade_env/include/mkl_spblas.h
+trugrade_env/include/mkl_spblas.fi
+trugrade_env/include/mkl_spblas.f90
+trugrade_env/include/mkl_sparse_qr.h
+trugrade_env/include/mkl_sparse_qr.f90
+trugrade_env/include/mkl_sparse_handle.h
+trugrade_env/include/mkl_sparse_handle.fi
+trugrade_env/include/mkl_sparse_handle.f90
+trugrade_env/include/mkl_solvers_ee.h
+trugrade_env/include/mkl_solvers_ee.fi
+trugrade_env/include/mkl_solvers_ee.f90
+trugrade_env/include/mkl_service.h
+trugrade_env/include/mkl_service.fi
+trugrade_env/include/mkl_service.f90
+trugrade_env/include/mkl_scalapack.h
+trugrade_env/include/mkl_rci.h
+trugrade_env/include/mkl_rci.fi
+trugrade_env/include/mkl_rci.f90
+trugrade_env/include/mkl_poisson.h
+trugrade_env/include/mkl_poisson.f90
+trugrade_env/include/mkl_pblas.h
+trugrade_env/include/mkl_pardiso.h
+trugrade_env/include/mkl_pardiso.fi
+trugrade_env/include/mkl_pardiso.f90
+trugrade_env/include/mkl_omp_variant.h
+trugrade_env/include/mkl_omp_offload.h
+trugrade_env/include/mkl_omp_offload.f90
+trugrade_env/include/mkl_lapacke.h
+trugrade_env/include/mkl_lapack_omp_variant_lp64.f90
+trugrade_env/include/mkl_lapack_omp_variant_ilp64.f90
+trugrade_env/include/mkl_lapack_omp_variant.h
+trugrade_env/include/mkl_lapack_omp_offload_lp64.f90
+trugrade_env/include/mkl_lapack_omp_offload_ilp64.f90
+trugrade_env/include/mkl_lapack_omp_offload.h
+trugrade_env/include/mkl_lapack_omp_offload.f90
+trugrade_env/include/mkl_lapack.h
+trugrade_env/include/mkl_lapack.fi
+trugrade_env/include/mkl_lapack.f90
+trugrade_env/include/mkl_jit_blas_lp64.f90
+trugrade_env/include/mkl_jit_blas_ilp64.f90
+trugrade_env/include/mkl_jit_blas.f90
+trugrade_env/include/mkl_dss.h
+trugrade_env/include/mkl_dss.fi
+trugrade_env/include/mkl_dss.f90
+trugrade_env/include/mkl_direct_types.h
+trugrade_env/include/mkl_direct_lapack.h
+trugrade_env/include/mkl_direct_call.h
+trugrade_env/include/mkl_direct_call.fi
+trugrade_env/include/mkl_direct_blas_kernels.h
+trugrade_env/include/mkl_direct_blas.h
+trugrade_env/include/mkl_dfti_omp_offload.h
+trugrade_env/include/mkl_dfti_omp_offload.f90
+trugrade_env/include/mkl_dfti.h
+trugrade_env/include/mkl_dfti.f90
+trugrade_env/include/mkl_df_types.h
+trugrade_env/include/mkl_df_functions.h
+trugrade_env/include/mkl_df_defines.h
+trugrade_env/include/mkl_df.h
+trugrade_env/include/mkl_df.f90
+trugrade_env/include/mkl_compact.h
+trugrade_env/include/mkl_cluster_sparse_solver.h
+trugrade_env/include/mkl_cluster_sparse_solver.fi
+trugrade_env/include/mkl_cluster_sparse_solver.f90
+trugrade_env/include/mkl_cdft_types.h
+trugrade_env/include/mkl_cdft.h
+trugrade_env/include/mkl_cdft.f90
+trugrade_env/include/mkl_cblas_64.h
+trugrade_env/include/mkl_cblas.h
+trugrade_env/include/mkl_blas_omp_variant_lp64_no_array_check.f90
+trugrade_env/include/mkl_blas_omp_variant_lp64.f90
+trugrade_env/include/mkl_blas_omp_variant_ilp64_no_array_check.f90
+trugrade_env/include/mkl_blas_omp_variant_ilp64.f90
+trugrade_env/include/mkl_blas_omp_variant.h
+trugrade_env/include/mkl_blas_omp_offload_lp64_no_array_check.f90
+trugrade_env/include/mkl_blas_omp_offload_lp64.f90
+trugrade_env/include/mkl_blas_omp_offload_ilp64_no_array_check.f90
+trugrade_env/include/mkl_blas_omp_offload_ilp64.f90
+trugrade_env/include/mkl_blas_omp_offload.h
+trugrade_env/include/mkl_blas_omp_offload.f90
+trugrade_env/include/mkl_blas_64.h
+trugrade_env/include/mkl_blas.h
+trugrade_env/include/mkl_blas.fi
+trugrade_env/include/mkl_blas.f90
+trugrade_env/include/mkl_blacs.h
+trugrade_env/include/mkl.h
+trugrade_env/include/mkl.fi
+trugrade_env/include/intel64/lp64/mkl_service.mod
+trugrade_env/include/intel64/lp64/lapack95.mod
+trugrade_env/include/intel64/lp64/f95_precision.mod
+trugrade_env/include/intel64/lp64/blas95.mod
+trugrade_env/include/intel64/ilp64/mkl_service.mod
+trugrade_env/include/intel64/ilp64/lapack95.mod
+trugrade_env/include/intel64/ilp64/f95_precision.mod
+trugrade_env/include/intel64/ilp64/blas95.mod
+trugrade_env/include/i_malloc.h
+trugrade_env/include/fftw/rfftw_threads.h
+trugrade_env/include/fftw/rfftw_mpi.h
+trugrade_env/include/fftw/rfftw.h
+trugrade_env/include/fftw/offload/fftw3_omp_offload_common.h
+trugrade_env/include/fftw/offload/fftw3_omp_offload.h
+trugrade_env/include/fftw/offload/fftw3_omp_offload.f90
+trugrade_env/include/fftw/fftw_threads.h
+trugrade_env/include/fftw/fftw_mpi.h
+trugrade_env/include/fftw/fftw_f77.i
+trugrade_env/include/fftw/fftw3_mkl_f77.h
+trugrade_env/include/fftw/fftw3_mkl.h
+trugrade_env/include/fftw/fftw3_mkl.f
+trugrade_env/include/fftw/fftw3.h
+trugrade_env/include/fftw/fftw3.f03
+trugrade_env/include/fftw/fftw3.f
+trugrade_env/include/fftw/fftw3-mpi_mkl.h
+trugrade_env/include/fftw/fftw3-mpi.h
+trugrade_env/include/fftw/fftw3-mpi.f03
+trugrade_env/include/fftw/fftw.h
+trugrade_env/etc/modulefiles/umf/0.11.0
+trugrade_env/etc/jupyter/nbconfig/notebook.d/widgetsnbextension.json
+trugrade_env/etc/jupyter/nbconfig/notebook.d/open3d.json
+trugrade_env/etc/jupyter/nbconfig/notebook.d/dash.json
